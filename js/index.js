@@ -109,17 +109,19 @@ Library.prototype.getBooksByAuthor = function (authorName){
 Library.prototype.addBooks = function (books){
 // Purpose: Takes multiple books, in the form of an array of book objects, and adds the objects to your books array.
 // Return: number of books successfully added, 0 if no books were added
-
   for (var i = 0; i < books.length; i++) {
-    this._bookshelf.push(books[i])
+    // use the same method
+    gLibrary.addBook(books[i])
   }
   return books.length;
 };
 
-// Library.prototype.getAuthors = function (){
-// // Purpose: Find the distinct authors’ names from all books in your library, only 1 book by that author
-// // Return: array of strings the names of all distinct authors, empty array if no books exist or if no authors exist
-// };
+Library.prototype.getAuthors = function (){
+// Purpose: Find the distinct authors’ names from all books in your library, only 1 book by that author
+// Return: array of strings the names of all distinct authors, empty array if no books exist or if no authors exist
+
+
+};
 
 Library.prototype.getRandomAuthorName = function (){
 // Purpose: Retrieves a random author name from your books collection
