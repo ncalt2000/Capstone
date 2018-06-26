@@ -92,26 +92,44 @@ Library.prototype.getBookByTitle = function (title){
 // Purpose: Return all books that completely or partially matches the string title passed into the function
 // Return: array of book objects if you find books with matching titles, empty array if no books are found
   var result = this._bookshelf.filter(function (item) {
-    return item.name.toLowerCase().indexOf(title.toLowerCase()) > -1;
+    return item.title.toLowerCase().indexOf(title.toLowerCase()) > -1;
   })
-  return "Result: " + " " + result;
+  return result;
 };
-// Library.prototype.getBooksByAuthor = function (authorName){
-// // Purpose: Finds all books where the author’s name partially or completely match-es the authorName argument passed to the function.
-// //Return:array of books if you find books with match authors, empty array if no books match
-// };
-// Library.prototype.addBooks = function (books){
-// // Purpose: Takes multiple books, in the form of an array of book objects, and adds the objects to your books array.
-// // Return: number number of books successfully added, 0 if no books were added
-// };
+
+Library.prototype.getBooksByAuthor = function (authorName){
+// Purpose: Finds all books where the author’s name partially or completely match-es the authorName argument passed to the function.
+//Return:array of books if you find books with match authors, empty array if no books match.
+  var result = this._bookshelf.filter(function (item) {
+    return item.author.toLowerCase().indexOf(authorName.toLowerCase()) > -1;
+  })
+  return result;
+};
+
+Library.prototype.addBooks = function (books){
+// Purpose: Takes multiple books, in the form of an array of book objects, and adds the objects to your books array.
+// Return: number of books successfully added, 0 if no books were added
+
+  for (var i = 0; i < books.length; i++) {
+    this._bookshelf.push(books[i])
+  }
+  return books.length;
+};
+
 // Library.prototype.getAuthors = function (){
-// // Purpose: Find the distinct authors’ names from all books in your library
+// // Purpose: Find the distinct authors’ names from all books in your library, only 1 book by that author
 // // Return: array of strings the names of all distinct authors, empty array if no books exist or if no authors exist
 // };
-// Library.prototype.getRandomAuthorName = function (){
-// // Purpose: Retrieves a random author name from your books collection
-// // Return: string author name, null if no books exist
-// };
+
+Library.prototype.getRandomAuthorName = function (){
+// Purpose: Retrieves a random author name from your books collection
+// Return: string author name, null if no books exist
+  if(this._bookshelf.length === 0){
+    return null;
+  }
+  var randomAuthor = this._bookshelf[Math.floor(Math.random() * this._bookshelf.length)]
+  return randomAuthor.author;
+};
 
 document.addEventListener('DOMContentLoaded', function() {
   window.gLibrary = new Library();
@@ -121,8 +139,11 @@ document.addEventListener('DOMContentLoaded', function() {
   window.book4 = new Book('Javascript', 'J.Duckett', 797, 'December 25, 2006');
   window.book5 = new Book('JQuery', 'J.Duckett', 897, 'December 25, 2008');
   window.book6 = new Book('JQuery2', 'J.Duckett', 897, 'December 25, 2008');
-  window.book7 = new Book('JQuery', 'J.Duckett', 897, 'December 25, 2008');
-  window.book8 = new Book('JQuery', 'J.Duckett', 897, 'December 25, 2008');
-
+  window.book7 = new Book('Carrie', 'S.King', 897, 'December 25, 2008');
+  window.book8 = new Book('Evgeniy Onegin', 'A.Pushkin', 897, 'December 25, 1879');
+  window.book9 = new Book('Harry Potter 2', 'J.Rowlins', 234, 'December 25, 2000');
+  window.book10 = new Book('Harry Potter 3', 'J.Rowlins', 234, 'December 25, 2000');
+  window.book11 = new Book('Harry Potter 4', 'J.Rowlins', 234, 'December 25, 2000');
+  window.bookArr = [book1, book2, book3];
 
 });
