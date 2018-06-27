@@ -3,14 +3,15 @@
 var Library = function() {
   // this creates a new private array, that gLib or gLibTwo has a reference to
   this._bookshelf = new Array();
+  // localStorage.setItem("Bookshelf" ,  JSON.stringify(this._bookshelf));
 };
 
 // 2. Create a Book object:
 var Book = function(title, author, pages, date){
   this.title = title,
   this.author = author,
-  this.numberOfPages = pages,
-  this.publishDate = new Date(date)
+  this.pages = pages,
+  this.date = new Date(date)
 };
 
 // Methods:
@@ -18,9 +19,11 @@ var Book = function(title, author, pages, date){
 Library.prototype.addBook = function(book) {
   //Purpose: Add a book object to your books array.
   // Return: boolean true if it is not already added, false if it is already added.
-
+  // var bookshelf = localStorage;
+  // console.log(bookshelf)
   if(this._bookshelf.length === 0){
     this._bookshelf.push(book);
+    // localStorage.setItem("bookshelf", this._bookshelf)
     return "The book is added!";
   }
 
@@ -34,9 +37,11 @@ Library.prototype.addBook = function(book) {
       return "Already exist"
       } else {
       this._bookshelf.push(book);
+      localStorage.setItem("bookshelf", JSON.stringify(this._bookshelf));
       return "The book is added"
     };
-  return this._bookshelf;
+
+    return this._bookshelf;
 };
 
 Library.prototype.removeBook = function(bookTitle) {
@@ -48,15 +53,14 @@ Library.prototype.removeBook = function(bookTitle) {
     }
   }
   if(bookDeleted){
+    localStorage.setItem("bookshelf", JSON.stringify(this._bookshelf))
     return "The book is deleted!"
   }
   return this._bookshelf;
 };
 
 Library.prototype.removeBookByAuthor = function (authorName) {
-  // var result = this._bookshelf.filter(function (book){
-  //   return book.toLowerCase() === authorName.toLowerCase();
-  // })
+
   var isDeleted = false;
   var deletedBooks = 0;
   for (var i = this._bookshelf.length-1; i >= 0; i--) {
@@ -121,7 +125,7 @@ var count = 0;
       count+=1;
     }
   }
-  return countNotAdded + " book(s) not added: already exist, " + count + " book(s) added!";
+  return countNotAdded + " book(s) not added, because they already exist, " + count + " book(s) added!";
 };
 
 Library.prototype.getAuthors = function (){
@@ -153,20 +157,9 @@ Library.prototype.getRandomAuthorName = function (){
   return randomAuthor.author;
 };
 
-Library.prototype.search = function(searchValue){
-  var resultArr = this._bookshelf.filter(function (book){
-    var search = searchValue.toLowerCase();
-    return book.title.toLowerCase().indexOf(search) > -1 ||
-    book.author.toLowerCase().indexOf(search) > -1 ||
-    book.numberOfPages >= search ||
-    book.publishDate >= (search)
-  })
-  return resultArr;
-};
-
 document.addEventListener('DOMContentLoaded', function() {
   window.gLibrary = new Library();
-  window.book1 = new Book('Harry Potter: The Philosopher\'s Stone', 'J.Rowling', 234, 'June 26, 1997');
+  window.book1 = new Book('Harry Potter', 'J.Rowlins', 234, 'December 25, 2000');
   window.book2 = new Book('IT', 'S.King', 197, 'December 25, 2006');
   window.book3 = new Book('War and Peace', 'L.Tolstoy', 1097, 'December 25, 1985');
   window.book4 = new Book('Javascript', 'J.Duckett', 797, 'December 25, 2006');
@@ -174,10 +167,9 @@ document.addEventListener('DOMContentLoaded', function() {
   window.book6 = new Book('JQuery2', 'J.Duckett', 897, 'December 25, 2008');
   window.book7 = new Book('Carrie', 'S.King', 897, 'December 25, 2008');
   window.book8 = new Book('Evgeniy Onegin', 'A.Pushkin', 897, 'December 25, 1879');
-  window.book9 = new Book('Harry Potter: The Chamber of Secrets', 'J.Rowling', 234, 'December 25, 1998');
-  window.book10 = new Book('Harry Potter: The Prisoner of Azkaban', 'J.Rowling', 234, 'December 25, 1998');
-  window.book11 = new Book('Harry Potter: The Goblet of Fire', 'J.Rowling', 234, 'December 25, 1999');
-  window.book12 = new Book('Harry Potter: The Order of the Phoenix', 500, 'December 25, 2003')
+  window.book9 = new Book('Harry Potter 2', 'J.Rowlins', 234, 'December 25, 2000');
+  window.book10 = new Book('Harry Potter 3', 'J.Rowlins', 234, 'December 25, 2000');
+  window.book11 = new Book('Harry Potter 4', 'J.Rowlins', 234, 'December 25, 2000');
   window.bookArr = [book1, book2, book3];
 
 });
