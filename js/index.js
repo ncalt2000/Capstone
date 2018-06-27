@@ -35,7 +35,7 @@ Library.prototype.addBook = function(book) {
       return "Already exist"
       } else {
       this._bookshelf.push(book);
-      return "The book is Added"
+      return "The book is added"
     };
   return this._bookshelf;
 };
@@ -109,18 +109,39 @@ Library.prototype.getBooksByAuthor = function (authorName){
 Library.prototype.addBooks = function (books){
 // Purpose: Takes multiple books, in the form of an array of book objects, and adds the objects to your books array.
 // Return: number of books successfully added, 0 if no books were added
+var countNotAdded = 0;
+var count = 0;
+
   for (var i = 0; i < books.length; i++) {
     // use the same method
-    gLibrary.addBook(books[i])
+    var booksAdded = gLibrary.addBook(books[i]);
+    if(booksAdded === "Already exist"){
+      countNotAdded +=1;
+    }
+    if(booksAdded === "The book is added"){
+      count+=1;
+    }
   }
-  return books.length;
+  return countNotAdded + " book(s) not added, because they already exist, " + count + " book(s) added!";
 };
 
 Library.prototype.getAuthors = function (){
 // Purpose: Find the distinct authors’ names from all books in your library, only 1 book by that author
 // Return: array of strings the names of all distinct authors, empty array if no books exist or if no authors exist
+  var resultArr = [];
+  for (var i = 0; i < this._bookshelf.length; i++) {
+    resultArr.push(this._bookshelf[i]['author']);
+  }
+  console.log(resultArr, 'result Arr');
 
+  var finalArr = resultArr.reduce(function (a,b){
+    if(a.indexOf(b) < 0){
+      a.push(b)
+    }
+    return a;
+  }, [])
 
+  return finalArr;
 };
 
 Library.prototype.getRandomAuthorName = function (){
