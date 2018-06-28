@@ -14,6 +14,10 @@ var Book = function(title, author, pages, date){
 };
 
 // Methods:
+Library.prototype.getStorage = function(){
+   var arr = JSON.parse(localStorage.getItem('bookshelf')) || [];
+   return arr;
+}
 
 Library.prototype.addBook = function(book) {
   //Purpose: Add a book object to your books array.
@@ -64,9 +68,6 @@ Library.prototype.removeBookByAuthor = function (authorName) {
 // Return: boolean true if the book(s) were removed, false if no books match
   var isDeleted = false;
   var deletedBooks = 0;
-  // var result = this._bookshelf.filter(function (item) {
-  //       item.author.toLowerCase().indexOf(authorName.toLowerCase()) > -1;
-  // })
   for (var i = this._bookshelf.length-1; i >= 0; i--) {
     if(this._bookshelf[i]['author'].toLowerCase().indexOf(authorName.toLowerCase()) > -1){
       this._bookshelf.splice(i, 1);
@@ -129,7 +130,8 @@ var count = 0;
       count+=1;
     }
   }
-  return countNotAdded + " book(s) not added, because they already exist, " + count + " book(s) added!";
+  localStorage.setItem("bookshelf", JSON.stringify(this._bookshelf));
+  return count + " book(s) added!";
 };
 
 Library.prototype.getAuthors = function (){
@@ -139,7 +141,6 @@ Library.prototype.getAuthors = function (){
   for (var i = 0; i < this._bookshelf.length; i++) {
     resultArr.push(this._bookshelf[i]['author']);
   }
-  console.log(resultArr, 'result Arr');
 
   var finalArr = resultArr.reduce(function (a,b){
     if(a.indexOf(b) < 0){
@@ -148,7 +149,7 @@ Library.prototype.getAuthors = function (){
     return a;
   }, [])
 
-  return finalArr;
+  return localStorage.setItem("distinctAuthors", JSON.stringify(finalArr));
 };
 
 Library.prototype.getRandomAuthorName = function (){
@@ -158,7 +159,19 @@ Library.prototype.getRandomAuthorName = function (){
     return null;
   }
   var randomAuthor = this._bookshelf[Math.floor(Math.random() * this._bookshelf.length)]
+  localStorage.setItem("randomAuthor", JSON.stringify(randomAuthor.author));
   return randomAuthor.author;
+};
+
+Library.prototype.search = function(searchValue){
+  var resultArr = this._bookshelf.filter(function (book){
+    var search = searchValue.toLowerCase();
+    return book.title.toLowerCase().indexOf(search) > -1 ||
+    book.author.toLowerCase().indexOf(search) > -1 ||
+    book.numberOfPages >= search ||
+    book.publishDate >= search
+  })
+  return resultArr;
 };
 
 document.addEventListener('DOMContentLoaded', function() {

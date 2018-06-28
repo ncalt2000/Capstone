@@ -58,13 +58,11 @@ Library.prototype.removeBook = function(bookTitle) {
 
 Library.prototype.removeBookByAuthor = function (authorName) {
 // Purpose: Remove a specific book from your books array by the author name.
-// Return: boolean true if the book(s) were removed, false if no books match.
-
+// Return: boolean true if the book(s) were removed, false if no books match
   var isDeleted = false;
   var deletedBooks = 0;
   for (var i = this._bookshelf.length-1; i >= 0; i--) {
-    // console.log('gets to the loop')
-    if(this._bookshelf[i]['author'].toLowerCase() === authorName.toLowerCase()){
+    if(this._bookshelf[i]['author'].toLowerCase().indexOf(authorName.toLowerCase()) > -1){
       this._bookshelf.splice(i, 1);
       deletedBooks +=1;
       isDeleted = true;
@@ -72,10 +70,10 @@ Library.prototype.removeBookByAuthor = function (authorName) {
   }
   if(isDeleted && deletedBooks < 2){
     return deletedBooks + " " + "book is deleted";
-  } else if (isDeleted && deletedBooks > 1 ){
+  } else if(isDeleted && deletedBooks > 1 ){
     return true + " " + deletedBooks + " books are deleted"
   }
-  return false + " Author is not found!";
+  return false + " Author is not found";
 };
 
 Library.prototype.getRandomBook = function (){
