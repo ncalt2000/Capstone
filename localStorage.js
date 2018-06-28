@@ -64,8 +64,11 @@ Library.prototype.removeBookByAuthor = function (authorName) {
 // Return: boolean true if the book(s) were removed, false if no books match
   var isDeleted = false;
   var deletedBooks = 0;
+  // var result = this._bookshelf.filter(function (item) {
+  //       item.author.toLowerCase().indexOf(authorName.toLowerCase()) > -1;
+  // })
   for (var i = this._bookshelf.length-1; i >= 0; i--) {
-    if(this._bookshelf[i]['author'].toLowerCase() === authorName.toLowerCase()){
+    if(this._bookshelf[i]['author'].toLowerCase().indexOf(authorName.toLowerCase()) > -1){
       this._bookshelf.splice(i, 1);
       deletedBooks +=1;
       isDeleted = true;
@@ -88,7 +91,8 @@ Library.prototype.getRandomBook = function (){
     return "There are no books in the library"
   }
   var randomBook = this._bookshelf[Math.floor(Math.random() * this._bookshelf.length)]
-  return localStorage.setItem("randomBook", JSON.stringify(randomBook));
+  localStorage.setItem("randomBook", JSON.stringify(randomBook));
+  return randomBook;
 };
 
 Library.prototype.getBookByTitle = function (title){
