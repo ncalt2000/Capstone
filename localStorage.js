@@ -3,15 +3,14 @@
 var Library = function() {
   // this creates a new private array, that gLib or gLibTwo has a reference to
   this._bookshelf = new Array();
-  // localStorage.setItem("Bookshelf" ,  JSON.stringify(this._bookshelf));
 };
 
 // 2. Create a Book object:
 var Book = function(title, author, pages, date){
   this.title = title,
   this.author = author,
-  this.pages = pages,
-  this.date = new Date(date)
+  this.NumberOfPages = pages,
+  this.publishDate = new Date(date)
 };
 
 // Methods:
@@ -19,11 +18,10 @@ var Book = function(title, author, pages, date){
 Library.prototype.addBook = function(book) {
   //Purpose: Add a book object to your books array.
   // Return: boolean true if it is not already added, false if it is already added.
-  // var bookshelf = localStorage;
-  // console.log(bookshelf)
+
   if(this._bookshelf.length === 0){
     this._bookshelf.push(book);
-    // localStorage.setItem("bookshelf", this._bookshelf)
+    localStorage.setItem("bookshelf", this._bookshelf)
     return "The book is added!";
   }
 
@@ -34,61 +32,63 @@ Library.prototype.addBook = function(book) {
     }
   }
     if(bookExist){
-      return "Already exist"
+      return false + " Already exist"
       } else {
       this._bookshelf.push(book);
       localStorage.setItem("bookshelf", JSON.stringify(this._bookshelf));
-      return "The book is added"
+      return true + " The book is added"
     };
 
     return this._bookshelf;
 };
 
 Library.prototype.removeBook = function(bookTitle) {
+  // Purpose: Remove book from from the books array by its title.
+  // Return:boolean true if the book(s) were removed, false if no books match
   var bookDeleted = false;
   for (var i = 0; i < this._bookshelf.length; i++) {
     if(this._bookshelf[i]['title'].toLowerCase() === bookTitle.toLowerCase()){
       bookDeleted = true;
       this._bookshelf.splice(i, 1)
+      localStorage.setItem("bookshelf", JSON.stringify(this._bookshelf))
     }
   }
   if(bookDeleted){
-    localStorage.setItem("bookshelf", JSON.stringify(this._bookshelf))
-    return "The book is deleted!"
+    return true + " The book is deleted!"
   }
-  return this._bookshelf;
+  return false + " The book is not found!";
 };
 
 Library.prototype.removeBookByAuthor = function (authorName) {
-
+// Purpose: Remove a specific book from your books array by the author name.
+// Return: boolean true if the book(s) were removed, false if no books match
   var isDeleted = false;
   var deletedBooks = 0;
   for (var i = this._bookshelf.length-1; i >= 0; i--) {
-    console.log('gets to the loop')
     if(this._bookshelf[i]['author'].toLowerCase() === authorName.toLowerCase()){
       this._bookshelf.splice(i, 1);
       deletedBooks +=1;
       isDeleted = true;
+      localStorage.setItem("bookshelf", JSON.stringify(this._bookshelf));
     }
   }
   if(isDeleted && deletedBooks < 2){
     return deletedBooks + " " + "book is deleted";
   } else if(isDeleted && deletedBooks > 1 ){
-    return deletedBooks + " " + "books are deleted"
-  } else {
-    return "Author is not found"
+    return true + " " + deletedBooks + " books are deleted"
   }
-  return this._bookshelf;
+  return false + " Author is not found";
 };
 
 Library.prototype.getRandomBook = function (){
 // Purpose: Return a random book object from your books array
 // Return: book object if you find a book, null if there are no books
+
   if(this._bookshelf.length === 0){
     return "There are no books in the library"
   }
   var randomBook = this._bookshelf[Math.floor(Math.random() * this._bookshelf.length)]
-  return "Random Book: " + " " + randomBook.title + " " + "by" + " " + randomBook.author;
+  return localStorage.setItem("randomBook", JSON.stringify(randomBook));
 };
 
 Library.prototype.getBookByTitle = function (title){
@@ -159,17 +159,17 @@ Library.prototype.getRandomAuthorName = function (){
 
 document.addEventListener('DOMContentLoaded', function() {
   window.gLibrary = new Library();
-  window.book1 = new Book('Harry Potter', 'J.Rowlins', 234, 'December 25, 2000');
+  window.book1 = new Book('Harry Potter: The Philosopher\'s Stone', 'J.Rowling', 234, '1997');
   window.book2 = new Book('IT', 'S.King', 197, 'December 25, 2006');
-  window.book3 = new Book('War and Peace', 'L.Tolstoy', 1097, 'December 25, 1985');
-  window.book4 = new Book('Javascript', 'J.Duckett', 797, 'December 25, 2006');
-  window.book5 = new Book('JQuery', 'J.Duckett', 897, 'December 25, 2008');
-  window.book6 = new Book('JQuery2', 'J.Duckett', 897, 'December 25, 2008');
-  window.book7 = new Book('Carrie', 'S.King', 897, 'December 25, 2008');
-  window.book8 = new Book('Evgeniy Onegin', 'A.Pushkin', 897, 'December 25, 1879');
-  window.book9 = new Book('Harry Potter 2', 'J.Rowlins', 234, 'December 25, 2000');
-  window.book10 = new Book('Harry Potter 3', 'J.Rowlins', 234, 'December 25, 2000');
-  window.book11 = new Book('Harry Potter 4', 'J.Rowlins', 234, 'December 25, 2000');
-  window.bookArr = [book1, book2, book3];
+  window.book3 = new Book('War and Peace', 'L.Tolstoy', 1097, '1985');
+  window.book4 = new Book('Javascript', 'J.Duckett', 797, '2006');
+  window.book5 = new Book('JQuery', 'J.Duckett', 897, '2008');
+  window.book6 = new Book('JQuery2', 'J.Duckett', 897, '2008');
+  window.book7 = new Book('Carrie', 'S.King', 897, '2008');
+  window.book8 = new Book('Evgeniy Onegin', 'A.Pushkin', 897, '1879');
+  window.book9 = new Book('Harry Potter: The Chamber of Secrets', 'J.Rowling', 234, '1998');
+  window.book10 = new Book('Harry Potter: The Prisoner of Azkaban', 'J.Rowling', 234, '1998');
+  window.book11 = new Book('Harry Potter: The Goblet of Fire', 'J.Rowling', 234, '1999');
+  window.book12 = new Book('Harry Potter: The Order of the Phoenix', 'J.Rowling', 500, '2003')
 
 });
