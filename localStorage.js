@@ -10,7 +10,7 @@ var Book = function(title, author, pages, date){
   this.title = title,
   this.author = author,
   this.NumberOfPages = pages,
-  this.publishDate = new Date(date)
+  this.publishDate = date
 };
 
 // Methods:
@@ -149,7 +149,8 @@ Library.prototype.getAuthors = function (){
     return a;
   }, [])
 
-  return localStorage.setItem("distinctAuthors", JSON.stringify(finalArr));
+  localStorage.setItem("distinctAuthors", JSON.stringify(finalArr));
+  return finalArr;
 };
 
 Library.prototype.getRandomAuthorName = function (){
