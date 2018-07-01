@@ -128,6 +128,7 @@ var count = 0;
     }
     if(booksAdded === "The book is added"){
       count+=1;
+      console.log(count);
     }
   }
   localStorage.setItem("bookshelf", JSON.stringify(this._bookshelf));
@@ -165,11 +166,18 @@ Library.prototype.getRandomAuthorName = function (){
 };
 
 Library.prototype.search = function(searchValue){
+  // if the search term is Number, then it's asking for pages
+  if (Number.isInteger(searchValue)){
+    var resultPages = this._bookshelf.filter(function (book){
+      return book.NumberOfPages >= searchValue
+    })
+    return resultPages;
+  };
+
   var resultArr = this._bookshelf.filter(function (book){
     var search = searchValue.toLowerCase();
     return book.title.toLowerCase().indexOf(search) > -1 ||
     book.author.toLowerCase().indexOf(search) > -1 ||
-    book.numberOfPages >= search ||
     book.publishDate >= search
   })
   return resultArr;

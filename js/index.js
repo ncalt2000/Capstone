@@ -154,18 +154,26 @@ Library.prototype.getRandomAuthorName = function (){
 };
 
 Library.prototype.search = function(searchValue){
+  // if the search term is Number, then it's asking for pages
+  if (Number.isInteger(searchValue)){
+    var resultPages = this._bookshelf.filter(function (book){
+      return book.NumberOfPages >= searchValue
+    })
+    return resultPages;
+  };
+
   var resultArr = this._bookshelf.filter(function (book){
     var search = searchValue.toLowerCase();
     return book.title.toLowerCase().indexOf(search) > -1 ||
     book.author.toLowerCase().indexOf(search) > -1 ||
-    book.numberOfPages >= search ||
-    book.publishDate >= (search)
+    book.publishDate >= search
   })
   return resultArr;
 };
 
 document.addEventListener('DOMContentLoaded', function() {
   window.gLibrary = new Library();
+  window.gLIbrary2
   window.book1 = new Book('Harry Potter: The Philosopher\'s Stone', 'J.Rowling', 234, '1997');
   window.book2 = new Book('IT', 'S.King', 197, 'December 25, 2006');
   window.book3 = new Book('War and Peace', 'L.Tolstoy', 1097, '1985');
