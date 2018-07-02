@@ -121,7 +121,6 @@ var Library = (function() {
     for (var i = 0; i < _bookshelf.length; i++) {
       resultArr.push(_bookshelf[i]['author']);
     }
-    console.log(resultArr, 'result Arr');
 
     var finalArr = resultArr.reduce(function(a, b) {
       if (a.indexOf(b) < 0) {
