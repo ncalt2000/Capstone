@@ -173,7 +173,6 @@ Library.prototype.search = function(searchValue){
 
 document.addEventListener('DOMContentLoaded', function() {
   window.gLibrary = new Library();
-  window.gLIbrary2
   window.book1 = new Book('Harry Potter: The Philosopher\'s Stone', 'J.Rowling', 234, '1997');
   window.book2 = new Book('IT', 'S.King', 197, 'December 25, 2006');
   window.book3 = new Book('War and Peace', 'L.Tolstoy', 1097, '1985');
