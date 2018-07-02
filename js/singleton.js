@@ -111,7 +111,7 @@ var Library = (function() {
         count += 1;
       }
     }
-    return countNotAdded + " book(s) not added: already exist, " + count + " book(s) added!";
+    return countNotAdded + " book(s) already exist, " + count + " book(s) added!";
   };
 
   var getAuthors = function() {

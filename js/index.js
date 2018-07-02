@@ -14,9 +14,8 @@ var Book = function(title, author, pages, date){
 };
 
 // Methods:
-
 Library.prototype.addBook = function(book) {
-  //Purpose: Add a book object to your books array.
+  // Purpose: Add a book object to your books array.
   // Return: boolean true if it is not already added, false if it is already added.
 
   if(this._bookshelf.length === 0){
@@ -81,7 +80,7 @@ Library.prototype.getRandomBook = function (){
 // Return: book object if you find a book, null if there are no books
 
   if(this._bookshelf.length === 0){
-    return "There are no books in the library"
+    return null + " There are no books in the library"
   }
   var randomBook = this._bookshelf[Math.floor(Math.random() * this._bookshelf.length)];
   return randomBook;
@@ -113,7 +112,7 @@ var count = 0;
 
   for (var i = 0; i < books.length; i++) {
     // use the same method
-    var booksAdded = gLibrary.addBook(books[i]);
+    var booksAdded = this.addBook(books[i]);
     if(booksAdded === "Already exist"){
       countNotAdded +=1;
     }
@@ -121,7 +120,7 @@ var count = 0;
       count+=1;
     }
   }
-  return countNotAdded + " book(s) not added: already exist, " + count + " book(s) added!";
+  return countNotAdded + " book(s) already exist, " + count + " book(s) added!";
 };
 
 Library.prototype.getAuthors = function (){

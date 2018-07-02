@@ -122,7 +122,7 @@ var count = 0;
 
   for (var i = 0; i < books.length; i++) {
     // use the same method
-    var booksAdded = gLibrary.addBook(books[i]);
+    var booksAdded = this.addBook(books[i]);
     if(booksAdded === "Already exist"){
       countNotAdded +=1;
     }
