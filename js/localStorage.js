@@ -1,4 +1,3 @@
-// BUILDING AN API:
 // 1. Create a Library obj
 var Library = function() {
   // this creates a new private array, that gLib or gLibTwo has a reference to

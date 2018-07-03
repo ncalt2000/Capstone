@@ -128,7 +128,10 @@ Library.prototype = {
     for (var i = 0; i < _bookshelf.length; i++) {
       resultArr.push(_bookshelf[i]['author']);
     }
+<<<<<<< HEAD
     // console.log(resultArr, 'result Arr');
+=======
+>>>>>>> a196be7703ee8e49631002d9b7d709de8341c80f
 
     var finalArr = resultArr.reduce(function(a, b) {
       if (a.indexOf(b) < 0) {

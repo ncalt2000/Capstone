@@ -130,7 +130,6 @@ Library.prototype.getAuthors = function (){
   for (var i = 0; i < this._bookshelf.length; i++) {
     resultArr.push(this._bookshelf[i]['author']);
   }
-  console.log(resultArr, 'result Arr');
 
   var finalArr = resultArr.reduce(function (a,b){
     if(a.indexOf(b) < 0){
