@@ -51,7 +51,7 @@ Library.prototype.removeBook = function(bookTitle) {
   // Return:boolean true if the book(s) were removed, false if no books match
   var bookDeleted = false;
   for (var i = 0; i < this._bookshelf.length; i++) {
-    if(this._bookshelf[i]['title'].toLowerCase() === bookTitle.toLowerCase()){
+    if(this._bookshelf[i]['title'].toLowerCase().indexOf(bookTitle.toLowerCase()) > -1){
       bookDeleted = true;
       this._bookshelf.splice(i, 1)
       localStorage.setItem("bookshelf", JSON.stringify(this._bookshelf))

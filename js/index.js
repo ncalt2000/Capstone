@@ -33,7 +33,7 @@ Library.prototype.addBook = function(book) {
       return "Already exist"
       } else {
       this._bookshelf.push(book);
-      return "The book is added"
+      return "The book is added!"
     };
   return this._bookshelf;
 };
@@ -44,7 +44,7 @@ Library.prototype.removeBook = function(bookTitle) {
 
   var bookDeleted = false;
   for (var i = 0; i < this._bookshelf.length; i++) {
-    if(this._bookshelf[i]['title'].toLowerCase() === bookTitle.toLowerCase()){
+    if(this._bookshelf[i]['title'].toLowerCase().indexOf(bookTitle.toLowerCase()) > -1){
       bookDeleted = true;
       this._bookshelf.splice(i, 1)
     }
@@ -116,7 +116,7 @@ var count = 0;
     if(booksAdded === "Already exist"){
       countNotAdded +=1;
     }
-    if(booksAdded === "The book is added"){
+    if(booksAdded === "The book is added!"){
       count+=1;
     }
   }
