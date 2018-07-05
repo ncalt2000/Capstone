@@ -4,6 +4,9 @@ html {
   box-sizing: border-box;
 }
 
+/* //////////////////////////// */
+/* HEADER & NAV */
+/* //////////////////////////// */
 nav {
   width: 100%;
   /* border: 1px solid red; */
@@ -17,19 +20,28 @@ nav {
 .form-inline {
   width: 100% !important;
   justify-content: center;
-  /* width: 100%; */
-  /* border: 3px solid red; */
-  /* z-index: 1; */
 }
 
 .row input {
   margin-right: 1em;
 }
-
+/* //////////////////////////// */
+/* MODAL */
+/* //////////////////////////// */
 #myModal label{
   font-size: .8em;
 }
-/* cards style */
+
+/* //////////////////////////// */
+/* CONTROLS */
+/* //////////////////////////// */
+
+
+
+/* //////////////////////////// */
+/* CARDS */
+/* //////////////////////////// */
+
 .book-cards{
   /* border: 2px solid blue; */
 }
@@ -44,19 +56,25 @@ nav {
 }
 .card img{
   width: 100%;
-  /* margin: auto; */
 }
-/* table style */
-tr{
-  -ms-align-items: center;
-  align-items: center;
+/* //////////////////////////// */
+/* TABLE */
+/* //////////////////////////// */
+table td,
+table th{
+  vertical-align: middle !important;
 }
+
 td img{
-  /* border: 2px solid green; */
   width: 50px;
 }
-/* Ratings */
-/* Rating Star Widgets Style */
+td .edit,
+td .delete{
+  margin: 10px;
+}
+/* //////////////////////////// */
+/* RATINGS */
+/* //////////////////////////// */
 
 .rating-stars ul {
   list-style-type:none;

@@ -35,6 +35,11 @@ $(document).ready(function(){
       $(stars[i]).addClass('selected');
     }
   });
+  // Enable tooltips everywhere
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
 });
 
 

@@ -134,12 +134,28 @@
   <!-- Controls -->
   <div class="container">
     <!-- Button to Open the Modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-      Open modal
+    <span data-toggle="modal" data-target="#myModal">
+    <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Add New Book">
+        New Book
+        <i class="fas fa-plus-circle"></i>
+        <!-- <i class="fas fa-book"></i> -->
+    </button>
+    </span>
+    <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Random Book">
+        Lucky Book
+      <i class="fas fa-gift"></i>
+    </button>
+    <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Random Author">
+        Lucky Author
+      <i class="fas fa-gift"></i>
+    </button>
+    <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="List of authors">
+        All Authors
+      <i class="fas fa-gift"></i>
     </button>
 
-
   </div>
+
   <!-- End of Controls -->
   <div>empty div</div>
 
@@ -197,7 +213,7 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th scope="col">#</th>
+        <th scope="col"></th>
         <th scope="col">Cover</th>
         <th scope="col">Title</th>
         <th scope="col">Author</th>
@@ -205,6 +221,7 @@
         <th scope="col">Publish Date</th>
         <th scope="col">Pages</th>
         <th scope="col">Rating</th>
+        <th scope="col">Edit/Delete</th>
       </tr>
     </thead>
     <tbody>
@@ -235,6 +252,10 @@
             </li>
           </ul>
         </td>
+        <td>
+          <i data-toggle="modal" data-target="#myModal" class="far fa-edit fa-lg edit"></i>
+          <i class="far fa-times-circle fa-lg delete"></i>
+        </td>
       </tr>
 
       <tr>
@@ -264,6 +285,10 @@
             </li>
           </ul>
         </td>
+        <td>
+          <i class="far fa-edit fa-lg edit"></i>
+          <i class="far fa-times-circle fa-lg delete"></i>
+        </td>
       </tr>
       <tr>
         <th scope="row">3</th>
@@ -291,7 +316,12 @@
               <i class='fa fa-star'></i>
             </li>
           </ul>
-        </td>      </tr>
+        </td>
+        <td>
+          <i class="far fa-edit fa-lg edit"></i>
+          <i class="far fa-times-circle fa-lg delete"></i>
+        </td>
+      </tr>
       <tr>
         <th scope="row">4</th>
         <td><img class="img-fluid" src="assets/books/gwithwind.jpg" alt=""></td>
@@ -318,7 +348,12 @@
               <i class='fa fa-star'></i>
             </li>
           </ul>
-        </td>      </tr>
+        </td>
+        <td>
+          <i class="far fa-edit fa-lg edit"></i>
+          <i class="far fa-times-circle fa-lg delete"></i>
+        </td>
+      </tr>
       <tr>
         <th scope="row">5</th>
         <td><img class="img-fluid" src="assets/books/hkeller.jpg" alt=""></td>
@@ -345,7 +380,12 @@
               <i class='fa fa-star'></i>
             </li>
           </ul>
-        </td>      </tr>
+        </td>
+        <td>
+          <i class="far fa-edit fa-lg edit"></i>
+          <i class="far fa-times-circle fa-lg delete"></i>
+        </td>
+      </tr>
     </tbody>
     <tr>
       <th scope="row">6</th>
@@ -373,7 +413,12 @@
             <i class='fa fa-star'></i>
           </li>
         </ul>
-      </td>    </tr>
+      </td>
+      <td>
+        <i class="far fa-edit fa-lg edit"></i>
+        <i class="far fa-times-circle fa-lg delete"></i>
+      </td>
+    </tr>
     <tr>
       <th scope="row">7</th>
       <td><img class="img-fluid" src="assets/books/1984.jpg" alt=""></td>
@@ -400,7 +445,12 @@
             <i class='fa fa-star'></i>
           </li>
         </ul>
-      </td>    </tr>
+      </td>
+      <td>
+        <i class="far fa-edit fa-lg edit"></i>
+        <i class="far fa-times-circle fa-lg delete"></i>
+      </td>
+    </tr>
     </tbody>
     </tbody>
   </table>
@@ -409,8 +459,9 @@
 
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="js/bootstrap.js"></script>
-  <script src="js/singleton.js"></script>
+  <script type="text/javascript" src="js/popper.js"></script>
+  <script type="text/javascript" src="js/bootstrap.js"></script>
+  <script type="text/javascript" src="js/singleton.js"></script>
 
 
 </body>
