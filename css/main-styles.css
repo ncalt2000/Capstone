@@ -3,103 +3,123 @@ html {
   margin: 0;
   box-sizing: border-box;
 }
+body{
+  background-color: rgba(27, 24, 24, 0.5);
+}
+body h2{
+  color: white;
+}
 
 /* //////////////////////////// */
-/* HEADER & NAV */
+/* NAVBAR */
 /* //////////////////////////// */
+
 nav {
   width: 100%;
-  /* border: 1px solid red; */
+  background-color: rgb(29, 32, 42);
+  color: #E5E5E8;
 }
+
+.navbar a {
+  color: #E5E5E8;
+}
+
+.login {
+  align-items: center;
+}
+
+.logout {
+  align-items: center;
+  display: none;
+}
+
+/* //////////////////////////// */
+/* BANNER */
+/* //////////////////////////// */
+
 .banner {
   height: 60vh;
   padding: 0;
-  background-image: linear-gradient(to bottom, rgba(0,0,0, .4), rgba(0,0,0, .9)), url("../assets/bookshelf.jpg");
+  background-image: linear-gradient( rgba(0, 0, 0, .3), rgba(0, 0, 0, .6)), url("../assets/bookshelf.jpg");
 }
 
-.form-inline {
+.search-group {
   width: 100% !important;
   justify-content: center;
 }
 
-.row input {
+.banner input {
   margin-right: 1em;
 }
+
 /* //////////////////////////// */
 /* MODAL */
 /* //////////////////////////// */
-#myModal label{
+
+#myModal label {
   font-size: .8em;
 }
-
-/* //////////////////////////// */
-/* CONTROLS */
-/* //////////////////////////// */
-
 
 
 /* //////////////////////////// */
 /* CARDS */
 /* //////////////////////////// */
+.card img {
+  max-width: 200px;
+}
 
-.book-cards{
-  /* border: 2px solid blue; */
-}
-.book-cards p{
-  font-size: .7em;
-}
-.card{
-  width: 18%;
-  margin: .5em;
-  display: inline-block;
-  border: 1px solid grey;
-}
-.card img{
-  width: 100%;
-}
 /* //////////////////////////// */
 /* TABLE */
 /* //////////////////////////// */
-table td,
-table th{
+table{
+  background-color: #EBE7E1 !important;
+}
+table td, table th {
   vertical-align: middle !important;
 }
 
-td img{
+td img {
   width: 50px;
 }
-td .edit,
-td .delete{
+
+td .edit, td .delete {
   margin: 10px;
 }
+
 /* //////////////////////////// */
 /* RATINGS */
 /* //////////////////////////// */
 
 .rating-stars ul {
-  list-style-type:none;
+  list-style-type: none;
   padding: 0;
-  -moz-user-select:none;
-  -webkit-user-select:none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
 }
-.rating-stars ul > li.star {
-  display:inline-block;
+
+.rating-stars ul>li.star {
+  display: inline-block;
   padding-right: 0;
   /* border: 1px solid red; */
 }
 
 /* Idle State of the stars */
-.rating-stars ul > li.star > i.fa {
-  font-size:1.2em; /* Change the size of the stars */
-  color:#ccc; /* Color on idle state */
+
+.rating-stars ul>li.star>i.fa {
+  font-size: 1.2em;
+  /* Change the size of the stars */
+  color: #CCC6C6;
+  /* Color on idle state */
 }
 
 /* Hover state of the stars */
-.rating-stars ul > li.star.hover > i.fa {
-  color:#FFCC36;
+
+.rating-stars ul>li.star.hover>i.fa {
+  color: #FFCC36;
 }
 
 /* Selected state of the stars */
-.rating-stars ul > li.star.selected > i.fa {
-  color:#FF912C;
+
+.rating-stars ul>li.star.selected>i.fa {
+  color: #FF912C;
 }
