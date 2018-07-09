@@ -1,15 +1,120 @@
+$(document).ready(function(){
+  /* 1. Visualizing things on Hover - See next part for action on click */
+  $('.stars li').on('mouseover', function(){
+    var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
+    // console.log(onStar, 'first');
+
+    // Now highlight all the stars that's not after the current hovered star
+    $(this).parent().children('.star').each(function(e){
+      if (e < onStar) {
+        $(this).addClass('hover');
+      }
+      else {
+        $(this).removeClass('hover');
+      }
+    });
+
+  }).on('mouseout', function(){
+    $(this).parent().children('li.star').each(function(e){
+      $(this).removeClass('hover');
+    });
+  });
+
+  /* 2. Action to perform on click */
+  $('.stars li').on('click', function(){
+    var onStar = parseInt($(this).data('value'), 10); // The star currently selected
+    // console.log(onStar, 'onStar');
+
+    var stars = $(this).parent().children('li.star');
+
+    for (i = 0; i < stars.length; i++) {
+      $(stars[i]).removeClass('selected');
+    }
+
+    for (i = 0; i < onStar; i++) {
+      $(stars[i]).addClass('selected');
+    }
+  });
+  // Enable tooltips everywhere
+  $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+});
+//addBook button
+$('#add-book-btn').click(gLibrary.addBook);
+
+});
+
+
 var Library = (function() {
   this._bookshelf = new Array();
 });
 
+
 Library.prototype = {
+  displayBooks: function(){
+    this.getStorage();
+    for (var i = 0; i < this._bookshelf.length; i++) {
+      let book = this._bookshelf[i];
+      // console.log(book)
+      $('#table-body').append(`
+        <tr>
+          <th scope="row">${i+1}</th>
+          <td><img class="img-thumbnail" src="assets/books/GGatsby.jpg" alt=""></td>
+          <td data-toggle="modal" data-target="#synopsisModal">${book.title}</td>
+          <td>${book.author}</td>
+          <td>${book.genre}</td>
+          <td>${book.publishDate}</td>
+          <td>${book.numberOfPages}</td>
+          <td class='rating-stars'>
+            <ul class='stars'>
+              <li class='star' data-value='1'>
+                <i class='fa fa-star'></i>
+              </li>
+              <li class='star' data-value='2'>
+                <i class='fa fa-star'></i>
+              </li>
+              <li class='star' data-value='3'>
+                <i class='fa fa-star'></i>
+              </li>
+              <li class='star' data-value='4'>
+                <i class='fa fa-star'></i>
+              </li>
+              <li class='star' data-value='5'>
+                <i class='fa fa-star'></i>
+              </li>
+            </ul>
+          </td>
+          <td>
+            <i data-toggle="modal" data-target="#myModal" class="far fa-edit fa-lg edit"></i>
+            <i class="far fa-times-circle fa-lg delete"></i>
+          </td>
+        </tr>
+      `);
+    }
+
+  },
+
   getStorage: function() {
     var arr = JSON.parse(localStorage.getItem('bookshelf')) || [];
-    return arr;
+    // console.log(this, 'this');
+    return this._bookshelf = arr;
   },
-  addBook: function(book) {
+
+  addBook: function() {
     //Purpose: Add a book object to your books array.
     // Return: boolean true if it is not already added, false if it is already added.
+    console.log('addBook works');
+    var title = $('#title-text').val();
+    var author = $('#author').val();
+    var genre = $('#genre').val();
+    var pages = $('#pages').val();
+    var publishDate = $('#publicationDate').val();
+    var synopsis = $('#synopsis').val();
+    var bookCover = $('#file-upload').val();
+
+    var book = new Book(title, author, genre, pages, publishDate, synopsis, bookCover);
+    // console.log(this);
+
 
     if (this._bookshelf.length === 0) {
       this._bookshelf.push(book);
@@ -29,7 +134,11 @@ Library.prototype = {
       this._bookshelf.push(book);
       return "The book is added!"
     };
+    localStorage.setItem("bookshelf", JSON.stringify(this._bookshelf));
+    this.getStorage();
+    this.displayBooks();
     return this._bookshelf;
+
   },
 
   removeBook: function(bookTitle) {
@@ -37,11 +146,11 @@ Library.prototype = {
     // Return:boolean true if the book(s) were removed, false if no books match
 
     var bookDeleted = false;
-    for (var i = 0; i < _bookshelf.length; i++) {
-      if (_bookshelf[i]['title'].toLowerCase().indexOf(bookTitle.toLowerCase()) > -1) {
+    for (var i = 0; i < this._bookshelf.length; i++) {
+      if (this._bookshelf[i]['title'].toLowerCase().indexOf(bookTitle.toLowerCase()) > -1) {
         bookDeleted = true;
-        _bookshelf.splice(i, 1)
-        localStorage.setItem("bookshelf", JSON.stringify(_bookshelf))
+        this._bookshelf.splice(i, 1)
+        localStorage.setItem("bookshelf", JSON.stringify(this._bookshelf))
       }
     }
     if (bookDeleted) {
@@ -55,12 +164,12 @@ Library.prototype = {
     // Return: boolean true if the book(s) were removed, false if no books match
     var isDeleted = false;
     var deletedBooks = 0;
-    for (var i = _bookshelf.length - 1; i >= 0; i--) {
-      if (_bookshelf[i]['author'].toLowerCase().indexOf(authorName.toLowerCase()) > -1) {
-        _bookshelf.splice(i, 1);
+    for (var i = this._bookshelf.length - 1; i >= 0; i--) {
+      if (this._bookshelf[i]['author'].toLowerCase().indexOf(authorName.toLowerCase()) > -1) {
+        this._bookshelf.splice(i, 1);
         deletedBooks += 1;
         isDeleted = true;
-        localStorage.setItem("bookshelf", JSON.stringify(_bookshelf))
+        localStorage.setItem("bookshelf", JSON.stringify(this._bookshelf))
       }
     }
     if (isDeleted && deletedBooks < 2) {
@@ -75,10 +184,10 @@ Library.prototype = {
     // Purpose: Return a random book object from your books array
     // Return: book object if you find a book, null if there are no books
 
-    if (_bookshelf.length === 0) {
+    if (this._bookshelf.length === 0) {
       return "There are no books in the library"
     }
-    var randomBook = _bookshelf[Math.floor(Math.random() * _bookshelf.length)];
+    var randomBook = this._bookshelf[Math.floor(Math.random() * this._bookshelf.length)];
     localStorage.setItem("randomBook", JSON.stringify(randomBook))
     return randomBook;
   },
@@ -95,7 +204,7 @@ Library.prototype = {
   getBooksByAuthor: function(authorName) {
     // Purpose: Finds all books where the author’s name partially or completely match-es the authorName argument passed to the function.
     //Return:array of books if you find books with match authors, empty array if no books match.
-    var result = _bookshelf.filter(function(item) {
+    var result = this._bookshelf.filter(function(item) {
       return item.author.toLowerCase().indexOf(authorName.toLowerCase()) > -1;
     })
     return result;
@@ -117,7 +226,7 @@ Library.prototype = {
         count += 1;
       }
     }
-    localStorage.setItem("bookshelf", JSON.stringify(_bookshelf))
+    localStorage.setItem("bookshelf", JSON.stringify(this._bookshelf))
     return countNotAdded + " book(s) already exist, " + count + " book(s) added!";
   },
 
@@ -125,13 +234,9 @@ Library.prototype = {
     // Purpose: Find the distinct authors’ names from all books in your library, only 1 book by that author
     // Return: array of strings the names of all distinct authors, empty array if no books exist or if no authors exist
     var resultArr = [];
-    for (var i = 0; i < _bookshelf.length; i++) {
-      resultArr.push(_bookshelf[i]['author']);
+    for (var i = 0; i < this._bookshelf.length; i++) {
+      resultArr.push(this._bookshelf[i]['author']);
     }
-<<<<<<< HEAD
-    // console.log(resultArr, 'result Arr');
-=======
->>>>>>> a196be7703ee8e49631002d9b7d709de8341c80f
 
     var finalArr = resultArr.reduce(function(a, b) {
       if (a.indexOf(b) < 0) {
@@ -146,10 +251,10 @@ Library.prototype = {
   getRandomAuthorName: function() {
     // Purpose: Retrieves a random author name from your books collection
     // Return: string author name, null if no books exist
-    if (_bookshelf.length === 0) {
+    if (this._bookshelf.length === 0) {
       return null;
     }
-    var randomAuthor = _bookshelf[Math.floor(Math.random() * _bookshelf.length)]
+    var randomAuthor = this._bookshelf[Math.floor(Math.random() * this._bookshelf.length)]
     localStorage.setItem("randomAuthor", JSON.stringify(randomAuthor))
     return randomAuthor.author;
   },
@@ -157,13 +262,13 @@ Library.prototype = {
   search: function(searchValue) {
     // if the search term is Number, then it's asking for pages
       if (Number.isInteger(searchValue)) {
-        var resultPages = _bookshelf.filter(function(book) {
+        var resultPages = this._bookshelf.filter(function(book) {
           return book.NumberOfPages >= searchValue
         })
         return resultPages;
       };
 
-      var resultArr = _bookshelf.filter(function(book) {
+      var resultArr = this._bookshelf.filter(function(book) {
         var search = searchValue.toLowerCase();
         return book.title.toLowerCase().indexOf(search) > -1 ||
         book.author.toLowerCase().indexOf(search) > -1 ||
@@ -176,27 +281,30 @@ Library.prototype = {
   };
 
 // Create a Book object:
-var Book = function(title, author, pages, date) {
+var Book = function(title, author, genre, pages, date, synopsis, cover) {
   this.title = title,
   this.author = author,
+  this.genre = genre,
   this.numberOfPages = pages,
-  this.publishDate = date
+  this.publishDate = new Date(),
+  this.synopsis = synopsis,
+  this.cover = cover
 };
 
+var book1 = new Book('Harry Potter: The Philosopher\'s Stone', 'J.Rowling', 'Drama', 234, '12-01-1997');
+var book2 = new Book('IT', 'S.King', 'Drama', 197, '12-01-2006');
+var book3 = new Book('War and Peace', 'L.Tolstoy', 'Drama', 1097, '12-01-1985');
+var book4 = new Book('Javascript', 'J.Duckett','Drama', 797, '12-01-2006');
+var book5 = new Book('JQuery', 'J.Duckett', 'Drama', 897, '12-01-2008');
+var book6 = new Book('JQuery2', 'J.Duckett', 'Drama', 897, '12-01-2008');
+var book7 = new Book('Carrie', 'S.King',  'Drama', 897, '12-01-2008');
+var book8 = new Book('Evgeniy Onegin', 'A.Pushkin', 'Drama', 897, '12-01-1879');
+var book9 = new Book('Harry Potter: The Chamber of Secrets', 'J.Rowling', 'Drama', 234, '12-01-1998');
+var book10 = new Book('Harry Potter: The Prisoner of Azkaban', 'J.Rowling', 'Drama', 234, '12-01-1998');
+var book11 = new Book('Harry Potter: The Goblet of Fire', 'J.Rowling', 'Drama', 234, '12-01-1999');
+var book12 = new Book('Harry Potter: The Order of the Phoenix', 'J.Rowling', 'Drama',  500, '12-01-2003')
 
 document.addEventListener('DOMContentLoaded', function() {
   window.gLibrary = new Library();
-  window.book1 = new Book('Harry Potter: The Philosopher\'s Stone', 'J.Rowling', 234, '1997');
-  window.book2 = new Book('IT', 'S.King', 197, 'December 25, 2006');
-  window.book3 = new Book('War and Peace', 'L.Tolstoy', 1097, '1985');
-  window.book4 = new Book('Javascript', 'J.Duckett', 797, '2006');
-  window.book5 = new Book('JQuery', 'J.Duckett', 897, '2008');
-  window.book6 = new Book('JQuery2', 'J.Duckett', 897, '2008');
-  window.book7 = new Book('Carrie', 'S.King', 897, '2008');
-  window.book8 = new Book('Evgeniy Onegin', 'A.Pushkin', 897, '1879');
-  window.book9 = new Book('Harry Potter: The Chamber of Secrets', 'J.Rowling', 234, '1998');
-  window.book10 = new Book('Harry Potter: The Prisoner of Azkaban', 'J.Rowling', 234, '1998');
-  window.book11 = new Book('Harry Potter: The Goblet of Fire', 'J.Rowling', 234, '1999');
-  window.book12 = new Book('Harry Potter: The Order of the Phoenix', 500, '2003')
-
+  gLibrary.displayBooks();
 });
