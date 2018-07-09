@@ -15,7 +15,7 @@
 <body>
   <div class="container-fluid">
     <!-- Navbar -->
-    <header>
+    <!-- <header>
       <div class="row">
         <nav class="navbar navbar-expand-sm fixed-top">
           <a class="navbar-brand" href="#">
@@ -44,13 +44,58 @@
           </div>
         </nav>
       </div>
-    </header>
+    </header> -->
+    <nav class=" row navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
+      <li class="nav-item">
+        <div class="input-group login">
+          <a class="nav-link p-2" href="#">Login</a>
+          <i class="fas fa-sign-in-alt p-2"></i>
+        </div>
+        <div class="input-group logout">
+          <a class="nav-link" href="#">LogOut</a>
+          <i class="fas fa-sign-out-alt"></i>
+        </div>
+      </li>
+    </form>
+  </div>
+</nav>
     <!-- End of Navbar -->
 
     <!-- Banner -->
     <div class="row banner">
       <form class="form-inline search-group">
-        <input class="form-control col-6" type="search" placeholder="Search" aria-label="Search">
+        <input class="form-control col-6 mr-3" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-primary col-2" type="submit">Search</button>
       </form>
     </div>
@@ -117,7 +162,7 @@
                   <span class="input-group-text"><i class="fas fa-arrow-circle-down"></i></span>
                 </div>
                 <div class="custom-file">
-                  <input type="file" class="custom-file-input" id="inputGroupFile01">
+                  <input type="file" class="custom-file-input" id="file-upload">
                   <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
                 </div>
               </div>
@@ -125,7 +170,7 @@
           </div>
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Add Another Book</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Save</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="add-book-btn">Save</button>
           </div>
         </div>
       </div>
@@ -232,8 +277,8 @@
     <!-- End of Synopsis Modal -->
 
     <!-- Books -->
-    <div class="book-cards card-deck my-5">
-      <div class="card col-md-3">
+    <!-- <div class="row book-cards card-deck my-5">
+      <div class="card card-inverse card-primary">
         <img class="card-img-top mx-auto d-block" src="assets/books/GGatsby.jpg" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title">The Great Gatsby</h5>
@@ -241,7 +286,7 @@
           <p class="card-text sinopsys">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
         </div>
       </div>
-      <div class="card col-md-3">
+      <div class="card ">
         <img class="card-img-top mx-auto d-block" src="assets/books/HP3.png" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title">The Great Gatsby</h5>
@@ -249,16 +294,15 @@
           <p class="card-text sinopsys">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
         </div>
       </div>
-      <div class="card col-md-3">
+      <div class="card">
         <img class="card-img-top mx-auto d-block" src="assets/books/GOT.jpg" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title">The Great Gatsby</h5>
           <h6 class="card-subtitle">F. Scott-Fitzgerald</h6>
           <p class="card-text sinopsys">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
         </div>
       </div>
-      <div class="card col-md-3">
+      <div class="card">
         <img class="card-img-top mx-auto d-block" src="assets/books/HP2.png" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title">The Great Gatsby</h5>
@@ -266,7 +310,7 @@
           <p class="card-text sinopsys">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
         </div>
       </div>
-      <div class="card col-md-3">
+      <div class="card">
         <img class="card-img-top mx-auto d-block" src="assets/books/hkeller.jpg" alt="Card image cap">
         <div class="card-body">
           <h5 class="card-title">The Great Gatsby</h5>
@@ -274,26 +318,76 @@
           <p class="card-text sinopsys">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
         </div>
       </div>
+    </div> -->
+
+
+    <div class="container-fluid my-5">
+
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card">
+        <img class="card-img-top" src="assets/books/hkeller.jpg" alt="Card image cap">
+        <div class="card-block">
+          <h4 class="card-title">This is Card #1</h4>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>
+      </div>
     </div>
+
+    <div class="col-md-3">
+      <div class="card card-inverse card-primary text-center">
+          <img class="card-img-top" src="assets/books/hkeller.jpg" alt="Card image cap">
+        <div class="card-block">
+          <h4 class="card-title">This is Card #2</h4>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-md-3">
+      <div class="card card-inverse card-success text-center">
+          <img class="card-img-top" src="assets/books/hkeller.jpg" alt="Card image cap">
+        <div class="card-block">
+          <h4 class="card-title">This is Card #3</h4>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card card-inverse card-info text-center">
+          <img class="card-img-top" src="assets/books/hkeller.jpg" alt="Card image cap">
+        <div class="card-block">
+          <h4 class="card-title">This is Card #4</h4>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
     <!-- End of Books -->
 
     <h2 class="text-center">My Library</h2>
 
     <!-- Controls -->
-    <div class="controls-container mt-5 mb-3 d-flex justify-content-around align-items-center">
-      <span data-toggle="modal" data-target="#addBookModal">
+    <!-- d-flex justify-content-around align-items-center -->
+    <div class="row controls-container mt-5 mb-3 ">
+      <span data-toggle="modal" data-target="#addBookModal" class="col-md-2">
         <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Add New Book">
           <i class="fas fa-book"></i>
         New Book
         </button>
       </span>
-      <span data-toggle="modal" data-target="#randomBookModal">
+      <span data-toggle="modal" data-target="#randomBookModal" class="col-md-2">
         <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Random Book">
           <i class="fas fa-gift"></i>
             Lucky Book
         </button>
       </span>
-      <span data-toggle="modal" data-target="#randomAuthorModal">
+      <span data-toggle="modal" data-target="#randomAuthorModal" class="col-md-2">
         <button type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Random Author">
           <i class="fas fa-pencil-alt"></i>
             Lucky Author
@@ -305,16 +399,19 @@
             All Authors
         </button>
       </span>
-      <div class="dropdown">
-        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Sort By
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="#">Title</a>
-          <a class="dropdown-item" href="#">Author</a>
-          <a class="dropdown-item" href="#">Publish Date</a>
+      <!-- <span class="col-md-2"> -->
+        <div class="dropdown">
+          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Sort By
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Title</a>
+            <a class="dropdown-item" href="#">Author</a>
+            <a class="dropdown-item" href="#">Publish Date</a>
+          </div>
         </div>
-      </div>
+      <!-- </span> -->
+
     </div>
 
     <!-- End of Controls -->
@@ -334,234 +431,8 @@
           <th scope="col">Edit Delete</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td><img class="img-thumbnail" src="assets/books/GGatsby.jpg" alt=""></td>
-          <td data-toggle="modal" data-target="#synopsisModal">The Great Gatsby</td>
-          <td>F. Scott-Fitzgerald</td>
-          <td>Drama</td>
-          <td>1985</td>
-          <td>700</td>
-          <td class='rating-stars'>
-            <ul class='stars'>
-              <li class='star' data-value='1'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='2'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='3'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='4'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='5'>
-                <i class='fa fa-star'></i>
-              </li>
-            </ul>
-          </td>
-          <td>
-            <i data-toggle="modal" data-target="#myModal" class="far fa-edit fa-lg edit"></i>
-            <i class="far fa-times-circle fa-lg delete"></i>
-          </td>
-        </tr>
-
-        <tr>
-          <th scope="row">2</th>
-          <td><img class="img-thumbnail" src="assets/books/GOT.jpg" alt=""></td>
-          <td data-toggle="modal" data-target="#synopsisModal">The Great Gatsby</td>
-          <td>F. Scott-Fitzgerald</td>
-          <td>Drama</td>
-          <td>1985</td>
-          <td>700</td>
-          <td class='rating-stars'>
-            <ul class='stars'>
-              <li class='star' data-value='1'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='2'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='3'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='4'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='5'>
-                <i class='fa fa-star'></i>
-              </li>
-            </ul>
-          </td>
-          <td>
-            <i class="far fa-edit fa-lg edit"></i>
-            <i class="far fa-times-circle fa-lg delete"></i>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">3</th>
-          <td><img class="img-thumbnail" src="assets/books/hp4.png" alt=""></td>
-          <td data-toggle="modal" data-target="#synopsisModal">The Great Gatsby</td>
-          <td>F. Scott-Fitzgerald</td>
-          <td>Drama</td>
-          <td>1985</td>
-          <td>700</td>
-          <td class='rating-stars'>
-            <ul class='stars'>
-              <li class='star' data-value='1'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='2'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='3'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='4'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='5'>
-                <i class='fa fa-star'></i>
-              </li>
-            </ul>
-          </td>
-          <td>
-            <i class="far fa-edit fa-lg edit"></i>
-            <i class="far fa-times-circle fa-lg delete"></i>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">4</th>
-          <td><img class="img-thumbnail" src="assets/books/gwithwind.jpg" alt=""></td>
-          <td>The Great Gatsby</td>
-          <td>F. Scott-Fitzgerald</td>
-          <td>Drama</td>
-          <td>1985</td>
-          <td>700</td>
-          <td class='rating-stars'>
-            <ul class='stars'>
-              <li class='star' data-value='1'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='2'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='3'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='4'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='5'>
-                <i class='fa fa-star'></i>
-              </li>
-            </ul>
-          </td>
-          <td>
-            <i class="far fa-edit fa-lg edit"></i>
-            <i class="far fa-times-circle fa-lg delete"></i>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">5</th>
-          <td><img class="img-thumbnail" src="assets/books/hkeller.jpg" alt=""></td>
-          <td>The Great Gatsby</td>
-          <td>F. Scott-Fitzgerald</td>
-          <td>Drama</td>
-          <td>1985</td>
-          <td>700</td>
-          <td class='rating-stars'>
-            <ul class='stars'>
-              <li class='star' data-value='1'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='2'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='3'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='4'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='5'>
-                <i class='fa fa-star'></i>
-              </li>
-            </ul>
-          </td>
-          <td>
-            <i class="far fa-edit fa-lg edit"></i>
-            <i class="far fa-times-circle fa-lg delete"></i>
-          </td>
-        </tr>
-      </tbody>
-      <tr>
-        <th scope="row">6</th>
-        <td><img class="img-thumbnail" src="assets/books/HP3.png" alt=""></td>
-        <td>The Great Gatsby</td>
-        <td>F. Scott-Fitzgerald</td>
-        <td>Drama</td>
-        <td>1985</td>
-        <td>700</td>
-        <td class='rating-stars'>
-          <ul class='stars'>
-            <li class='star' data-value='1'>
-              <i class='fa fa-star'></i>
-            </li>
-            <li class='star' data-value='2'>
-              <i class='fa fa-star'></i>
-            </li>
-            <li class='star' data-value='3'>
-              <i class='fa fa-star'></i>
-            </li>
-            <li class='star' data-value='4'>
-              <i class='fa fa-star'></i>
-            </li>
-            <li class='star' data-value='5'>
-              <i class='fa fa-star'></i>
-            </li>
-          </ul>
-        </td>
-        <td>
-          <i class="far fa-edit fa-lg edit"></i>
-          <i class="far fa-times-circle fa-lg delete"></i>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">7</th>
-        <td><img class="img-thumbnail" src="assets/books/1984.jpg" alt=""></td>
-        <td>The Great Gatsby</td>
-        <td>F. Scott-Fitzgerald</td>
-        <td>Drama</td>
-        <td>1985</td>
-        <td>700</td>
-        <td class='rating-stars'>
-          <ul class='stars'>
-            <li class='star' data-value='1'>
-              <i class='fa fa-star'></i>
-            </li>
-            <li class='star' data-value='2'>
-              <i class='fa fa-star'></i>
-            </li>
-            <li class='star' data-value='3'>
-              <i class='fa fa-star'></i>
-            </li>
-            <li class='star' data-value='4'>
-              <i class='fa fa-star'></i>
-            </li>
-            <li class='star' data-value='5'>
-              <i class='fa fa-star'></i>
-            </li>
-          </ul>
-        </td>
-        <td>
-          <i class="far fa-edit fa-lg edit"></i>
-          <i class="far fa-times-circle fa-lg delete"></i>
-        </td>
-      </tr>
-      </tbody>
+      <tbody id="table-body">
+        <!-- elements will be appended -->
       </tbody>
     </table>
     <!-- End of Table -->
@@ -571,6 +442,9 @@
     <script type="text/javascript" src="js/popper.js"></script>
     <script type="text/javascript" src="js/bootstrap.js"></script>
     <script type="text/javascript" src="js/singleton.js"></script>
+    <script type="text/javascript" src="js/util.js"></script>
+    <script type="text/javascript" src="js/AddBooksUI.js"></script>
+
   </div>
 </body>
 
