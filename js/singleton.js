@@ -38,9 +38,6 @@ $(document).ready(function() {
   $(function() {
     $('[data-toggle="tooltip"]').tooltip()
   });
-
-  // gLibrary.displayBooks();
-
 });
 
 var Library = (function() {
@@ -48,48 +45,6 @@ var Library = (function() {
 });
 
 Library.prototype = {
-  // displayBooks: function() {
-  //   this.getStorage();
-  //   for (var i = 0; i < this._bookshelf.length; i++) {
-  //     let book = this._bookshelf[i];
-  //     // console.log(book)
-  //     $('#table-body').append(`
-  //       <tr>
-  //         <th scope="row">${i + 1}</th>
-  //         <td><img class="img-thumbnail" src="assets/books/GGatsby.jpg" alt=""></td>
-  //         <td data-toggle="modal" data-target="#synopsisModal">${book.title}</td>
-  //         <td>${book.author}</td>
-  //         <td>${book.genre}</td>
-  //         <td>${book.publishDate}</td>
-  //         <td>${book.numberOfPages}</td>
-  //         <td class='rating-stars'>
-  //           <ul class='stars'>
-  //             <li class='star' data-value='1'>
-  //               <i class='fa fa-star'></i>
-  //             </li>
-  //             <li class='star' data-value='2'>
-  //               <i class='fa fa-star'></i>
-  //             </li>
-  //             <li class='star' data-value='3'>
-  //               <i class='fa fa-star'></i>
-  //             </li>
-  //             <li class='star' data-value='4'>
-  //               <i class='fa fa-star'></i>
-  //             </li>
-  //             <li class='star' data-value='5'>
-  //               <i class='fa fa-star'></i>
-  //             </li>
-  //           </ul>
-  //         </td>
-  //         <td>
-  //           <i data-toggle="modal" data-target="#myModal" class="far fa-edit fa-lg edit"></i>
-  //           <i class="far fa-times-circle fa-lg delete"></i>
-  //         </td>
-  //       </tr>
-  //     `);
-  //   }
-  //
-  // },
 
   getStorage: function() {
     var arr = JSON.parse(localStorage.getItem('bookshelf')) || [];
@@ -294,5 +249,4 @@ var book12 = new Book('Harry Potter: The Order of the Phoenix', 'J.Rowling', 'Dr
 
 document.addEventListener('DOMContentLoaded', function() {
   window.gLibrary = new Library();
-  // gLibrary.displayBooks();
 });

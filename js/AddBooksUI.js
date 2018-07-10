@@ -108,8 +108,8 @@ AddBooksUI.prototype._displayBooks = function () {
           </ul>
         </td>
         <td>
-          <i data-toggle="modal" data-target="#myModal" class="far fa-edit fa-lg edit"></i>
-          <i class="far fa-times-circle fa-lg delete"></i>
+          <i class="far fa-edit fa-lg edit"></i>
+          <i id="delete-icon" class="far fa-times-circle fa-lg delete"></i>
         </td>
       </tr>
     `);
