@@ -1,27 +1,26 @@
-$(document).ready(function(){
+$(document).ready(function() {
   /* 1. Visualizing things on Hover - See next part for action on click */
-  $('.stars li').on('mouseover', function(){
+  $('.stars li').on('mouseover', function() {
     var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
     // console.log(onStar, 'first');
 
     // Now highlight all the stars that's not after the current hovered star
-    $(this).parent().children('.star').each(function(e){
+    $(this).parent().children('.star').each(function(e) {
       if (e < onStar) {
         $(this).addClass('hover');
-      }
-      else {
+      } else {
         $(this).removeClass('hover');
       }
     });
 
-  }).on('mouseout', function(){
-    $(this).parent().children('li.star').each(function(e){
+  }).on('mouseout', function() {
+    $(this).parent().children('li.star').each(function(e) {
       $(this).removeClass('hover');
     });
   });
 
   /* 2. Action to perform on click */
-  $('.stars li').on('click', function(){
+  $('.stars li').on('click', function() {
     var onStar = parseInt($(this).data('value'), 10); // The star currently selected
     // console.log(onStar, 'onStar');
 
@@ -36,63 +35,61 @@ $(document).ready(function(){
     }
   });
   // Enable tooltips everywhere
-  $(function () {
-  $('[data-toggle="tooltip"]').tooltip()
-});
-//addBook button
-$('#add-book-btn').click(gLibrary.addBook);
+  $(function() {
+    $('[data-toggle="tooltip"]').tooltip()
+  });
+
+  // gLibrary.displayBooks();
 
 });
-
 
 var Library = (function() {
   this._bookshelf = new Array();
 });
 
-
 Library.prototype = {
-  displayBooks: function(){
-    this.getStorage();
-    for (var i = 0; i < this._bookshelf.length; i++) {
-      let book = this._bookshelf[i];
-      // console.log(book)
-      $('#table-body').append(`
-        <tr>
-          <th scope="row">${i+1}</th>
-          <td><img class="img-thumbnail" src="assets/books/GGatsby.jpg" alt=""></td>
-          <td data-toggle="modal" data-target="#synopsisModal">${book.title}</td>
-          <td>${book.author}</td>
-          <td>${book.genre}</td>
-          <td>${book.publishDate}</td>
-          <td>${book.numberOfPages}</td>
-          <td class='rating-stars'>
-            <ul class='stars'>
-              <li class='star' data-value='1'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='2'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='3'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='4'>
-                <i class='fa fa-star'></i>
-              </li>
-              <li class='star' data-value='5'>
-                <i class='fa fa-star'></i>
-              </li>
-            </ul>
-          </td>
-          <td>
-            <i data-toggle="modal" data-target="#myModal" class="far fa-edit fa-lg edit"></i>
-            <i class="far fa-times-circle fa-lg delete"></i>
-          </td>
-        </tr>
-      `);
-    }
-
-  },
+  // displayBooks: function() {
+  //   this.getStorage();
+  //   for (var i = 0; i < this._bookshelf.length; i++) {
+  //     let book = this._bookshelf[i];
+  //     // console.log(book)
+  //     $('#table-body').append(`
+  //       <tr>
+  //         <th scope="row">${i + 1}</th>
+  //         <td><img class="img-thumbnail" src="assets/books/GGatsby.jpg" alt=""></td>
+  //         <td data-toggle="modal" data-target="#synopsisModal">${book.title}</td>
+  //         <td>${book.author}</td>
+  //         <td>${book.genre}</td>
+  //         <td>${book.publishDate}</td>
+  //         <td>${book.numberOfPages}</td>
+  //         <td class='rating-stars'>
+  //           <ul class='stars'>
+  //             <li class='star' data-value='1'>
+  //               <i class='fa fa-star'></i>
+  //             </li>
+  //             <li class='star' data-value='2'>
+  //               <i class='fa fa-star'></i>
+  //             </li>
+  //             <li class='star' data-value='3'>
+  //               <i class='fa fa-star'></i>
+  //             </li>
+  //             <li class='star' data-value='4'>
+  //               <i class='fa fa-star'></i>
+  //             </li>
+  //             <li class='star' data-value='5'>
+  //               <i class='fa fa-star'></i>
+  //             </li>
+  //           </ul>
+  //         </td>
+  //         <td>
+  //           <i data-toggle="modal" data-target="#myModal" class="far fa-edit fa-lg edit"></i>
+  //           <i class="far fa-times-circle fa-lg delete"></i>
+  //         </td>
+  //       </tr>
+  //     `);
+  //   }
+  //
+  // },
 
   getStorage: function() {
     var arr = JSON.parse(localStorage.getItem('bookshelf')) || [];
@@ -100,22 +97,9 @@ Library.prototype = {
     return this._bookshelf = arr;
   },
 
-  addBook: function() {
+  addBook: function(book) {
     //Purpose: Add a book object to your books array.
     // Return: boolean true if it is not already added, false if it is already added.
-    console.log('addBook works');
-    var title = $('#title-text').val();
-    var author = $('#author').val();
-    var genre = $('#genre').val();
-    var pages = $('#pages').val();
-    var publishDate = $('#publicationDate').val();
-    var synopsis = $('#synopsis').val();
-    var bookCover = $('#file-upload').val();
-
-    var book = new Book(title, author, genre, pages, publishDate, synopsis, bookCover);
-    // console.log(this);
-
-
     if (this._bookshelf.length === 0) {
       this._bookshelf.push(book);
       localStorage.setItem("bookshelf", JSON.stringify(this._bookshelf))
@@ -131,12 +115,12 @@ Library.prototype = {
     if (bookExist) {
       return "Already exist"
     } else {
-      this._bookshelf.push(book);
+      this._bookshelf.unshift(book);
       return "The book is added!"
     };
     localStorage.setItem("bookshelf", JSON.stringify(this._bookshelf));
-    this.getStorage();
-    this.displayBooks();
+    // this.getStorage();
+    // this.displayBooks();
     return this._bookshelf;
 
   },
@@ -244,8 +228,14 @@ Library.prototype = {
       }
       return a;
     }, [])
-
+    localStorage.setItem("allAuthors", JSON.stringify(finalArr));
     return finalArr;
+  },
+
+  getAuthorsFromStorage: function() {
+    this.getAuthors();
+    var authorsList = JSON.parse(localStorage.getItem('allAuthors')) || [];
+    return authorsList;
   },
 
   getRandomAuthorName: function() {
@@ -261,24 +251,22 @@ Library.prototype = {
 
   search: function(searchValue) {
     // if the search term is Number, then it's asking for pages
-      if (Number.isInteger(searchValue)) {
-        var resultPages = this._bookshelf.filter(function(book) {
-          return book.NumberOfPages >= searchValue
-        })
-        return resultPages;
-      };
-
-      var resultArr = this._bookshelf.filter(function(book) {
-        var search = searchValue.toLowerCase();
-        return book.title.toLowerCase().indexOf(search) > -1 ||
-        book.author.toLowerCase().indexOf(search) > -1 ||
-        book.publishDate >= search
+    if (Number.isInteger(searchValue)) {
+      var resultPages = this._bookshelf.filter(function(book) {
+        return book.NumberOfPages >= searchValue
       })
-      return resultArr;
-    }
-    // this.getBookByTitle(searchValue);
-    // this.getBooksByAuthor(searchValue);
-  };
+      return resultPages;
+    };
+
+    var resultArr = this._bookshelf.filter(function(book) {
+      var search = searchValue.toLowerCase();
+      return book.title.toLowerCase().indexOf(search) > -1 || book.author.toLowerCase().indexOf(search) > -1 || book.publishDate >= search
+    })
+    return resultArr;
+  }
+  // this.getBookByTitle(searchValue);
+  // this.getBooksByAuthor(searchValue);
+};
 
 // Create a Book object:
 var Book = function(title, author, genre, pages, date, synopsis, cover) {
@@ -294,17 +282,17 @@ var Book = function(title, author, genre, pages, date, synopsis, cover) {
 var book1 = new Book('Harry Potter: The Philosopher\'s Stone', 'J.Rowling', 'Drama', 234, '12-01-1997');
 var book2 = new Book('IT', 'S.King', 'Drama', 197, '12-01-2006');
 var book3 = new Book('War and Peace', 'L.Tolstoy', 'Drama', 1097, '12-01-1985');
-var book4 = new Book('Javascript', 'J.Duckett','Drama', 797, '12-01-2006');
+var book4 = new Book('Javascript', 'J.Duckett', 'Drama', 797, '12-01-2006');
 var book5 = new Book('JQuery', 'J.Duckett', 'Drama', 897, '12-01-2008');
 var book6 = new Book('JQuery2', 'J.Duckett', 'Drama', 897, '12-01-2008');
-var book7 = new Book('Carrie', 'S.King',  'Drama', 897, '12-01-2008');
+var book7 = new Book('Carrie', 'S.King', 'Drama', 897, '12-01-2008');
 var book8 = new Book('Evgeniy Onegin', 'A.Pushkin', 'Drama', 897, '12-01-1879');
 var book9 = new Book('Harry Potter: The Chamber of Secrets', 'J.Rowling', 'Drama', 234, '12-01-1998');
 var book10 = new Book('Harry Potter: The Prisoner of Azkaban', 'J.Rowling', 'Drama', 234, '12-01-1998');
 var book11 = new Book('Harry Potter: The Goblet of Fire', 'J.Rowling', 'Drama', 234, '12-01-1999');
-var book12 = new Book('Harry Potter: The Order of the Phoenix', 'J.Rowling', 'Drama',  500, '12-01-2003')
+var book12 = new Book('Harry Potter: The Order of the Phoenix', 'J.Rowling', 'Drama', 500, '12-01-2003')
 
 document.addEventListener('DOMContentLoaded', function() {
   window.gLibrary = new Library();
-  gLibrary.displayBooks();
+  // gLibrary.displayBooks();
 });
