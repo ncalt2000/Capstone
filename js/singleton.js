@@ -83,13 +83,13 @@ Library.prototype = {
   removeBook: function(bookTitle) {
     // Purpose: Remove book from from the books array by its title.
     // Return:boolean true if the book(s) were removed, false if no books match
-
+    var bookshelf = this.getStorage();
     var bookDeleted = false;
-    for (var i = 0; i < this._bookshelf.length; i++) {
-      if (this._bookshelf[i]['title'].toLowerCase().indexOf(bookTitle.toLowerCase()) > -1) {
+    for (var i = 0; i < bookshelf.length; i++) {
+      if (bookshelf[i]['title'].toLowerCase().indexOf(bookTitle.toLowerCase()) > -1) {
         bookDeleted = true;
-        this._bookshelf.splice(i, 1)
-        localStorage.setItem("bookshelf", JSON.stringify(this._bookshelf))
+        bookshelf.splice(i, 1)
+        localStorage.setItem("bookshelf", JSON.stringify(bookshelf))
       }
     }
     if (bookDeleted) {
@@ -172,9 +172,10 @@ Library.prototype = {
   getAuthors: function() {
     // Purpose: Find the distinct authors’ names from all books in your library, only 1 book by that author
     // Return: array of strings the names of all distinct authors, empty array if no books exist or if no authors exist
+    var authors = JSON.parse(localStorage.getItem('bookshelf'))
     var resultArr = [];
-    for (var i = 0; i < this._bookshelf.length; i++) {
-      resultArr.push(this._bookshelf[i]['author']);
+    for (var i = 0; i < authors.length; i++) {
+      resultArr.push(authors[i]['author']);
     }
 
     var finalArr = resultArr.reduce(function(a, b) {
@@ -185,12 +186,6 @@ Library.prototype = {
     }, [])
     localStorage.setItem("allAuthors", JSON.stringify(finalArr));
     return finalArr;
-  },
-
-  getAuthorsFromStorage: function() {
-    this.getAuthors();
-    var authorsList = JSON.parse(localStorage.getItem('allAuthors')) || [];
-    return authorsList;
   },
 
   getRandomAuthorName: function() {

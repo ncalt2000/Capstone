@@ -1,7 +1,6 @@
 var DeleteBook = function(container){
   this.$container = container;
   Library.call(this);
-  AddBooksUI.call(this);
 };
 
 DeleteBook.prototype = Object.create(Library.prototype);
@@ -12,15 +11,22 @@ DeleteBook.prototype.init = function(){
 };
 
 DeleteBook.prototype._bindEvents = function(){
-  $('#delete-icon').on('click', $.proxy(this._handleDeleteBook, this));
+  $('.delete').on('click', $.proxy(this._handleDeleteBook, this));
   return;
 };
 
-DeleteBook.prototype._handleDeleteBook = function () {
+DeleteBook.prototype._handleDeleteBook = function() {
+  // var bookshelf = this.getStorage();
+  // console.log($(event.target).data('title'), 'target');
+  this.removeBook($(event.target).data('title'))
+  // console.log(bookshelf);
+  location.reload();
   console.log('deleting');
 };
 
+
 $(function(){
-  window.gDeleteBook = DeleteBook($('#delete-icon'));
+  window.gDeleteBook = new DeleteBook($('#edit-delete'));
   window.gDeleteBook.init();
+
 });

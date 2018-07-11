@@ -29,12 +29,11 @@ ShowAuthorsUI.prototype._bindEvents = function () {
 ShowAuthorsUI.prototype._handleShowAuthors = function () {
   //console.log(this.getAuthors());
   //make a holding array for the results of getAuthors
-  // var authors = this.getAuthors();
-  var authors = this.getAuthorsFromStorage();
+  var authors = this.getAuthors();
   //if there are authors in the array, show the modal and append <li>
   // console.log(authors);
 
-  if(authors.length){
+  if(authors){
     this.$container.modal('show');
     //use _createUlOfAuthors to make this function less complecated
     //find the class labelled modal body and add html
@@ -60,7 +59,6 @@ ShowAuthorsUI.prototype._createUlOfAuthors = function (authors){
     //append to ul element
     ul.append(li);
   }
-  return ul;
 };
 
 
@@ -75,6 +73,4 @@ $(function(){
   window.gShowAuthUI = new ShowAuthorsUI($('#allAuthorsModal'));//refactored to make a holding variable
   //initialize with your init function
   window.gShowAuthUI.init();
-  // window.gShowAuthUI.getAuthorsFromStorage();
-  // window.gShowAuthUI._createUlOfAuthors();
 });

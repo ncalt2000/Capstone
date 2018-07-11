@@ -50,6 +50,7 @@ AddBooksUI.prototype._createBook = function () {
   // console.log(book, 'book');
 
   this._tempBookshelf.push(book);
+
   var $booksToAdd = $('<p>', {'class': 'booksToAdd'});
   $('.booksInLine').append($booksToAdd).text(`Books to be added: ${this._tempBookshelf.length}`);
   $('#add-book-form')[0].reset();
@@ -76,12 +77,62 @@ AddBooksUI.prototype._saveBook = function(){
 
 AddBooksUI.prototype._displayBooks = function () {
   this.getStorage();
+
+// *********************
+  // new stuff
+  //create table body
+  // var tbody = document.createElement('tbody');
+  // //for elements returned from getAuthors create an <li> with text from getAuthors
+  // for (var i = 0; i < this._bookshelf.length; i++) {
+  //   let book = this._bookshelf[i];
+  //   //create element
+  //   var tr = document.createElement('tr');
+  //   var th = document.createElement('th');
+  //   var cover = document.createElement('td');
+  //   var coverImage = document.createElement('img');
+  //   var title = document.createElement('td');
+  //   var author = document.createElement('td');
+  //   var genre = document.createElement('td');
+  //   var publishDate = document.createElement('td');
+  //   var numberOfPages = document.createElement('td');
+  //   var ratings = document.createElement('td');
+  //   var ratingsList = document.createElement('ul');
+  //   var buttons = document.createElement('td');
+  //   //add text
+  //   $(th).attr('scope', 'row').text(i+1);
+  //   $(coverImage)
+  //     .attr('class', 'img-thumbnail')
+  //     .attr('src', 'assets/books/GGatsby.jpg');
+  //   $(title).text(book.title);
+  //   $(author).text(book.author);
+  //   $(genre).text(book.genre);
+  //   $(ratings).attr('class', 'rating-stars');
+  //   $(ratingsList).attr('class', 'stars');
+  //   $(publishDate).text(book.publishDate);
+  //   $(numberOfPages).text(book.publishDate);
+  //   //append to ul element
+  //   tr.append(th);
+  //   tr.append(cover);
+  //   cover.append(coverImage);
+  //   tr.append(title);
+  //   tr.append(author);
+  //   tr.append(genre);
+  //   tr.append(publishDate);
+  //   tr.append(numberOfPages);
+  //   tr.append(ratings);
+  //   tr.append(buttons);
+  //   tbody.append(tr);
+  // }
+  // $('#book-table').append(tbody);
+  // return tbody;
+  // *******************
+
   for (var i = 0; i < this._bookshelf.length; i++) {
     let book = this._bookshelf[i];
     // console.log(book)
     $('#table-body').append(`
       <tr>
-        <th scope="row">${i + 1}</th>
+        <th scope="row">${i+1}</th>
         <td><img class="img-thumbnail" src="assets/books/GGatsby.jpg" alt=""></td>
         <td data-toggle="modal" data-target="#synopsisModal">${book.title}</td>
         <td>${book.author}</td>
@@ -107,12 +158,12 @@ AddBooksUI.prototype._displayBooks = function () {
             </li>
           </ul>
         </td>
-        <td>
-          <i class="far fa-edit fa-lg edit"></i>
-          <i id="delete-icon" class="far fa-times-circle fa-lg delete"></i>
+        <td id="edit-delete">
+          <i class="far fa-edit fa-lg edit" ></i>
+          <i class="far fa-times-circle fa-lg delete" data-title=${book.title}></i>
         </td>
       </tr>
-    `);
+    `)
   }
 };
 
