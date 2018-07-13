@@ -47,8 +47,10 @@ AddBooksUI.prototype._createBook = function () {
   var synopsis = $('#synopsis').val();
   var bookCover = $('#file-upload').val();
   var deleteCol = '';
+  var edit = '';
+  var rating = '';
 
-  var book = new Book(bookCover, title, author, genre, pages, publishDate, deleteCol, synopsis);
+  var book = new Book(bookCover, title, author, genre, pages, publishDate, rating, deleteCol, synopsis, edit);
   this._tempBookshelf.push(book);
 
   var $booksToAdd = $('<p>', {'class': 'booksToAdd'});

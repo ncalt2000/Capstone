@@ -11,6 +11,7 @@ DataTable.prototype.init = function() {
   this._updateTable();
   this._bindEvents();
   this._bindCustomListeners();
+  this._ratingBook();
 };
 
 DataTable.prototype._bindEvents = function() {
@@ -48,23 +49,8 @@ DataTable.prototype._handleModalOpen = function(e) {
 };
 
 DataTable.prototype._handleDeleteBook = function() {
-
-  var bookDeleted = false;
-  for (var i = 0; i < window.bookshelf.length; i++) {
-    if (window.bookshelf[i]['title'] === this._titleToDelete) {
-      bookDeleted = true;
-      window.bookshelf.splice(i, 1)
-      localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf))
-    }
-  }
-  this._handleEventTrigger("objUpdate", {booksAdded: "The book is added"});
-
-  if (bookDeleted) {
-    return true + " The book is deleted!"
-  }
-  return false + " The book is not found!";
+  this.removeBook(this._titleToDelete);
 };
-
 
 DataTable.prototype._createHeader = function() {
   var book = new Book();
@@ -100,17 +86,29 @@ DataTable.prototype._createRow = function(book) {
     'data-title': book['title']
   });
   var editIcon = $('<i>', {class: 'far fa-edit fa-lg edit'});
+  var ratingList = $('<ul>', {class: 'stars' });
+  // console.log(ratingList);
 
   for (var key in book) {
     var td = document.createElement('td');
-    if (key === 'synopsis') {
-      $(td).hide();
-    } else if (key === 'deleteCol') {
-      $(td).append(deleteIcon)
-      $(td).append(editIcon)
-    } else if (key === 'publishDate') {
+    if (key === 'publishDate') {
       var parsedDate = window.parseDate(book[key])
       $(td).append(parsedDate)
+    } else if (key === 'rating') {
+      for (var i = 0; i < 5; i++) {
+        var ratingItem = $('<li>', {class: 'star', 'data-value': i+1});
+        var star = $('<i>', {class: 'fa fa-star'});
+        var rating = $(ratingItem).append(star);
+        $(ratingList).append(rating)
+      }
+        $(td).addClass('rating-stars');
+        $(td).append(ratingList);
+    } else if (key === 'deleteCol') {
+      $(td).append(deleteIcon)
+    } else if (key === 'synopsis') {
+      $(td).hide();
+    } else if (key === 'edit') {
+      $(td).append(editIcon)
     } else {
       $(td).text(book[key]);
     }
@@ -118,6 +116,39 @@ DataTable.prototype._createRow = function(book) {
   }
   // console.log(tr);
   return tr;
+};
+
+DataTable.prototype._ratingBook = function () {
+  /* 1. Visualizing things on Hover - See next part for action on click */
+  $('.stars li').on('mouseover', function() {
+    var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
+    // console.log(onStar, 'first');
+
+    // Now highlight all the stars that's not after the current hovered star
+    $(this).parent().children('.star').each(function(e) {
+      if (e < onStar) {
+        $(this).addClass('hover');
+      } else {
+        $(this).removeClass('hover');
+      }
+    });
+  }).on('mouseout', function() {
+    $(this).parent().children('li.star').each(function(e) {
+      $(this).removeClass('hover');
+    });
+  });
+  /* 2. Action to perform on click */
+  $('.stars li').on('click', function() {
+    var onStar = parseInt($(this).data('value'), 10); // The star currently selected
+    console.log(onStar, 'onStar');
+    var stars = $(this).parent().children('li.star');
+    for (i = 0; i < stars.length; i++) {
+      $(stars[i]).removeClass('selected');
+    }
+    for (i = 0; i < onStar; i++) {
+      $(stars[i]).addClass('selected');
+    }
+  });
 };
 
 $(function() {

@@ -9,7 +9,6 @@ $(function() {
 //formate a date methods here:
 function parseDate(pubDate) {
   var date = new Date(pubDate);
-  // var day = date.getDate();
   var month = date.getMonth();
   var arr = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'Sepember', 'October', 'November', 'December']
   month = arr[month]
