@@ -34,10 +34,6 @@ $(document).ready(function() {
       $(stars[i]).addClass('selected');
     }
   });
-  // Enable tooltips everywhere
-  $(function() {
-    $('[data-toggle="tooltip"]').tooltip()
-  });
 });
 
 var Library = (function() {
@@ -76,7 +72,6 @@ Library.prototype = {
       }
     }
 
-
     if (bookExist) {
       return "Already exist"
     } else {
@@ -85,6 +80,7 @@ Library.prototype = {
     }
 
     localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf));
+
     this._handleEventTrigger("objUpdate", {booksAdded: "The book is added"});
     return window.bookshelf;
 
@@ -94,8 +90,7 @@ Library.prototype = {
     // Purpose: Remove book from from the books array by its title.
     // Return:boolean true if the book(s) were removed, false if no books match
     this.getStorage();
-    // console.log(window.bookshelf, 'gbookshelf');
-    // console.log(bookshelf, 'bookshelf storage');
+
     var bookDeleted = false;
     for (var i = 0; i < window.bookshelf.length; i++) {
 
@@ -147,7 +142,7 @@ Library.prototype = {
   getBookByTitle: function(title) {
     // Purpose: Return all books that completely or partially matches the string title passed into the function
     // Return: array of book objects if you find books with matching titles, empty array if no books are found
-    var result = _bookshelf.filter(function(item) {
+    var result = window_bookshelf.filter(function(item) {
       return item.title.toLowerCase().indexOf(title.toLowerCase()) > -1;
     })
     return result;
@@ -241,7 +236,7 @@ var Book = function(cover, title, author, genre, pages, publishDate, deleteCol, 
   this.author = author;
   this.genre = genre;
   this.pages = pages;
-  this.publishDate = new Date(publishDate).getUTCFullYear();
+  this.publishDate = new Date(String(publishDate));
   this.deleteCol = deleteCol;
   this.synopsis = synopsis;
 };

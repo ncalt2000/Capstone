@@ -47,13 +47,13 @@ AddBooksUI.prototype._createBook = function () {
   var synopsis = $('#synopsis').val();
   var bookCover = $('#file-upload').val();
   var deleteCol = '';
-  var edit = '';
 
-  var book = new Book(bookCover, title, author, genre, pages, publishDate, deleteCol, synopsis, edit);
+  var book = new Book(bookCover, title, author, genre, pages, publishDate, deleteCol, synopsis);
   this._tempBookshelf.push(book);
 
   var $booksToAdd = $('<p>', {'class': 'booksToAdd'});
   $('.booksInLine').append($booksToAdd).text(`Books to be added: ${this._tempBookshelf.length}`);
+  console.log(this._tempBookshelf, 'temp');
   $('#add-book-form')[0].reset();
 };
 
@@ -66,15 +66,15 @@ AddBooksUI.prototype._saveBook = function(){
   var synopsis = $('#synopsis').val();
   var bookCover = $('#file-upload').val();
   var deleteCol = '';
-  var edit = '';
-  var book = new Book(bookCover, title, author, genre, pages, publishDate, deleteCol, synopsis, edit);
+
+  var book = new Book(bookCover, title, author, genre, pages, publishDate, deleteCol, synopsis);
 
   if(this._tempBookshelf.length === 0){
     this.addBook(book);
   }
   this.addBooks(this._tempBookshelf);
   $('#add-book-form')[0].reset();
-  // location.reload();
+  this._tempBookshelf = new Array();
 };
 
 $(function(){
