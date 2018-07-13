@@ -31,7 +31,7 @@ ShowAuthorsUI.prototype._handleShowAuthors = function () {
   //make a holding array for the results of getAuthors
   var authors = this.getAuthors();
   //if there are authors in the array, show the modal and append <li>
-  // console.log(authors);
+  // console.log(authors, 'authors');
 
   if(authors){
     this.$container.modal('show');
@@ -59,6 +59,7 @@ ShowAuthorsUI.prototype._createUlOfAuthors = function (authors){
     //append to ul element
     ul.append(li);
   }
+  return ul;
 };
 
 

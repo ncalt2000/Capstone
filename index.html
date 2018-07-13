@@ -269,6 +269,22 @@
     </div>
     <!-- End of Synopsis Modal -->
 
+    <!-- Confirm DeleteBook Modal -->
+    <div id="confirm-delete-modal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>Are you sure you want to delete this book? </p>
+      </div>
+      <div class="modal-footer">
+        <button id="confirm-delete-btn" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+    <!-- End of Confirm DeleteBook modal -->
+
     <!-- Books -->
     <!-- <div class="row book-cards card-deck my-5">
       <div class="card card-inverse card-primary">
@@ -412,20 +428,10 @@
     <!-- Table -->
     <table id="book-table" class="table table-hover">
       <thead class="thead-dark">
-        <tr>
-          <th scope="col"></th>
-          <th scope="col">Cover</th>
-          <th scope="col">Title <span><i class="fas fa-caret-down"></i></span></th>
-          <th scope="col">Author <span><i class="fas fa-caret-down"></i></span></th>
-          <th scope="col">Genre</th>
-          <th scope="col">Publish Date</th>
-          <th scope="col">Pages</th>
-          <th scope="col">Rating</th>
-          <th scope="col">Edit Delete</th>
-        </tr>
+        <!-- _createHeader() is invoked here -->
       </thead>
       <tbody id="table-body">
-
+      <!-- _createRow() is invoked here -->
       </tbody>
     </table>
     <!-- End of Table -->
@@ -439,6 +445,7 @@
     <script type="text/javascript" src="js/ShowAuthorsUI.js"></script>
     <script type="text/javascript" src="js/AddBooksUI.js"></script>
     <script type="text/javascript" src="js/DeleteBook.js"></script>
+    <script type="text/javascript" src="js/UpdateTable.js"></script>
 
   </div>
 </body>
