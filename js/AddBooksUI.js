@@ -1,6 +1,6 @@
 // create a contructor: addBooksUI
-var AddBooksUI = function(container){
-//placeholder for an id='addBooksModal'
+var AddBooksUI = function(container) {
+  //placeholder for an id='addBooksModal'
   this.$container = container;
   // allow us to access anythign in the Library
   Library.call(this);
@@ -12,7 +12,7 @@ AddBooksUI.prototype = Object.create(Library.prototype);
 //data-target and data-value are removed from html. This will be added in js.
 
 // init fires whatever is in the _bindEvents.
-AddBooksUI.prototype.init = function(){
+AddBooksUI.prototype.init = function() {
   this.getStorage();
   this._bindEvents();
   return;
@@ -20,24 +20,22 @@ AddBooksUI.prototype.init = function(){
 
 // this opens the modal
 // proxy is doing similar ot call(this)
-AddBooksUI.prototype._bindEvents = function(){
+AddBooksUI.prototype._bindEvents = function() {
   // add an id=''
-  $('button#add-book-btn').on('click',
-  $.proxy(this._handleModalOpen, this));
+  $('button#add-book-btn').on('click', $.proxy(this._handleModalOpen, this));
 
   $('button#add-another-btn').on('click', $.proxy(this._createBook, this));
 
-  $('button#save-book-btn').on('click',
-  $.proxy(this._saveBook, this));
+  $('button#save-book-btn').on('click', $.proxy(this._saveBook, this));
 };
 
 // event handlers
-AddBooksUI.prototype._handleModalOpen = function(){
+AddBooksUI.prototype._handleModalOpen = function() {
   this.$container.modal('show');
   return;
 }
 
-AddBooksUI.prototype._createBook = function () {
+AddBooksUI.prototype._createBook = function() {
   event.preventDefault();
   var title = $('#title-text').val();
   var author = $('#author').val();
@@ -59,7 +57,7 @@ AddBooksUI.prototype._createBook = function () {
   $('#add-book-form')[0].reset();
 };
 
-AddBooksUI.prototype._saveBook = function(){
+AddBooksUI.prototype._saveBook = function() {
   var title = $('#title-text').val();
   var author = $('#author').val();
   var genre = $('#genre').val();
@@ -68,8 +66,25 @@ AddBooksUI.prototype._saveBook = function(){
   var synopsis = $('#synopsis').val();
   var bookCover = $('#file-upload').val();
   var deleteCol = '';
+  var edit = '';
+  var rating = '';
 
-  var book = new Book(bookCover, title, author, genre, pages, publishDate, deleteCol, synopsis);
+  var book = new Book(bookCover, title, author, genre, pages, publishDate, rating, deleteCol, synopsis, edit);
+
+  // check for empty fields:
+  // var requiredInput = [];
+  // var requiredFields = $('input[required]'); //object
+  // // console.log(requiredFields, 'req');
+  // for (var key in requiredFields) {
+  //   requiredInput.push($(requiredFields[key]).val())
+  //   console.log(requiredInput, 'input');
+  // }
+  //
+  // for (var i = 0; i < requiredInput.length; i++) {
+  //   if (requiredInput[i] === '') {
+  //     return alert('add text!')
+  //   }
+  // }
 
   if(this._tempBookshelf.length === 0){
     this.addBook(book);
@@ -79,7 +94,7 @@ AddBooksUI.prototype._saveBook = function(){
   this._tempBookshelf = new Array();
 };
 
-$(function(){
+$(function() {
   window.gAddBooksUI = new AddBooksUI($('#addBookModal'));
   window.gAddBooksUI.init();
 });

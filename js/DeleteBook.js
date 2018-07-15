@@ -7,7 +7,7 @@ var DeleteBook = function(){
 DeleteBook.prototype = Object.create(Library.prototype);
 
 DeleteBook.prototype.init = function(){
-  this.getStorage();
+  // this.getStorage();
   this._bindEvents();
   // return;
 };

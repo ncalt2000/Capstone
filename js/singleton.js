@@ -7,24 +7,41 @@ Library.prototype = {
     var oData = oData || {}; //sets oData to an empty object if it does not have data
     if (sEvent) {
       var event = new CustomEvent(sEvent, oData);
+      console.log(event, 'Event');
       document.dispatchEvent(event);
     }
   },
 
+  setStorage(){
+    localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf));
+  },
+
   getStorage: function() {
     var arr = JSON.parse(localStorage.getItem('bookshelf')) || [];
+
     for (var i = 0; i < arr.length; i++) {
-      window.bookshelf.push(new Book(arr[i].cover, arr[i].title,arr[i].author,arr[i].genre, arr[i].pages, arr[i].publishDate, arr[i].deleteCol, arr[i].synopsis ))
+      window.bookshelf.push(new Book(
+        arr[i].cover,
+        arr[i].title,
+        arr[i].author,
+        arr[i].genre,
+        arr[i].pages, arr[i].publishDate,
+        arr[i].rating,
+        arr[i].deleteCol, arr[i].synopsis,
+        arr[i].edit ))
     }
-    return window.bookshelf = arr;;
+    return window.bookshelf;
   },
 
   addBook: function(book) {
     //Purpose: Add a book object to your books array.
     // Return: boolean true if it is not already added, false if it is already added.
+
+    console.log('adding book');
     if (window.bookshelf.length === 0) {
       window.bookshelf.push(book);
-      localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf))
+      // localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf))
+      this.setStorage();
       return "The book is added!";
     }
 
@@ -42,7 +59,8 @@ Library.prototype = {
       return "The book is added!"
     }
 
-    localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf));
+    // localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf));
+    this.setStorage();
 
     this._handleEventTrigger("objUpdate", {booksAdded: "The book is added"});
     return window.bookshelf;
@@ -52,15 +70,14 @@ Library.prototype = {
   removeBook: function(bookTitle) {
     // Purpose: Remove book from from the books array by its title.
     // Return:boolean true if the book(s) were removed, false if no books match
-    this.getStorage();
-
+    console.log('removing book');
     var bookDeleted = false;
-    for (var i = 0; i < window.bookshelf.length; i++) {
-
+    for (var i=0; i<window.bookshelf.length; i++) {
       if (window.bookshelf[i]['title'].toLowerCase().indexOf(bookTitle.toLowerCase()) > -1) {
         bookDeleted = true;
         window.bookshelf.splice(i, 1)
-        localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf))
+        // localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf))
+        this.setStorage();
       }
     }
     this._handleEventTrigger("objUpdate", {booksAdded: "Book(s) deleted!"});
@@ -81,7 +98,8 @@ Library.prototype = {
         window.bookshelf.splice(i, 1);
         deletedBooks += 1;
         isDeleted = true;
-        localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf))
+        // localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf))
+        this.setStorage();
       }
     }
     if (isDeleted && deletedBooks < 2) {
@@ -100,14 +118,15 @@ Library.prototype = {
       return "There are no books in the library"
     }
     var randomBook = window.bookshelf[Math.floor(Math.random() * window.bookshelf.length)];
-    localStorage.setItem("randomBook", JSON.stringify(randomBook))
+    // localStorage.setItem("randomBook", JSON.stringify(randomBook))
+    this.setStorage();
     return randomBook;
   },
 
   getBookByTitle: function(title) {
     // Purpose: Return all books that completely or partially matches the string title passed into the function
     // Return: array of book objects if you find books with matching titles, empty array if no books are found
-    var result = window_bookshelf.filter(function(item) {
+    var result = window.bookshelf.filter(function(item) {
       return item.title.toLowerCase().indexOf(title.toLowerCase()) > -1;
     })
     return result;
@@ -131,6 +150,7 @@ Library.prototype = {
     for (var i = 0; i < books.length; i++) {
       // use the same method
       var booksAdded = this.addBook(books[i]);
+      console.log(books[i], 'books[i]');
       if (booksAdded === "Already exist") {
         countNotAdded += 1;
       }
@@ -141,7 +161,8 @@ Library.prototype = {
     }
         this._handleEventTrigger("objUpdate", {booksAdded: count + " books were added"});
 
-    localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf))
+    // localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf))
+    this.setStorage();
     return countNotAdded + " book(s) already exist, " + count + " book(s) added!";
   },
 

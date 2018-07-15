@@ -2,12 +2,12 @@ var DataTable = function() {
   Library.call(this);
   this.$container = $('#book-table');
   var _titleToDelete = '';
+  var _titleToEdit = '';
 };
 
 DataTable.prototype = Object.create(Library.prototype);
 
 DataTable.prototype.init = function() {
-  this.getStorage();
   this._updateTable();
   this._bindEvents();
   this._bindCustomListeners();
@@ -16,7 +16,8 @@ DataTable.prototype.init = function() {
 
 DataTable.prototype._bindEvents = function() {
   //add native events here
-  $('.delete').on('click', $.proxy(this._handleModalOpen, this));
+  $('.delete').on('click', $.proxy(this._openDeleteModal, this));
+  $('.edit').on('click', $.proxy(this._openEditModal, this));
 };
 
 DataTable.prototype._bindCustomListeners = function() {
@@ -24,6 +25,7 @@ DataTable.prototype._bindCustomListeners = function() {
 
   $('#confirm-delete-btn').on('click', $.proxy(this._handleDeleteBook, this));
 
+  $('#save-edit-btn').on('click', $.proxy(this._editBook, this));
 };
 
 DataTable.prototype._updateTable = function(book) {
@@ -41,11 +43,29 @@ DataTable.prototype._updateTable = function(book) {
   });
 };
 
-DataTable.prototype._handleModalOpen = function(e) {
-  var title = $(e.target).data('title');
-  this._titleToDelete = title;
+DataTable.prototype._openDeleteModal = function(e) {
+  this._titleToDelete = $(e.target).data('title');
   console.log(this._titleToDelete, 'title');
   $('#confirm-delete-modal').modal('show')
+};
+
+DataTable.prototype._openEditModal = function (e) {
+  // 1. open modal:
+  $('#edit-book-modal').modal('show')
+  // 2. get the title fo the book you are clicking on:
+  _titleToEdit = $(e.target).data('title');
+  console.log(_titleToEdit, '_titleToEdit');
+  // 3. getBookByTitle(it comes in as an array):
+  var bookToEdit = this.getBookByTitle(_titleToEdit)[0];
+  console.log(bookToEdit, 'to edit');
+  // 4. grab all the values from the book and put it in the modal:
+  $('#title-edit').val(bookToEdit.title);
+  $('#author-edit').val(bookToEdit.author);
+  $('#genre-edit').val(bookToEdit.genre);
+  $('#pages-edit').val(bookToEdit.pages);
+  $('#publicationDate-edit').val(bookToEdit.publishDate);
+  $('#synopsis-edit').val(bookToEdit.synopsis);
+  // $('#file-upload-edit').val(bookToEdit.cover); //throws error!!!
 };
 
 DataTable.prototype._handleDeleteBook = function() {
@@ -85,12 +105,17 @@ DataTable.prototype._createRow = function(book) {
     class: 'far fa-times-circle fa-lg delete',
     'data-title': book['title']
   });
-  var editIcon = $('<i>', {class: 'far fa-edit fa-lg edit'});
+  var editIcon = $('<i>', {class: 'far fa-edit fa-lg edit', 'data-title': book['title']});
   var ratingList = $('<ul>', {class: 'stars' });
   // console.log(ratingList);
 
   for (var key in book) {
     var td = document.createElement('td');
+    // var attr = document.createAttribute('contenteditable');
+    // attr.value = 'true';
+    // td.setAttributeNode(attr);
+    // console.log(td);
+
     if (key === 'publishDate') {
       var parsedDate = window.parseDate(book[key])
       $(td).append(parsedDate)
@@ -149,6 +174,39 @@ DataTable.prototype._ratingBook = function () {
       $(stars[i]).addClass('selected');
     }
   });
+};
+
+DataTable.prototype._editBook = function () {
+  // 1.get book you want to edit, comes in array
+  // var bookToReplace = this.getBookByTitle(_titleToEdit)[0];
+  // console.log(bookToReplace, 'replace');
+  // 2.delete the book you edited:
+  // this.removeBook(_titleToEdit);
+  // 3.create book from edited fields:
+  var newTitle = $('#title-edit').val();
+  var newAuthor = $('#author-edit').val();
+  var newGenre = $('#genre-edit').val();
+  var newPages = $('#pages-edit').val();
+  var newPubDate = $('#publicationDate-edit').val();
+  var newSynopsis = $('#synopsis-edit').val();
+  var newBook = new Book('', newTitle, newAuthor, newGenre, newPages, newPubDate, '', '', newSynopsis, '');
+  console.log(newBook, 'newBook');
+  // 4. add new edited book: !!!DOESN'T WORK!!!
+  // this.addBook(newBook);
+  //
+// *******TRY NEW METHOD******
+var index;
+for (var i = 0; i < window.bookshelf.length; i++) {
+if(window.bookshelf[i].title ===_titleToEdit) {
+  // console.log(i, 'index');
+  index = i;
+}
+}
+   window.bookshelf.splice(index,1,newBook);
+   console.log(window.bookshelf, 'she;f');
+
+   localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf));
+
 };
 
 $(function() {
