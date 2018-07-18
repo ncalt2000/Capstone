@@ -239,18 +239,18 @@ var Book = function(cover, title, author, genre, pages, publishDate, rating, del
 //   this.synopsis = args.synopsis;
 // };
 
-// var book1 = new Book('cover', 'Harry Potter: The Philosopher\'s Stone', 'J.Rowling', 'Drama', 234, '12-01-1997');
-// var book2 = new Book('cover','IT', 'S.King', 'Drama', 197, '12-01-2006');
-// var book3 = new Book('cover','War and Peace', 'L.Tolstoy', 'Drama', 1097, '12-01-1985');
-// var book4 = new Book('cover', 'Javascript', 'J.Duckett', 'Drama', 797, '12-01-2006');
-// var book5 = new Book('cover', 'JQuery', 'J.Duckett', 'Drama', 897, '12-01-2008');
-// var book6 = new Book('cover', 'JQuery2', 'J.Duckett', 'Drama', 897, '12-01-2008');
-// var book7 = new Book('cover', 'Carrie', 'S.King', 'Drama', 897, '12-01-2008');
-// var book8 = new Book('cover', 'Evgeniy Onegin', 'A.Pushkin', 'Drama', 897, '12-01-1879');
-// var book9 = new Book('cover', 'Harry Potter: The Chamber of Secrets', 'J.Rowling', 'Drama', 234, '12-01-1998');
-// var book10 = new Book('cover', 'Harry Potter: The Prisoner of Azkaban', 'J.Rowling', 'Drama', 234, '12-01-1998');
-// var book11 = new Book('cover', 'Harry Potter: The Goblet of Fire', 'J.Rowling', 'Drama', 234, '12-01-1999');
-// var book12 = new Book('cover', 'Harry Potter: The Order of the Phoenix', 'J.Rowling', 'Drama', 500, '12-01-2003')
+var book1 = new Book('cover', 'Harry Potter: The Philosopher\'s Stone', 'J.Rowling', 'Drama', 234, '12-01-1997');
+var book2 = new Book('cover','IT', 'S.King', 'Drama', 197, '12-01-2006');
+var book3 = new Book('cover','War and Peace', 'L.Tolstoy', 'Drama', 1097, '12-01-1985');
+var book4 = new Book('cover', 'Javascript', 'J.Duckett', 'Drama', 797, '12-01-2006');
+var book5 = new Book('cover', 'JQuery', 'J.Duckett', 'Drama', 897, '12-01-2008');
+var book6 = new Book('cover', 'JQuery2', 'J.Duckett', 'Drama', 897, '12-01-2008');
+var book7 = new Book('cover', 'Carrie', 'S.King', 'Drama', 897, '12-01-2008');
+var book8 = new Book('cover', 'Evgeniy Onegin', 'A.Pushkin', 'Drama', 897, '12-01-1879');
+var book9 = new Book('cover', 'Harry Potter: The Chamber of Secrets', 'J.Rowling', 'Drama', 234, '12-01-1998');
+var book10 = new Book('cover', 'Harry Potter: The Prisoner of Azkaban', 'J.Rowling', 'Drama', 234, '12-01-1998');
+var book11 = new Book('cover', 'Harry Potter: The Goblet of Fire', 'J.Rowling', 'Drama', 234, '12-01-1999');
+var book12 = new Book('cover', 'Harry Potter: The Order of the Phoenix', 'J.Rowling', 'Drama', 500, '12-01-2003')
 
 // document.addEventListener('DOMContentLoaded', function() {
 //   window.gLibrary = new Library();

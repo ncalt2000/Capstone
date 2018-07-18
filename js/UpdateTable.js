@@ -177,12 +177,7 @@ DataTable.prototype._ratingBook = function () {
 };
 
 DataTable.prototype._editBook = function () {
-  // 1.get book you want to edit, comes in array
-  // var bookToReplace = this.getBookByTitle(_titleToEdit)[0];
-  // console.log(bookToReplace, 'replace');
-  // 2.delete the book you edited:
-  // this.removeBook(_titleToEdit);
-  // 3.create book from edited fields:
+
   var newTitle = $('#title-edit').val();
   var newAuthor = $('#author-edit').val();
   var newGenre = $('#genre-edit').val();
@@ -190,10 +185,8 @@ DataTable.prototype._editBook = function () {
   var newPubDate = $('#publicationDate-edit').val();
   var newSynopsis = $('#synopsis-edit').val();
   var newBook = new Book('', newTitle, newAuthor, newGenre, newPages, newPubDate, '', '', newSynopsis, '');
-  console.log(newBook, 'newBook');
-  // 4. add new edited book: !!!DOESN'T WORK!!!
-  // this.addBook(newBook);
-  //
+  // console.log(newBook, 'newBook');
+
 // *******TRY NEW METHOD******
 var index;
 for (var i = 0; i < window.bookshelf.length; i++) {
@@ -202,8 +195,13 @@ if(window.bookshelf[i].title ===_titleToEdit) {
   index = i;
 }
 }
+for (var i = 0; i < window.bookshelf.length; i++) {
+  if(newTitle === window.bookshelf[i].title){
+    alert("This book already exist!")
+  }
+}
    window.bookshelf.splice(index,1,newBook);
-   console.log(window.bookshelf, 'she;f');
+   // console.log(window.bookshelf, 'shelf');
 
    localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf));
 
