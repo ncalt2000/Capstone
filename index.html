@@ -92,10 +92,15 @@
     <!-- End of Navbar -->
 
     <!-- Banner -->
-    <div class="row banner">
-      <form class="form-inline search-group">
-        <input class="form-control col-6 mr-3" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-primary col-2" type="submit">Search</button>
+    <div class="row banner" id="banner">
+      <form class="form-inline search-group d-flex justify-content-center align-items-center">
+        <span class="custom-box d-flex justify-content-center align-items-center">
+        <div class="input-border d-flex justify-content-center align-items-center">
+        <input
+        id="search-input" class="form-control col-6 mr-3" type="search" placeholder="Search" aria-label="Search">
+        <button id="search-btn" class="btn btn-primary col-2" type="submit">Search</button>
+      </div>
+      </span>
       </form>
     </div>
     <!-- End of Banner -->
@@ -283,7 +288,7 @@
           </button>
           </div>
           <div class="modal-body">
-            
+
           </div>
         </div>
       </div>
@@ -397,54 +402,10 @@
         </div>
       </div>
     </div> -->
-
-
     <div class="container-fluid my-5">
 
-      <div class="row">
-        <div class="col-md-3">
-          <div class="card">
-            <img class="card-img-top" src="assets/books/hkeller.jpg" alt="Card image cap">
-            <div class="card-block">
-              <h4 class="card-title">This is Card #1</h4>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="card card-inverse card-primary text-center">
-            <img class="card-img-top" src="assets/books/hkeller.jpg" alt="Card image cap">
-            <div class="card-block">
-              <h4 class="card-title">This is Card #2</h4>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-          </div>
-        </div>
-
-
-        <div class="col-md-3">
-          <div class="card card-inverse card-success text-center">
-            <img class="card-img-top" src="assets/books/hkeller.jpg" alt="Card image cap">
-            <div class="card-block">
-              <h4 class="card-title">This is Card #3</h4>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-3">
-          <div class="card card-inverse card-info text-center">
-            <img class="card-img-top" src="assets/books/hkeller.jpg" alt="Card image cap">
-            <div class="card-block">
-              <h4 class="card-title">This is Card #4</h4>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
+    <div class="row d-flex justify-content-center mb-5" id="searchResults">
+      <!-- search Results -->
     </div>
     <!-- End of Books -->
 
@@ -516,6 +477,7 @@
     <script type="text/javascript" src="js/DeleteBook.js"></script>
     <script type="text/javascript" src="js/UpdateTable.js"></script>  <script type="text/javascript" src="js/RandomBookUI.js"></script>
     <script type="text/javascript" src="js/RandomAuthor.js"></script>
+    <script type="text/javascript" src="js/SearchUI.js"></script>
 
   </div>
 </body>
