@@ -50,20 +50,23 @@ DataTable.prototype._openDeleteModal = function(e) {
 };
 
 DataTable.prototype._openEditModal = function (e) {
+
   // 1. open modal:
   $('#edit-book-modal').modal('show')
   // 2. get the title fo the book you are clicking on:
   _titleToEdit = $(e.target).data('title');
-  console.log(_titleToEdit, '_titleToEdit');
+  // console.log(_titleToEdit, '_titleToEdit');
   // 3. getBookByTitle(it comes in as an array):
   var bookToEdit = this.getBookByTitle(_titleToEdit)[0];
-  console.log(bookToEdit, 'to edit');
+  // console.log(bookToEdit, 'to edit');
   // 4. grab all the values from the book and put it in the modal:
+  var parsedDate = window.parseFormDate(bookToEdit.publishDate);
+  // console.log(parsedDate, 'parsed date');
   $('#title-edit').val(bookToEdit.title);
   $('#author-edit').val(bookToEdit.author);
   $('#genre-edit').val(bookToEdit.genre);
   $('#pages-edit').val(bookToEdit.pages);
-  $('#publicationDate-edit').val(bookToEdit.publishDate);
+  $('#publicationDate-edit').val(parsedDate);
   $('#synopsis-edit').val(bookToEdit.synopsis);
   // $('#file-upload-edit').val(bookToEdit.cover); //throws error!!!
 };
@@ -106,7 +109,7 @@ DataTable.prototype._createRow = function(book) {
     'data-title': book['title']
   });
   var editIcon = $('<i>', {class: 'far fa-edit fa-lg edit', 'data-title': book['title']});
-  var ratingList = $('<ul>', {class: 'stars' });
+  var ratingList = $('<ul>', {class: 'stars w-100'});
   // console.log(ratingList);
 
   for (var key in book) {
@@ -122,12 +125,15 @@ DataTable.prototype._createRow = function(book) {
     } else if (key === 'rating') {
       for (var i = 0; i < 5; i++) {
         var ratingItem = $('<li>', {class: 'star', 'data-value': i+1});
-        var star = $('<i>', {class: 'fa fa-star'});
+        if(book.rating && book.rating > i){
+          $(ratingItem).addClass('selected');
+        }
+        var star = $('<i>', {class: 'fa fa-star', 'data-title': book['title']});
         var rating = $(ratingItem).append(star);
-        $(ratingList).append(rating)
+        $(ratingList).append(rating);
       }
-        $(td).addClass('rating-stars');
-        $(td).append(ratingList);
+      $(td).addClass('rating-stars');
+      $(td).append(ratingList);
     } else if (key === 'deleteCol') {
       $(td).append(deleteIcon)
     } else if (key === 'synopsis') {
@@ -163,7 +169,9 @@ DataTable.prototype._ratingBook = function () {
     });
   });
   /* 2. Action to perform on click */
-  $('.stars li').on('click', function() {
+  $('.stars li').on('click', function(e) {
+    var currentTitle = $(e.target).data('title');
+    console.log(currentTitle, 'currentTitle');
     var onStar = parseInt($(this).data('value'), 10); // The star currently selected
     console.log(onStar, 'onStar');
     var stars = $(this).parent().children('li.star');
@@ -173,11 +181,15 @@ DataTable.prototype._ratingBook = function () {
     for (i = 0; i < onStar; i++) {
       $(stars[i]).addClass('selected');
     }
-  });
+    for (var y = 0; y < window.bookshelf.length; y++) {
+      if(window.bookshelf[y].title === currentTitle ){
+        window.bookshelf[y].rating = onStar;
+      }
+    }
+localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf));  });
 };
 
 DataTable.prototype._editBook = function () {
-
   var newTitle = $('#title-edit').val();
   var newAuthor = $('#author-edit').val();
   var newGenre = $('#genre-edit').val();
@@ -186,7 +198,6 @@ DataTable.prototype._editBook = function () {
   var newSynopsis = $('#synopsis-edit').val();
   var newBook = new Book('', newTitle, newAuthor, newGenre, newPages, newPubDate, '', '', newSynopsis, '');
   // console.log(newBook, 'newBook');
-
 // *******TRY NEW METHOD******
 var index;
 for (var i = 0; i < window.bookshelf.length; i++) {
@@ -202,9 +213,7 @@ for (var i = 0; i < window.bookshelf.length; i++) {
 }
    window.bookshelf.splice(index,1,newBook);
    // console.log(window.bookshelf, 'shelf');
-
    localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf));
-
 };
 
 $(function() {

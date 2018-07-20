@@ -94,7 +94,7 @@
     <!-- Banner -->
     <div class="row banner" id="banner">
       <form class="form-inline search-group d-flex justify-content-center align-items-center">
-        <span class="custom-box d-flex justify-content-center align-items-center">
+        <span class="custom-box d-flex justify-content-center align-items-center shadow-lg p-3 mb-5 rounded">
         <div class="input-border d-flex justify-content-center align-items-center">
         <input
         id="search-input" class="form-control col-6 mr-3" type="search" placeholder="Search" aria-label="Search">
@@ -359,88 +359,47 @@
     </div>
     <!-- End of Confirm DeleteBook modal -->
 
-    <!-- Books -->
-    <!-- <div class="row book-cards card-deck my-5">
-      <div class="card card-inverse card-primary">
-        <img class="card-img-top mx-auto d-block" src="assets/books/GGatsby.jpg" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">The Great Gatsby</h5>
-          <h6 class="card-subtitle">F. Scott-Fitzgerald</h6>
-          <p class="card-text sinopsys">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div>
-      <div class="card ">
-        <img class="card-img-top mx-auto d-block" src="assets/books/HP3.png" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">The Great Gatsby</h5>
-          <h6 class="card-subtitle">F. Scott-Fitzgerald</h6>
-          <p class="card-text sinopsys">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div>
-      <div class="card">
-        <img class="card-img-top mx-auto d-block" src="assets/books/GOT.jpg" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">The Great Gatsby</h5>
-          <h6 class="card-subtitle">F. Scott-Fitzgerald</h6>
-          <p class="card-text sinopsys">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div>
-      <div class="card">
-        <img class="card-img-top mx-auto d-block" src="assets/books/HP2.png" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">The Great Gatsby</h5>
-          <h6 class="card-subtitle">F. Scott-Fitzgerald</h6>
-          <p class="card-text sinopsys">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div>
-      <div class="card">
-        <img class="card-img-top mx-auto d-block" src="assets/books/hkeller.jpg" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">The Great Gatsby</h5>
-          <h6 class="card-subtitle">F. Scott-Fitzgerald</h6>
-          <p class="card-text sinopsys">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        </div>
-      </div>
-    </div> -->
-    <div class="container-fluid my-5">
+    <!-- Found Books -->
+
+    <div class="container-fluid my-5" id="mainDivStart">
 
     <div class="row d-flex justify-content-center mb-5" id="searchResults">
       <!-- search Results -->
     </div>
-    <!-- End of Books -->
+    <!-- End of Found Books -->
 
     <h2 class="text-center">My Library</h2>
 
     <!-- Controls -->
     <!-- d-flex justify-content-around align-items-center -->
-    <div class="row controls-container mt-5 mb-3 ">
+    <div class="row controls-container mt-5 mb-3 d-flex justify-content-between">
       <span class="col-md-2">
-        <button id="add-book-btn" type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Add New Book">
+        <button id="add-book-btn" type="button" class="btn btn-primary w-100" data-toggle="tooltip" data-placement="top" title="Add New Book">
           <i class="fas fa-book"></i>
         New Book
         </button>
       </span>
       <span class="col-md-2">
-        <button id="random-book-btn" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Random Book">
+        <button id="random-book-btn" type="button" class="btn btn-secondary btn-sm w-100" data-toggle="tooltip" data-placement="top" title="Random Book">
           <i class="fas fa-gift"></i>
             Lucky Book
         </button>
       </span>
       <span class="col-md-2">
-        <button id="random-author-btn" type="button" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Random Author">
+        <button id="random-author-btn" type="button" class="btn btn-secondary btn-sm w-100" data-toggle="tooltip" data-placement="top" title="Random Author">
           <i class="fas fa-pencil-alt"></i>
             Lucky Author
         </button>
       </span>
-      <span>
-        <button type="button" class="btn btn-secondary btn-sm" id='showAllAuthorsBtn' data-toggle="tooltip" data-placement="top" title="List of authors">
+      <span class="col-md-2">
+        <button type="button" class="btn btn-secondary btn-sm w-100" id='showAllAuthorsBtn' data-toggle="tooltip" data-placement="top" title="List of authors">
           <i class="fas fa-list-alt"></i>
             All Authors
         </button>
       </span>
-      <span class="col-md-3 ml-5">
+      <span class="col-md-2">
         <div class="dropdown">
-          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <button class="btn btn-secondary btn-sm w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle=" dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-filter"></i>
             Sort By
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
