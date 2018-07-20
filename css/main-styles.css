@@ -1,0 +1,126 @@
+/* html {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+} */
+body{
+  background-color: rgba(78, 72, 72, 0.43);
+}
+body h2{
+  color: white;
+}
+
+/* //////////////////////////// */
+/* NAVBAR */
+/* //////////////////////////// */
+
+nav {
+  /* width: 100%; */
+  background-color: rgb(29, 32, 42);
+  color: #E5E5E8;
+}
+
+.navbar a {
+  color: #E5E5E8;
+}
+
+.login {
+  align-items: center;
+}
+
+.logout {
+  align-items: center;
+  display: none;
+}
+
+/* //////////////////////////// */
+/* BANNER */
+/* //////////////////////////// */
+
+.banner {
+  height: 100vh;
+  /* padding: 0; */
+  background-image: linear-gradient( rgba(0, 0, 0, .3), rgba(0, 0, 0, .3)), url("../assets/bookshelf.jpg");
+}
+
+.search-group {
+  width: 100% !important;
+  /* justify-content: center; */
+}
+.input-border{
+  width: 100%;
+  height: 25%;
+  justify-content: center;
+}
+.custom-box{
+  width: 70%;
+  height: 40%;
+  background-color: rgba(7, 8, 8, 0.7)
+}
+
+
+/* //////////////////////////// */
+/* CARDS */
+/* //////////////////////////// */
+.book-cards{
+  max-height: 500px;
+}
+/* .card img {
+  max-width: 100%;
+} */
+
+/* //////////////////////////// */
+/* TABLE */
+/* //////////////////////////// */
+table{
+  background-color: #EBE7E1 !important;
+}
+table td, table th {
+  vertical-align: middle !important;
+}
+
+td img {
+  width: 50px;
+}
+
+td .edit, td .delete {
+  margin: 10px;
+}
+
+/* //////////////////////////// */
+/* RATINGS */
+/* //////////////////////////// */
+
+.rating-stars ul {
+  list-style-type: none;
+  padding: 0;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+.rating-stars ul>li.star {
+  display: inline-block;
+  padding-right: 0;
+  /* border: 1px solid red; */
+}
+
+/* Idle State of the stars */
+
+.rating-stars ul>li.star>i.fa {
+  font-size: 1.2em;
+  /* Change the size of the stars */
+  color: #CCC6C6;
+  /* Color on idle state */
+}
+
+/* Hover state of the stars */
+
+.rating-stars ul>li.star.hover>i.fa {
+  color: #FFCC36;
+}
+
+/* Selected state of the stars */
+
+.rating-stars ul>li.star.selected>i.fa {
+  color: #FF912C;
+}
