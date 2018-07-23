@@ -6,6 +6,7 @@ var AddBooksUI = function(container) {
   Library.call(this);
   // temp bookshelf is to hold multiple books, then pass it in addBooks function, and tie to Add btn.
   this._tempBookshelf = new Array();
+
 };
 // new instance of Library.prototype is created
 AddBooksUI.prototype = Object.create(Library.prototype);

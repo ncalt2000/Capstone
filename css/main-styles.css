@@ -45,7 +45,6 @@ nav {
 
 .search-group {
   width: 100% !important;
-  /* justify-content: center; */
 }
 .input-border{
   width: 100%;
@@ -58,16 +57,12 @@ nav {
   background-color: rgba(7, 8, 8, 0.7)
 }
 
-
 /* //////////////////////////// */
 /* CARDS */
 /* //////////////////////////// */
-.book-cards{
-  max-height: 500px;
+.book-card{
+  max-height: 500px !important;
 }
-/* .card img {
-  max-width: 100%;
-} */
 
 /* //////////////////////////// */
 /* TABLE */
@@ -90,7 +85,6 @@ td .edit, td .delete {
 /* //////////////////////////// */
 /* RATINGS */
 /* //////////////////////////// */
-
 .rating-stars ul {
   list-style-type: none;
   padding: 0;
@@ -101,26 +95,56 @@ td .edit, td .delete {
 .rating-stars ul>li.star {
   display: inline-block;
   padding-right: 0;
-  /* border: 1px solid red; */
 }
 
 /* Idle State of the stars */
-
 .rating-stars ul>li.star>i.fa {
-  font-size: 1.2em;
+  font-size: .8em;
   /* Change the size of the stars */
   color: #CCC6C6;
   /* Color on idle state */
 }
 
 /* Hover state of the stars */
-
 .rating-stars ul>li.star.hover>i.fa {
   color: #FFCC36;
 }
 
 /* Selected state of the stars */
-
 .rating-stars ul>li.star.selected>i.fa {
-  color: #FF912C;
+  color: #FF652D;
+}
+
+/* //////////////////////////// */
+/* CARD FLIPPER */
+/* //////////////////////////// */
+
+.custom-container {
+  cursor: pointer;
+  height: 500px;
+  perspective: 1000;
+  position: relative;
+  width: 300px;
+}
+.flipper{
+  height: 100%;
+  position: absolute;
+  transform-style: preserve-3d;
+  transition: all .7s ease-in-out;
+  width: 100%;
+}
+.flipper:hover {
+  transform: rotateY(180deg);
+}
+.custom-container .front {
+  backface-visibility: hidden;
+  border-radius: 6px;
+  height: 100%;
+  position: absolute;
+  overflow: hidden;
+}
+.custom-container .back {
+  background: #eaeaed;
+  text-align: center;
+  transform: rotateY(180deg);
 }

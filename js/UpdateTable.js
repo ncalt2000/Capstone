@@ -38,8 +38,9 @@ DataTable.prototype._updateTable = function(book) {
   $thead.empty();
 
   $thead.append(_self._createHeader());
+
   $.each(window.bookshelf, function(index, book) {
-    $tbody.append(_self._createRow(book));
+    $tbody.append(_self._createRow(index, book));
   });
 };
 
@@ -49,7 +50,7 @@ DataTable.prototype._openDeleteModal = function(e) {
   $('#confirm-delete-modal').modal('show')
 };
 
-DataTable.prototype._openEditModal = function (e) {
+DataTable.prototype._openEditModal = function(e) {
 
   // 1. open modal:
   $('#edit-book-modal').modal('show')
@@ -68,7 +69,7 @@ DataTable.prototype._openEditModal = function (e) {
   $('#pages-edit').val(bookToEdit.pages);
   $('#publicationDate-edit').val(parsedDate);
   $('#synopsis-edit').val(bookToEdit.synopsis);
-  // $('#file-upload-edit').val(bookToEdit.cover); //throws error!!!
+  // $('#file-upload-edit').val(bookToEdit.cover); throws error!!!
 };
 
 DataTable.prototype._handleDeleteBook = function() {
@@ -78,25 +79,37 @@ DataTable.prototype._handleDeleteBook = function() {
 DataTable.prototype._createHeader = function() {
   var book = new Book();
   var tr = document.createElement('tr');
+  
+  // ************Number the rows*********
+  var rowNumber = document.createElement('th');
+  $(rowNumber).text('');
+  $(tr).append(rowNumber);
+  // ************************
 
   for (var key in book) {
     var th = document.createElement('th');
     var thAttr = document.createAttribute("scope");
     thAttr.value = "col";
     th.setAttributeNode(thAttr);
-    $(th).text(key);
+    // var th = $('<th>', {"scope": "col"});
+    // ********Capitalize Columns names**********
+    var keyName = key.split(/(?=[A-Z])/).join(' ')
+    var headerName = keyName.charAt(0).toUpperCase() + keyName.substr(1);
+    // ********************
+    $(th).text(headerName);
     tr.append(th);
+
     if (key === 'synopsis') {
       $(th).hide();
     }
     if (key === 'deleteCol') {
-      $(th).text("delete");
+      $(th).text("Delete");
     }
   }
   return tr;
 };
 
-DataTable.prototype._createRow = function(book) {
+DataTable.prototype._createRow = function(index, book) {
   var tr = document.createElement('tr');
   // *** create deleteIcon in vanillaJS: ***
   // var deleteIcon = document.createElement('i');
@@ -108,27 +121,34 @@ DataTable.prototype._createRow = function(book) {
     class: 'far fa-times-circle fa-lg delete',
     'data-title': book['title']
   });
-  var editIcon = $('<i>', {class: 'far fa-edit fa-lg edit', 'data-title': book['title']});
+  var editIcon = $('<i>', {
+    class: 'far fa-edit fa-lg edit',
+    'data-title': book['title']
+  });
   var ratingList = $('<ul>', {class: 'stars w-100'});
   // console.log(ratingList);
+  var rowNumber = $('<td>');
+  $(rowNumber).text(index+1);
+  $(tr).append(rowNumber);
 
   for (var key in book) {
     var td = document.createElement('td');
-    // var attr = document.createAttribute('contenteditable');
-    // attr.value = 'true';
-    // td.setAttributeNode(attr);
-    // console.log(td);
-
     if (key === 'publishDate') {
       var parsedDate = window.parseDate(book[key])
       $(td).append(parsedDate)
     } else if (key === 'rating') {
       for (var i = 0; i < 5; i++) {
-        var ratingItem = $('<li>', {class: 'star', 'data-value': i+1});
-        if(book.rating && book.rating > i){
+        var ratingItem = $('<li>', {
+          class: 'star',
+          'data-value': i + 1
+        });
+        if (book.rating && book.rating > i) {
           $(ratingItem).addClass('selected');
         }
-        var star = $('<i>', {class: 'fa fa-star', 'data-title': book['title']});
+        var star = $('<i>', {
+          class: 'fa fa-star',
+          'data-title': book['title']
+        });
         var rating = $(ratingItem).append(star);
         $(ratingList).append(rating);
       }
@@ -143,13 +163,14 @@ DataTable.prototype._createRow = function(book) {
     } else {
       $(td).text(book[key]);
     }
-    tr.append(td);
+    $(tr).append(td);
   }
   // console.log(tr);
+
   return tr;
 };
 
-DataTable.prototype._ratingBook = function () {
+DataTable.prototype._ratingBook = function() {
   /* 1. Visualizing things on Hover - See next part for action on click */
   $('.stars li').on('mouseover', function() {
     var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
@@ -182,14 +203,15 @@ DataTable.prototype._ratingBook = function () {
       $(stars[i]).addClass('selected');
     }
     for (var y = 0; y < window.bookshelf.length; y++) {
-      if(window.bookshelf[y].title === currentTitle ){
+      if (window.bookshelf[y].title === currentTitle) {
         window.bookshelf[y].rating = onStar;
       }
     }
-localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf));  });
+    localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf));
+  });
 };
 
-DataTable.prototype._editBook = function () {
+DataTable.prototype._editBook = function() {
   var newTitle = $('#title-edit').val();
   var newAuthor = $('#author-edit').val();
   var newGenre = $('#genre-edit').val();
@@ -197,23 +219,20 @@ DataTable.prototype._editBook = function () {
   var newPubDate = $('#publicationDate-edit').val();
   var newSynopsis = $('#synopsis-edit').val();
   var newBook = new Book('', newTitle, newAuthor, newGenre, newPages, newPubDate, '', '', newSynopsis, '');
-  // console.log(newBook, 'newBook');
-// *******TRY NEW METHOD******
-var index;
-for (var i = 0; i < window.bookshelf.length; i++) {
-if(window.bookshelf[i].title ===_titleToEdit) {
-  // console.log(i, 'index');
-  index = i;
-}
-}
-for (var i = 0; i < window.bookshelf.length; i++) {
-  if(newTitle === window.bookshelf[i].title){
-    alert("This book already exist!")
+  var index;
+  for (var i = 0; i < window.bookshelf.length; i++) {
+    if (window.bookshelf[i].title === _titleToEdit) {
+      // console.log(i, 'index');
+      index = i;
+    }
   }
-}
-   window.bookshelf.splice(index,1,newBook);
-   // console.log(window.bookshelf, 'shelf');
-   localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf));
+  for (var i = 0; i < window.bookshelf.length; i++) {
+    if (newTitle === window.bookshelf[i].title) {
+      alert("This book already exist!")
+    }
+  }
+  window.bookshelf.splice(index, 1, newBook);
+  localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf));
 };
 
 $(function() {
