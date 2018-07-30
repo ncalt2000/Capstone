@@ -56,7 +56,7 @@ DataTable.prototype._openEditModal = function(e) {
   $('#edit-book-modal').modal('show')
   // 2. get the title fo the book you are clicking on:
   _titleToEdit = $(e.target).data('title');
-  // console.log(_titleToEdit, '_titleToEdit');
+  console.log(_titleToEdit, '_titleToEdit');
   // 3. getBookByTitle(it comes in as an array):
   var bookToEdit = this.getBookByTitle(_titleToEdit)[0];
   // console.log(bookToEdit, 'to edit');
@@ -79,7 +79,7 @@ DataTable.prototype._handleDeleteBook = function() {
 DataTable.prototype._createHeader = function() {
   var book = new Book();
   var tr = document.createElement('tr');
-  
+
   // ************Number the rows*********
   var rowNumber = document.createElement('th');
   $(rowNumber).text('');
@@ -91,7 +91,6 @@ DataTable.prototype._createHeader = function() {
     var thAttr = document.createAttribute("scope");
     thAttr.value = "col";
     th.setAttributeNode(thAttr);
-    // var th = $('<th>', {"scope": "col"});
     // ********Capitalize Columns names**********
     var keyName = key.split(/(?=[A-Z])/).join(' ')
     var headerName = keyName.charAt(0).toUpperCase() + keyName.substr(1);
@@ -222,7 +221,6 @@ DataTable.prototype._editBook = function() {
   var index;
   for (var i = 0; i < window.bookshelf.length; i++) {
     if (window.bookshelf[i].title === _titleToEdit) {
-      // console.log(i, 'index');
       index = i;
     }
   }
@@ -232,7 +230,7 @@ DataTable.prototype._editBook = function() {
     }
   }
   window.bookshelf.splice(index, 1, newBook);
-  localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf));
+  this.setStorage();
 };
 
 $(function() {

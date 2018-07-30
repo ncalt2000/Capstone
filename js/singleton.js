@@ -25,9 +25,11 @@ Library.prototype = {
         arr[i].title,
         arr[i].author,
         arr[i].genre,
-        arr[i].pages, arr[i].publishDate,
+        arr[i].pages,
+        arr[i].publishDate,
         arr[i].rating,
-        arr[i].deleteCol, arr[i].synopsis,
+        arr[i].deleteCol,
+        arr[i].synopsis,
         arr[i].edit ))
     }
     return window.bookshelf;
@@ -42,7 +44,7 @@ Library.prototype = {
       window.bookshelf.push(book);
       // localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf))
       this.setStorage();
-      return "The book is added!";
+      return true;
     }
 
     var bookExist = false;
@@ -53,30 +55,28 @@ Library.prototype = {
     }
 
     if (bookExist) {
-      return "Already exist"
+      return false
     } else {
       window.bookshelf.unshift(book);
-      return "The book is added!"
+      return true;
     }
 
-    // localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf));
     this.setStorage();
 
     this._handleEventTrigger("objUpdate", {booksAdded: "The book is added"});
     return window.bookshelf;
-
   },
 
   removeBook: function(bookTitle) {
     // Purpose: Remove book from from the books array by its title.
     // Return:boolean true if the book(s) were removed, false if no books match
-    console.log('removing book');
+    // console.log('removing book');
     var bookDeleted = false;
     for (var i=0; i<window.bookshelf.length; i++) {
       if (window.bookshelf[i]['title'].toLowerCase().indexOf(bookTitle.toLowerCase()) > -1) {
         bookDeleted = true;
         window.bookshelf.splice(i, 1)
-        // localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf))
+
         this.setStorage();
       }
     }
@@ -98,10 +98,11 @@ Library.prototype = {
         window.bookshelf.splice(i, 1);
         deletedBooks += 1;
         isDeleted = true;
-        // localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf))
-        this.setStorage();
+        // this.setStorage();
+
       }
     }
+
     if (isDeleted && deletedBooks < 2) {
       return deletedBooks + " " + "book is deleted";
     } else if (isDeleted && deletedBooks > 1) {
