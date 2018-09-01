@@ -3,6 +3,7 @@ var DataTable = function() {
   this.$container = $('#book-table');
   var _titleToDelete = '';
   var _titleToEdit = '';
+  var _keepRating = 0;
 };
 
 DataTable.prototype = Object.create(Library.prototype);
@@ -59,16 +60,17 @@ DataTable.prototype._openEditModal = function(e) {
   console.log(_titleToEdit, '_titleToEdit');
   // 3. getBookByTitle(it comes in as an array):
   var bookToEdit = this.getBookByTitle(_titleToEdit)[0];
-  // console.log(bookToEdit, 'to edit');
+  console.log(bookToEdit, 'to edit');
   // 4. grab all the values from the book and put it in the modal:
   var parsedDate = window.parseFormDate(bookToEdit.publishDate);
-  // console.log(parsedDate, 'parsed date');
   $('#title-edit').val(bookToEdit.title);
   $('#author-edit').val(bookToEdit.author);
   $('#genre-edit').val(bookToEdit.genre);
   $('#pages-edit').val(bookToEdit.pages);
   $('#publicationDate-edit').val(parsedDate);
   $('#synopsis-edit').val(bookToEdit.synopsis);
+  _keepRating = bookToEdit.rating;
+
   // $('#file-upload-edit').val(bookToEdit.cover); throws error!!!
 };
 
@@ -124,7 +126,7 @@ DataTable.prototype._createRow = function(index, book) {
     class: 'far fa-edit fa-lg edit',
     'data-title': book['title']
   });
-  var ratingList = $('<ul>', {class: 'stars w-100'});
+  var ratingList = $('<ul>', {class: 'stars w-100', id: 'ratingStar'});
   // console.log(ratingList);
   var rowNumber = $('<td>');
   $(rowNumber).text(index+1);
@@ -217,18 +219,15 @@ DataTable.prototype._editBook = function() {
   var newPages = $('#pages-edit').val();
   var newPubDate = $('#publicationDate-edit').val();
   var newSynopsis = $('#synopsis-edit').val();
-  var newBook = new Book('', newTitle, newAuthor, newGenre, newPages, newPubDate, '', '', newSynopsis, '');
+
+  var newBook = new Book('', newTitle, newAuthor, newGenre, newPages, newPubDate, _keepRating, '', newSynopsis, '');
   var index;
   for (var i = 0; i < window.bookshelf.length; i++) {
     if (window.bookshelf[i].title === _titleToEdit) {
       index = i;
     }
   }
-  for (var i = 0; i < window.bookshelf.length; i++) {
-    if (newTitle === window.bookshelf[i].title) {
-      alert("This book already exist!")
-    }
-  }
+
   window.bookshelf.splice(index, 1, newBook);
   this.setStorage();
 };
