@@ -213,7 +213,7 @@ Library.prototype = {
 
 // Create a Book object:
 var Book = function(cover, title, author, genre, pages, publishDate, rating, deleteCol, synopsis, edit) {
-  this.cover = "cover";
+  this.cover = cover;
   this.title = title;
   this.author = author;
   this.genre = genre;

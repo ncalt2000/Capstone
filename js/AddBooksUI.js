@@ -6,7 +6,7 @@ var AddBooksUI = function(container) {
   Library.call(this);
   // temp bookshelf is to hold multiple books, then pass it in addBooks function, and tie to Add btn.
   this._tempBookshelf = new Array();
-
+  this._encodedImg;
 };
 // new instance of Library.prototype is created
 AddBooksUI.prototype = Object.create(Library.prototype);
@@ -36,10 +36,6 @@ AddBooksUI.prototype._handleModalOpen = function() {
   return;
 }
 
-AddBooksUI.prototype._createBook = function () {
-
-};
-
 AddBooksUI.prototype._bookInLine = function() {
   var title = $('#title-text').val();
   var author = $('#author').val();
@@ -47,18 +43,36 @@ AddBooksUI.prototype._bookInLine = function() {
   var pages = $('#pages').val();
   var publishDate = $('#publicationDate').val();
   var synopsis = $('#synopsis').val();
-  var bookCover = $('#file-upload').val();
+  var bookCover;
   var deleteCol = '';
   var edit = '';
   var rating = '';
 
-  var book = new Book(bookCover, title, author, genre, pages, publishDate, rating, deleteCol, synopsis, edit);
-  this._tempBookshelf.push(book);
+  var file = document.querySelector('#file-upload').files[0];
+  var reader = new FileReader();
+  reader.readAsDataURL(file);
 
-  var $booksToAdd = $('<p>', {'class': 'booksToAdd'});
-  $('.booksInLine').append($booksToAdd).text(`Books to be added: ${this._tempBookshelf.length}`);
-  // console.log(this._tempBookshelf, 'temp');
-  $('#add-book-form')[0].reset();
+  reader.onload = function() {
+    bookCover = reader.result;
+    createBook();
+  };
+  createBook = function (){
+    var book = new Book(bookCover, title, author, genre, pages, publishDate, rating, deleteCol, synopsis, edit);
+    this._tempBookshelf.push(book);
+
+    var $booksToAdd = $('<p>', {'class': 'booksToAdd'});
+    $('.booksInLine').append($booksToAdd).text(`Books to be added: ${this._tempBookshelf.length}`);
+    $('#add-book-form')[0].reset();
+  }.bind(this);
+};
+
+AddBooksUI.prototype._getBase64 = function (callback) {
+  var file = document.querySelector('#file-upload').files[0];
+  var reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function() {
+    return this._encodedImg = reader.result;
+  };
 };
 
 AddBooksUI.prototype._saveBook = function() {
@@ -68,22 +82,34 @@ AddBooksUI.prototype._saveBook = function() {
   var pages = $('#pages').val();
   var publishDate = $('#publicationDate').val();
   var synopsis = $('#synopsis').val();
-  var bookCover = $('#file-upload').val();
+  var bookCover = this._encodedImg;
   var deleteCol = '';
   var edit = '';
   var rating = '';
 
-  var book = new Book(bookCover, title, author, genre, pages, publishDate, rating, deleteCol, synopsis, edit);
+  var file = document.querySelector('#file-upload').files[0];
+  var reader = new FileReader();
+  reader.readAsDataURL(file);
 
-  // console.log(this._tempBookshelf, '_tempBookshelf');
-  var addSuccessful = this._tempBookshelf.length > 0 ? this.addBooks(this._tempBookshelf) : this.addBook(book);
-  // console.log(addSuccessful);
-  if(addSuccessful){
-    $('#success-modal').modal('show');
-  }
-  $('#add-book-form')[0].reset();
-  $('.booksInLine').empty();
-  this._tempBookshelf = new Array();
+  reader.onload = function() {
+    bookCover = reader.result;
+    createBook();
+  };
+
+  createBook = function(){
+    var book = new Book(bookCover, title, author, genre, pages, publishDate, rating, deleteCol, synopsis, edit);
+
+    var addSuccessful = this._tempBookshelf.length > 0
+    ? this.addBooks(this._tempBookshelf)
+    : this.addBook(book);
+    // console.log(addSuccessful);
+    if (addSuccessful) {
+      $('#success-modal').modal('show');
+    }
+    $('#add-book-form')[0].reset();
+    $('.booksInLine').empty();
+    this._tempBookshelf = new Array();
+  }.bind(this);
 };
 
 $(function() {

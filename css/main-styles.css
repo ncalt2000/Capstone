@@ -213,3 +213,9 @@ td .edit, td .delete {
     stroke-dashoffset: 900;
   }
 }
+
+
+#img-preview{
+  width: 60px;
+  height: 70px;
+}

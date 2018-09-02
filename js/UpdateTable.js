@@ -10,20 +10,30 @@ var DataTable = function() {
 DataTable.prototype = Object.create(Library.prototype);
 
 DataTable.prototype.init = function() {
+  // when the page initially loads
   this._updateTable();
   this._bindEvents();
   this._bindCustomListeners();
   this._ratingBook();
 };
 
+DataTable.prototype._reload = function() {
+  //after addind, editing, deleting, these methods must run!
+  this._updateTable();
+  this._bindEvents();
+  this._ratingBook();
+};
+
 DataTable.prototype._bindEvents = function() {
   //add native events here
+  //Must run this._bindEvents() to attach event handlers to the btns.
   $('.delete').on('click', $.proxy(this._openDeleteModal, this));
   $('.edit').on('click', $.proxy(this._openEditModal, this));
 };
 
 DataTable.prototype._bindCustomListeners = function() {
-  $(document).on('objUpdate', $.proxy(this._updateTable, this));
+  //every time table updates, this._bindEvents must reload again.
+  $(document).on('objUpdate', $.proxy(this._reload, this));
 
   $('#confirm-delete-btn').on('click', $.proxy(this._handleDeleteBook, this));
 
@@ -54,8 +64,11 @@ DataTable.prototype._updateTable = function(book) {
 DataTable.prototype._openDeleteModal = function(e) {
   this._titleToDelete = $(e.target).data('title');
   // console.log(this._titleToDelete, 'title');
-  var deleteText = $('<p>');
-  deleteText.html(`Are you sure you want to delete ${this._titleToDelete}? You cannot undo this!`)
+  var strong = $('<span>', {class: 'text-danger font-weight-bold'})
+  var styledTitle = strong.html(this._titleToDelete);
+  console.log(styledTitle);
+  var deleteText = $('<p>', {id: 'delete-text'});
+  deleteText.html(`Are you sure you want to delete ${styledTitle[0].textContent}?`)
   var confirmDeleteText = $('.confirm-delete-text').append(deleteText)
   $('#confirm-delete-modal').modal('show')
 };
@@ -122,6 +135,7 @@ DataTable.prototype._createHeader = function() {
 };
 
 DataTable.prototype._createRow = function(index, book) {
+  // console.log(book, 'create row book');
   var tr = document.createElement('tr');
   // *** create deleteIcon in vanillaJS: ***
   // var deleteIcon = document.createElement('i');
@@ -141,10 +155,15 @@ DataTable.prototype._createRow = function(index, book) {
     class: 'stars w-100',
     id: 'ratingStar'
   });
-  // console.log(ratingList);
+
   var rowNumber = $('<td>');
   $(rowNumber).text(index + 1);
   $(tr).append(rowNumber);
+
+  // *** book cover cell
+  // console.log(book, 'book');
+  var bookImg = $('<img>', {src: `${book.cover}`, alt:'book cover'})
+  // end book cover cell ***
 
   for (var key in book) {
     var td = document.createElement('td');
@@ -175,6 +194,8 @@ DataTable.prototype._createRow = function(index, book) {
       $(td).hide();
     } else if (key === 'edit') {
       $(td).append(editIcon)
+    } else if (key === 'cover') {
+      $(td).append(bookImg)
     } else if(book[key]){
       $(td).text(book[key]);
     } else {
@@ -229,6 +250,7 @@ DataTable.prototype._ratingBook = function() {
 };
 
 DataTable.prototype._editBook = function() {
+  var newCover = $('#file-upload-edit').val();
   var newTitle = $('#title-edit').val();
   var newAuthor = $('#author-edit').val();
   var newGenre = $('#genre-edit').val();
@@ -236,7 +258,7 @@ DataTable.prototype._editBook = function() {
   var newPubDate = $('#publicationDate-edit').val();
   var newSynopsis = $('#synopsis-edit').val();
 
-  var newBook = new Book('', newTitle, newAuthor, newGenre, newPages, newPubDate, _keepRating, '', newSynopsis, '');
+  var newBook = new Book(newCover, newTitle, newAuthor, newGenre, newPages, newPubDate, _keepRating, '', newSynopsis, '');
   var index;
   var isSuccessful = false;
   for (var i = 0; i < window.bookshelf.length; i++) {
@@ -263,15 +285,12 @@ DataTable.prototype._sortBy = function(e, book) {
   window.bookshelf.sort((a, b)=> {
     if(typeof a[val] === "number"){
       return b[val]-a[val]
-      this._sorted = true
     }
     var itemA = a[val].toLowerCase()
     var itemB = b[val].toLowerCase()
     if (itemA < itemB) //sort string ascending
-    this._sorted = true
     return -1
     if (itemA > itemB)
-    this._sorted = true
     return 1
     return 0 //default return value (no sorting)
   })
