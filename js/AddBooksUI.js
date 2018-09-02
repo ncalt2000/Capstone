@@ -57,7 +57,7 @@ AddBooksUI.prototype._bookInLine = function() {
 
   var $booksToAdd = $('<p>', {'class': 'booksToAdd'});
   $('.booksInLine').append($booksToAdd).text(`Books to be added: ${this._tempBookshelf.length}`);
-  console.log(this._tempBookshelf, 'temp');
+  // console.log(this._tempBookshelf, 'temp');
   $('#add-book-form')[0].reset();
 };
 
@@ -75,40 +75,14 @@ AddBooksUI.prototype._saveBook = function() {
 
   var book = new Book(bookCover, title, author, genre, pages, publishDate, rating, deleteCol, synopsis, edit);
 
-
-  // ************Validation of fields **************
-  $('#title-text').blur(function(){
-    console.log('validation');
-    if(!$(this).val() ) {
-      console.log(this, 'this in validation');
-    $('#title-text').addClass('warning');
-    }
-  });
-  // ********************************
-  // check for empty fields:
-  // var requiredInput = [];
-  // var requiredFields = $('input[required]'); //object
-  // // console.log(requiredFields, 'req');
-  // for (var key in requiredFields) {
-  //   requiredInput.push($(requiredFields[key]).val())
-  //   console.log(requiredInput, 'input');
-  // }
-  //
-  // for (var i = 0; i < requiredInput.length; i++) {
-  //   if (requiredInput[i] === '') {
-  //     return alert('add text!')
-  //   }
-  // }
-
-  if(this._tempBookshelf.length === 0){
-    var result = this.addBook(book);
-    if(result){
-      console.log(result);
-      $('#book-table').append('<div class="gfyitem" data-id=QuaintLikelyFlyingfish></div><p><a href="https://gfycat.com/gifs/detail/QuaintLikelyFlyingfish">via Gfycat</a>t</p>');
-    }
+  // console.log(this._tempBookshelf, '_tempBookshelf');
+  var addSuccessful = this._tempBookshelf.length > 0 ? this.addBooks(this._tempBookshelf) : this.addBook(book);
+  // console.log(addSuccessful);
+  if(addSuccessful){
+    $('#success-modal').modal('show');
   }
-  this.addBooks(this._tempBookshelf);
   $('#add-book-form')[0].reset();
+  $('.booksInLine').empty();
   this._tempBookshelf = new Array();
 };
 

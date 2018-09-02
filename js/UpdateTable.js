@@ -27,6 +27,11 @@ DataTable.prototype._bindCustomListeners = function() {
   $('#confirm-delete-btn').on('click', $.proxy(this._handleDeleteBook, this));
 
   $('#save-edit-btn').on('click', $.proxy(this._editBook, this));
+
+  $("#sort-title").on('click', $.proxy(this._sortBy, this));
+  $("#sort-author").on('click', $.proxy(this._sortBy, this));
+  $("#sort-genre").on('click', $.proxy(this._sortBy, this));
+  $("#sort-rating").on('click', $.proxy(this._sortBy, this));
 };
 
 DataTable.prototype._updateTable = function(book) {
@@ -47,7 +52,10 @@ DataTable.prototype._updateTable = function(book) {
 
 DataTable.prototype._openDeleteModal = function(e) {
   this._titleToDelete = $(e.target).data('title');
-  console.log(this._titleToDelete, 'title');
+  // console.log(this._titleToDelete, 'title');
+  var deleteText = $('<p>');
+  deleteText.html(`Are you sure you want to delete ${this._titleToDelete}? You cannot undo this!`)
+  var confirmDeleteText = $('.confirm-delete-text').append(deleteText)
   $('#confirm-delete-modal').modal('show')
 };
 
@@ -57,10 +65,8 @@ DataTable.prototype._openEditModal = function(e) {
   $('#edit-book-modal').modal('show')
   // 2. get the title fo the book you are clicking on:
   _titleToEdit = $(e.target).data('title');
-  console.log(_titleToEdit, '_titleToEdit');
   // 3. getBookByTitle(it comes in as an array):
   var bookToEdit = this.getBookByTitle(_titleToEdit)[0];
-  console.log(bookToEdit, 'to edit');
   // 4. grab all the values from the book and put it in the modal:
   var parsedDate = window.parseFormDate(bookToEdit.publishDate);
   $('#title-edit').val(bookToEdit.title);
@@ -75,7 +81,9 @@ DataTable.prototype._openEditModal = function(e) {
 };
 
 DataTable.prototype._handleDeleteBook = function() {
-  this.removeBook(this._titleToDelete);
+  if (this.removeBook(this._titleToDelete)) {
+    $('#success-modal').modal('show');
+  }
 };
 
 DataTable.prototype._createHeader = function() {
@@ -99,6 +107,7 @@ DataTable.prototype._createHeader = function() {
     // ********************
     $(th).text(headerName);
     tr.append(th);
+    // console.log(headerName);
 
     if (key === 'synopsis') {
       $(th).hide();
@@ -126,10 +135,13 @@ DataTable.prototype._createRow = function(index, book) {
     class: 'far fa-edit fa-lg edit',
     'data-title': book['title']
   });
-  var ratingList = $('<ul>', {class: 'stars w-100', id: 'ratingStar'});
+  var ratingList = $('<ul>', {
+    class: 'stars w-100',
+    id: 'ratingStar'
+  });
   // console.log(ratingList);
   var rowNumber = $('<td>');
-  $(rowNumber).text(index+1);
+  $(rowNumber).text(index + 1);
   $(tr).append(rowNumber);
 
   for (var key in book) {
@@ -193,9 +205,9 @@ DataTable.prototype._ratingBook = function() {
   /* 2. Action to perform on click */
   $('.stars li').on('click', function(e) {
     var currentTitle = $(e.target).data('title');
-    console.log(currentTitle, 'currentTitle');
+    // console.log(currentTitle, 'currentTitle');
     var onStar = parseInt($(this).data('value'), 10); // The star currently selected
-    console.log(onStar, 'onStar');
+    // console.log(onStar, 'onStar');
     var stars = $(this).parent().children('li.star');
     for (i = 0; i < stars.length; i++) {
       $(stars[i]).removeClass('selected');
@@ -222,14 +234,42 @@ DataTable.prototype._editBook = function() {
 
   var newBook = new Book('', newTitle, newAuthor, newGenre, newPages, newPubDate, _keepRating, '', newSynopsis, '');
   var index;
+  var isSuccessful = false;
   for (var i = 0; i < window.bookshelf.length; i++) {
     if (window.bookshelf[i].title === _titleToEdit) {
       index = i;
+      isSuccessful = true;
     }
   }
-
   window.bookshelf.splice(index, 1, newBook);
+
   this.setStorage();
+  this._handleEventTrigger("objUpdate", {bookEdited: "Book is Edited!"});
+
+  $('#edit-book-modal').modal('hide');
+
+  if (isSuccessful) {
+    $('#success-modal').modal('show');
+  }
+};
+
+DataTable.prototype._sortBy = function(e, book) {
+  var val = $(e.target).data("sort");
+  // console.log(val);
+  window.bookshelf.sort((a, b)=> {
+    if(typeof a[val] === "number"){
+      return b[val]-a[val]
+    }
+    var itemA = a[val].toLowerCase()
+    var itemB = b[val].toLowerCase()
+    if (itemA < itemB) //sort string ascending
+    return -1
+    if (itemA > itemB)
+    return 1
+    return 0 //default return value (no sorting)
+  })
+
+  this._handleEventTrigger("objUpdate");
 };
 
 $(function() {
