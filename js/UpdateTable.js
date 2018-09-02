@@ -4,6 +4,7 @@ var DataTable = function() {
   var _titleToDelete = '';
   var _titleToEdit = '';
   var _keepRating = 0;
+  var _sorted = false;
 };
 
 DataTable.prototype = Object.create(Library.prototype);
@@ -96,6 +97,7 @@ DataTable.prototype._createHeader = function() {
   $(tr).append(rowNumber);
   // ************************
 
+  var sortIcon = $('<i>', {class: "fas fa-arrow-down ml-1"})
   for (var key in book) {
     var th = document.createElement('th');
     var thAttr = document.createAttribute("scope");
@@ -105,9 +107,9 @@ DataTable.prototype._createHeader = function() {
     var keyName = key.split(/(?=[A-Z])/).join(' ')
     var headerName = keyName.charAt(0).toUpperCase() + keyName.substr(1);
     // ********************
+
     $(th).text(headerName);
     tr.append(th);
-    // console.log(headerName);
 
     if (key === 'synopsis') {
       $(th).hide();
@@ -173,8 +175,10 @@ DataTable.prototype._createRow = function(index, book) {
       $(td).hide();
     } else if (key === 'edit') {
       $(td).append(editIcon)
-    } else {
+    } else if(book[key]){
       $(td).text(book[key]);
+    } else {
+      $(td).text(null);
     }
     $(tr).append(td);
   }
@@ -259,12 +263,15 @@ DataTable.prototype._sortBy = function(e, book) {
   window.bookshelf.sort((a, b)=> {
     if(typeof a[val] === "number"){
       return b[val]-a[val]
+      this._sorted = true
     }
     var itemA = a[val].toLowerCase()
     var itemB = b[val].toLowerCase()
     if (itemA < itemB) //sort string ascending
+    this._sorted = true
     return -1
     if (itemA > itemB)
+    this._sorted = true
     return 1
     return 0 //default return value (no sorting)
   })
