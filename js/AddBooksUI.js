@@ -50,13 +50,13 @@ AddBooksUI.prototype._bookInLine = function() {
   var noCover = '../assets/books/noCover.jpg';
   // console.log(noCover);
 
-  createBook = function (){
+  createBook = function() {
 
-    if(title === ""){
+    if (title === "") {
       $('#title-text').addClass('required animated pulse');
       return;
     }
-    if(author === ""){
+    if (author === "") {
       $('#title-text').removeClass('required');
       $('#author').addClass('required animated pulse');
       return;
@@ -75,7 +75,6 @@ AddBooksUI.prototype._bookInLine = function() {
   var file = document.querySelector('#file-upload').files[0];
   var reader = new FileReader();
   // console.log(reader);
-
 
   if (file) {
     reader.readAsDataURL(file);
@@ -112,12 +111,12 @@ AddBooksUI.prototype._saveBook = function() {
   var rating = '1';
   var noCover = '../assets/books/noCover.jpg';
 
-  createBook = function(){
-    if(title === ""){
+  createBook = function() {
+    if (title === "") {
       $('#title-text').addClass('required animated pulse');
       return;
     }
-    if(author === ""){
+    if (author === "") {
       $('#title-text').removeClass('required');
       $('#author').addClass('required animated pulse');
       return;
@@ -125,22 +124,23 @@ AddBooksUI.prototype._saveBook = function() {
     var book = new Book(bookCover, title, author, genre, pages, publishDate, rating, deleteCol, synopsis, edit);
 
     var addSuccessful = this._tempBookshelf.length > 0
-    ? this.addBooks(this._tempBookshelf) && this.addBook(book)
-    : this.addBook(book);
-    // console.log(addSuccessful);
+      ? this.addBooks(this._tempBookshelf) && this.addBook(book)
+      : this.addBook(book);
     if (addSuccessful) {
+      $('#title-text').addClass('new-book');
       $('#title-text').removeClass('required');
       $('#author').removeClass('required');
       $('#success-modal').modal('show');
-      setTimeout(function () {
+      setTimeout(function() {
         $('#success-modal').removeClass('zoomIn');
         $('#success-modal').addClass('zoomOut');
       }, 1000);
-      setTimeout(function () {
+      setTimeout(function() {
         $('#success-modal').modal('hide');
         $('#success-modal').removeClass('zoomOut');
         $('#success-modal').addClass('zoomIn');
-      }, 1500);    }
+      }, 1500);
+    }
     $('#add-book-form')[0].reset();
     $('#addBookModal').modal('hide');
     $('.booksInLine').empty();

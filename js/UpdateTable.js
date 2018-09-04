@@ -186,7 +186,7 @@ DataTable.prototype._createRow = function(index, book) {
   // end book cover cell ***
 
   for (var key in book) {
-    var td = document.createElement('td');
+    var td = $('<td>');
     if (key === 'publishDate') {
       var parsedDate = window.parseDate(book[key])
       $(td).append(parsedDate)
@@ -217,11 +217,15 @@ DataTable.prototype._createRow = function(index, book) {
       $(td).append(editIcon)
     } else if (key === 'cover') {
       $(td).append(bookImg)
-    } else if (book[key]) {
+    }
+    // else if (key === 'title') {
+    //   $(td).attr('id', 'new-book')
+    //   $(td).text(book[key]);
+    // }
+    else if (book[key]) {
       $(td).text(book[key]);
     } else {
       $(td).text(null);
-      // $('#row').addClass('slideInDown');
     }
     $(tr).append(td);
   }
