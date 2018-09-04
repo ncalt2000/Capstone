@@ -132,7 +132,15 @@ AddBooksUI.prototype._saveBook = function() {
       $('#title-text').removeClass('required');
       $('#author').removeClass('required');
       $('#success-modal').modal('show');
-    }
+      setTimeout(function () {
+        $('#success-modal').removeClass('zoomIn');
+        $('#success-modal').addClass('zoomOut');
+      }, 1000);
+      setTimeout(function () {
+        $('#success-modal').modal('hide');
+        $('#success-modal').removeClass('zoomOut');
+        $('#success-modal').addClass('zoomIn');
+      }, 1500);    }
     $('#add-book-form')[0].reset();
     $('#addBookModal').modal('hide');
     $('.booksInLine').empty();

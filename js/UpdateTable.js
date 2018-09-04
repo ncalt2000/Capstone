@@ -19,7 +19,7 @@ DataTable.prototype.init = function() {
 };
 
 DataTable.prototype._reload = function() {
-  //after addind, editing, deleting, these methods must run!
+  //after addind, editing, deleting, these methods must run to add event handlers back to the btns!
   this._updateTable();
   this._bindEvents();
   this._ratingBook();
@@ -104,7 +104,15 @@ DataTable.prototype._openEditModal = function(e) {
 DataTable.prototype._handleDeleteBook = function() {
   if (this.removeBook(this._titleToDelete)) {
     $('#success-modal').modal('show');
-    $('.confirm-delete-text').empty();
+    setTimeout(function () {
+      $('#success-modal').removeClass('zoomIn');
+      $('#success-modal').addClass('zoomOut');
+    }, 1000);
+    setTimeout(function () {
+      $('#success-modal').modal('hide');
+      $('#success-modal').removeClass('zoomOut');
+      $('#success-modal').addClass('zoomIn');
+    }, 1500);    $('.confirm-delete-text').empty();
   }
 };
 
@@ -273,6 +281,16 @@ DataTable.prototype._editBook = function() {
   var newSynopsis = $('#synopsis-edit').val();
 
   editThisBook = function(cover) {
+    if(newTitle === ""){
+      $('#title-edit').addClass('required animated pulse');
+      return;
+    }
+    if(newAuthor === ""){
+      $('#title-edit').removeClass('required');
+      $('#author-edit').addClass('required animated pulse');
+      return;
+    }
+
     var newBook = new Book(cover, newTitle, newAuthor, newGenre, newPages, newPubDate, this._keepRating, '', newSynopsis, '');
     var index;
     var isSuccessful = false;
@@ -292,25 +310,34 @@ DataTable.prototype._editBook = function() {
 
     if (isSuccessful) {
       $('#success-modal').modal('show');
+      setTimeout(function () {
+        $('#success-modal').removeClass('zoomIn');
+        $('#success-modal').addClass('zoomOut');
+      }, 1000);
+      setTimeout(function () {
+        $('#success-modal').modal('hide');
+        $('#success-modal').removeClass('zoomOut');
+        $('#success-modal').addClass('zoomIn');
+      }, 1500);
     }
   }.bind(this);
 
   var file = document.querySelector('#file-upload-edit').files[0];
-  console.log('file', file);
+  // console.log('file', file);
   var reader = new FileReader();
   var coverToEdit;
   if (file) {
-    console.log('If file');
+    // console.log('If file');
     reader.readAsDataURL(file);
     reader.onload = function() {
       coverToEdit = reader.result;
       editThisBook(coverToEdit);
     };
   } else {
-    console.log('if NO file');
+    // console.log('if NO file');
     coverToEdit = this.currentCover;
-    console.log(this.currentCover, 'from else');
-    this.currentCover = null;
+    // console.log(this.currentCover, 'from else');
+    // this.currentCover = null;
     editThisBook(coverToEdit);
   }
   document.getElementById("file-upload-edit").value = "";
