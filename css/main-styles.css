@@ -85,6 +85,11 @@ td .edit, td .delete {
   /* margin: 10px; */
 }
 
+.required{
+  box-shadow: 1px 1px 5px 1px rgb(236,43,9);
+  border: 2px solid rgb(236, 43, 9);
+}
+
 /* //////////////////////////// */
 /* RATINGS */
 /* //////////////////////////// */
@@ -214,8 +219,46 @@ td .edit, td .delete {
   }
 }
 
+/* //////////////////////////// */
+/* Cross mark ANIMATION */
+/* //////////////////////////// */
+.cross__svg {
+  border-radius: 50%;
+  display: block;
+  height: 154px;
+  margin: 4rem auto;
+  stroke-width: 3;
+  width: 154px;
+}
 
-#img-preview{
-  width: 60px;
-  height: 70px;
+.cross__circle {
+  animation: 0.6s ease 0s normal forwards 1 running stroke;
+  fill: none;
+  margin: 0 auto;
+  stroke: #e55454;
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 2;
+}
+
+.cross__path {
+  stroke: $color;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  transform-origin: 50% 50% 0;
+}
+
+.cross__path--right {
+  animation: 0.3s ease 0.8s normal forwards 1 running stroke;
+}
+
+.cross__path--left {
+  animation: 1s ease 0.8s normal forwards 1 running stroke;
+}
+
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
 }

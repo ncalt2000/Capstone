@@ -95,7 +95,7 @@
           <div class="modal-body">
             <form id="add-book-form">
               <div class="form-row">
-                <div class="form-group col-md-12">
+                <div class="form-group col-md-12 title-div">
                   <label for="title">Title*</label>
                   <input type="text" class="form-control" id="title-text" placeholder="Title" required>
                 </div>
@@ -154,7 +154,7 @@
           <div class="modal-footer">
             <div class="booksInLine mr-5  text-success"></div>
             <button id="add-another-btn" type="submit" class="btn btn-primary transition-3d-hover">Add Another Book</button>
-            <button type="button" class="btn btn-secondary transition-3d-hover" data-dismiss="modal" id="save-book-btn">Save</button>
+            <button type="button" class="btn btn-secondary transition-3d-hover" id="save-book-btn">Save</button>
           </div>
         </div>
       </div>
@@ -215,7 +215,7 @@
                 <textarea class="form-control" id="synopsis-edit" rows="5"></textarea>
               </div>
             </form>
-            <form>
+            <form id="form-upload">
               <label for="book-cover">Upload Book Cover</label>
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
@@ -331,7 +331,7 @@
           </div>
           <div class="modal-footer">
             <button id="confirm-delete-btn" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button id="confirm-cancel-btn" type="button" class="btn btn-secondary">Cancel</button>
           </div>
         </div>
       </div>
@@ -353,12 +353,30 @@
             <!-- End Checkmark -->
 
             <h3 class="text-success font-weight-bold text-center">Success!!!</h3>
-            <!-- <button type="button" class="btn btn-primary float-left" data-dismiss="modal">OK</button> -->
           </div>
         </div>
       </div>
     </div>
     <!-- End of Success modal -->
+
+    <!-- Failure Modal -->
+    <div id="failure-modal" class="modal animated zoomIn" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document" data-dismiss="modal">
+        <div class="modal-content">
+          <div class="modal-body mx-auto">
+            <!-- Cross -->
+            <svg class="cross__svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+              <circle class="cross__circle" cx="26" cy="26" r="25" fill="none"/>
+            	<path class="cross__path cross__path--right" fill="none" d="M16,16 l20,20" />
+              <path class="cross__path cross__path--right" fill="none" d="M16,36 l20,-20" />
+            </svg>
+            <!-- End Cross -->
+            <h3 class="text-danger font-weight-bold text-center">Nope!!!</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Failure Modal -->
 
     <!-- Found Books -->
     <div class="container-fluid my-5" id="mainDivStart">

@@ -43,37 +43,61 @@ AddBooksUI.prototype._bookInLine = function() {
   var pages = $('#pages').val();
   var publishDate = $('#publicationDate').val();
   var synopsis = $('#synopsis').val();
-  var bookCover;
+  var bookCover = '';
   var deleteCol = '';
   var edit = '';
-  var rating = '';
+  var rating = '1';
+  var noCover = '../assets/books/noCover.jpg';
+  // console.log(noCover);
 
-  var file = document.querySelector('#file-upload').files[0];
-  var reader = new FileReader();
-  reader.readAsDataURL(file);
-
-  reader.onload = function() {
-    bookCover = reader.result;
-    createBook();
-  };
   createBook = function (){
+
+    if(title === ""){
+      $('#title-text').addClass('required animated pulse');
+      return;
+    }
+    if(author === ""){
+      $('#title-text').removeClass('required');
+      $('#author').addClass('required animated pulse');
+      return;
+    }
+
     var book = new Book(bookCover, title, author, genre, pages, publishDate, rating, deleteCol, synopsis, edit);
+    $('#title-text').removeClass('required');
+    $('#author').removeClass('required');
     this._tempBookshelf.push(book);
 
     var $booksToAdd = $('<p>', {'class': 'booksToAdd'});
     $('.booksInLine').append($booksToAdd).text(`Books to be added: ${this._tempBookshelf.length}`);
     $('#add-book-form')[0].reset();
   }.bind(this);
-};
 
-AddBooksUI.prototype._getBase64 = function (callback) {
   var file = document.querySelector('#file-upload').files[0];
   var reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = function() {
-    return this._encodedImg = reader.result;
-  };
+  // console.log(reader);
+
+
+  if (file) {
+    reader.readAsDataURL(file);
+    reader.onload = function() {
+      console.log(reader.result);
+      bookCover = reader.result;
+      createBook();
+    };
+  } else {
+    bookCover = noCover;
+    createBook();
+  }
 };
+
+// AddBooksUI.prototype._getBase64 = function (callback) {
+//   var file = document.querySelector('#file-upload').files[0];
+//   var reader = new FileReader();
+//   reader.readAsDataURL(file);
+//   reader.onload = function() {
+//     return this._encodedImg = reader.result;
+//   };
+// };
 
 AddBooksUI.prototype._saveBook = function() {
   var title = $('#title-text').val();
@@ -82,34 +106,54 @@ AddBooksUI.prototype._saveBook = function() {
   var pages = $('#pages').val();
   var publishDate = $('#publicationDate').val();
   var synopsis = $('#synopsis').val();
-  var bookCover = this._encodedImg;
+  var bookCover;
   var deleteCol = '';
   var edit = '';
-  var rating = '';
-
-  var file = document.querySelector('#file-upload').files[0];
-  var reader = new FileReader();
-  reader.readAsDataURL(file);
-
-  reader.onload = function() {
-    bookCover = reader.result;
-    createBook();
-  };
+  var rating = '1';
+  var noCover = '../assets/books/noCover.jpg';
 
   createBook = function(){
+    if(title === ""){
+      $('#title-text').addClass('required animated pulse');
+      return;
+    }
+    if(author === ""){
+      $('#title-text').removeClass('required');
+      $('#author').addClass('required animated pulse');
+      return;
+    }
     var book = new Book(bookCover, title, author, genre, pages, publishDate, rating, deleteCol, synopsis, edit);
 
     var addSuccessful = this._tempBookshelf.length > 0
-    ? this.addBooks(this._tempBookshelf)
+    ? this.addBooks(this._tempBookshelf) && this.addBook(book)
     : this.addBook(book);
     // console.log(addSuccessful);
     if (addSuccessful) {
+      $('#title-text').removeClass('required');
+      $('#author').removeClass('required');
       $('#success-modal').modal('show');
     }
     $('#add-book-form')[0].reset();
+    $('#addBookModal').modal('hide');
     $('.booksInLine').empty();
     this._tempBookshelf = new Array();
   }.bind(this);
+
+  var file = document.querySelector('#file-upload').files[0];
+  var reader = new FileReader();
+
+  if (file) {
+    reader.readAsDataURL(file);
+    reader.onload = function() {
+      // console.log(reader.result);
+      bookCover = reader.result;
+      createBook();
+    };
+  } else {
+    bookCover = noCover;
+    createBook();
+  }
+
 };
 
 $(function() {

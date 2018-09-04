@@ -5,6 +5,7 @@ var DataTable = function() {
   var _titleToEdit = '';
   var _keepRating = 0;
   var _sorted = false;
+  var currentCover;
 };
 
 DataTable.prototype = Object.create(Library.prototype);
@@ -34,7 +35,7 @@ DataTable.prototype._bindEvents = function() {
 DataTable.prototype._bindCustomListeners = function() {
   //every time table updates, this._bindEvents must reload again.
   $(document).on('objUpdate', $.proxy(this._reload, this));
-
+  $('#confirm-cancel-btn').on('click', $.proxy(this._closeModalOnCancel, this));
   $('#confirm-delete-btn').on('click', $.proxy(this._handleDeleteBook, this));
 
   $('#save-edit-btn').on('click', $.proxy(this._editBook, this));
@@ -43,6 +44,11 @@ DataTable.prototype._bindCustomListeners = function() {
   $("#sort-author").on('click', $.proxy(this._sortBy, this));
   $("#sort-genre").on('click', $.proxy(this._sortBy, this));
   $("#sort-rating").on('click', $.proxy(this._sortBy, this));
+};
+
+DataTable.prototype._closeModalOnCancel = function () {
+  $('.confirm-delete-text').empty();
+  $('#confirm-delete-modal').modal('hide')
 };
 
 DataTable.prototype._updateTable = function(book) {
@@ -65,8 +71,8 @@ DataTable.prototype._openDeleteModal = function(e) {
   this._titleToDelete = $(e.target).data('title');
   // console.log(this._titleToDelete, 'title');
   var strong = $('<span>', {class: 'text-danger font-weight-bold'})
-  var styledTitle = strong.html(this._titleToDelete);
-  console.log(styledTitle);
+  var styledTitle = strong.append(this._titleToDelete);
+  // console.log(styledTitle);
   var deleteText = $('<p>', {id: 'delete-text'});
   deleteText.html(`Are you sure you want to delete ${styledTitle[0].textContent}?`)
   var confirmDeleteText = $('.confirm-delete-text').append(deleteText)
@@ -78,25 +84,27 @@ DataTable.prototype._openEditModal = function(e) {
   // 1. open modal:
   $('#edit-book-modal').modal('show')
   // 2. get the title fo the book you are clicking on:
-  _titleToEdit = $(e.target).data('title');
+  this._titleToEdit = $(e.target).data('title');
   // 3. getBookByTitle(it comes in as an array):
-  var bookToEdit = this.getBookByTitle(_titleToEdit)[0];
+  var bookToEdit = this.getBookByTitle(this._titleToEdit)[0];
   // 4. grab all the values from the book and put it in the modal:
   var parsedDate = window.parseFormDate(bookToEdit.publishDate);
+  // console.log(bookToEdit.cover);
+  this.currentCover = bookToEdit.cover;
+  // console.log(this.currentCover, 'from OpenModal');
   $('#title-edit').val(bookToEdit.title);
   $('#author-edit').val(bookToEdit.author);
   $('#genre-edit').val(bookToEdit.genre);
   $('#pages-edit').val(bookToEdit.pages);
   $('#publicationDate-edit').val(parsedDate);
   $('#synopsis-edit').val(bookToEdit.synopsis);
-  _keepRating = bookToEdit.rating;
-
-  // $('#file-upload-edit').val(bookToEdit.cover); throws error!!!
+  this._keepRating = bookToEdit.rating;
 };
 
 DataTable.prototype._handleDeleteBook = function() {
   if (this.removeBook(this._titleToDelete)) {
     $('#success-modal').modal('show');
+    $('.confirm-delete-text').empty();
   }
 };
 
@@ -135,8 +143,8 @@ DataTable.prototype._createHeader = function() {
 };
 
 DataTable.prototype._createRow = function(index, book) {
-  // console.log(book, 'create row book');
-  var tr = document.createElement('tr');
+
+  var tr = $('<tr>', {id: 'row', class: 'animated fadeIn'});
   // *** create deleteIcon in vanillaJS: ***
   // var deleteIcon = document.createElement('i');
   // var deleteIconAttr = document.createAttribute("class");
@@ -162,7 +170,11 @@ DataTable.prototype._createRow = function(index, book) {
 
   // *** book cover cell
   // console.log(book, 'book');
-  var bookImg = $('<img>', {src: `${book.cover}`, alt:'book cover'})
+  var bookImg = $('<img>', {
+    class: 'coverToEdit',
+    src: `${book.cover}`,
+    alt: 'book cover'
+  })
   // end book cover cell ***
 
   for (var key in book) {
@@ -176,6 +188,7 @@ DataTable.prototype._createRow = function(index, book) {
           class: 'star',
           'data-value': i + 1
         });
+        // console.log(book.rating, 'book.rating');
         if (book.rating && book.rating > i) {
           $(ratingItem).addClass('selected');
         }
@@ -196,10 +209,11 @@ DataTable.prototype._createRow = function(index, book) {
       $(td).append(editIcon)
     } else if (key === 'cover') {
       $(td).append(bookImg)
-    } else if(book[key]){
+    } else if (book[key]) {
       $(td).text(book[key]);
     } else {
       $(td).text(null);
+      // $('#row').addClass('slideInDown');
     }
     $(tr).append(td);
   }
@@ -250,7 +264,7 @@ DataTable.prototype._ratingBook = function() {
 };
 
 DataTable.prototype._editBook = function() {
-  var newCover = $('#file-upload-edit').val();
+
   var newTitle = $('#title-edit').val();
   var newAuthor = $('#author-edit').val();
   var newGenre = $('#genre-edit').val();
@@ -258,40 +272,63 @@ DataTable.prototype._editBook = function() {
   var newPubDate = $('#publicationDate-edit').val();
   var newSynopsis = $('#synopsis-edit').val();
 
-  var newBook = new Book(newCover, newTitle, newAuthor, newGenre, newPages, newPubDate, _keepRating, '', newSynopsis, '');
-  var index;
-  var isSuccessful = false;
-  for (var i = 0; i < window.bookshelf.length; i++) {
-    if (window.bookshelf[i].title === _titleToEdit) {
-      index = i;
-      isSuccessful = true;
+  editThisBook = function(cover) {
+    var newBook = new Book(cover, newTitle, newAuthor, newGenre, newPages, newPubDate, this._keepRating, '', newSynopsis, '');
+    var index;
+    var isSuccessful = false;
+    for (var i = 0; i < window.bookshelf.length; i++) {
+      if (window.bookshelf[i].title === this._titleToEdit) {
+        index = i;
+        isSuccessful = true;
+      }
     }
+
+    window.bookshelf.splice(index, 1, newBook);
+
+    this.setStorage();
+    this._handleEventTrigger("objUpdate", {bookEdited: "Book is Edited!"});
+
+    $('#edit-book-modal').modal('hide');
+
+    if (isSuccessful) {
+      $('#success-modal').modal('show');
+    }
+  }.bind(this);
+
+  var file = document.querySelector('#file-upload-edit').files[0];
+  console.log('file', file);
+  var reader = new FileReader();
+  var coverToEdit;
+  if (file) {
+    console.log('If file');
+    reader.readAsDataURL(file);
+    reader.onload = function() {
+      coverToEdit = reader.result;
+      editThisBook(coverToEdit);
+    };
+  } else {
+    console.log('if NO file');
+    coverToEdit = this.currentCover;
+    console.log(this.currentCover, 'from else');
+    this.currentCover = null;
+    editThisBook(coverToEdit);
   }
-  window.bookshelf.splice(index, 1, newBook);
-
-  this.setStorage();
-  this._handleEventTrigger("objUpdate", {bookEdited: "Book is Edited!"});
-
-  $('#edit-book-modal').modal('hide');
-
-  if (isSuccessful) {
-    $('#success-modal').modal('show');
-  }
+  document.getElementById("file-upload-edit").value = "";
 };
 
 DataTable.prototype._sortBy = function(e, book) {
   var val = $(e.target).data("sort");
   // console.log(val);
-  window.bookshelf.sort((a, b)=> {
-    if(typeof a[val] === "number"){
-      return b[val]-a[val]
+  window.bookshelf.sort((a, b) => {
+    if (typeof a[val] === "number") {
+      return b[val] - a[val]
     }
     var itemA = a[val].toLowerCase()
     var itemB = b[val].toLowerCase()
     if (itemA < itemB) //sort string ascending
-    return -1
+      return -1
     if (itemA > itemB)
-    return 1
+      return 1
     return 0 //default return value (no sorting)
   })
 

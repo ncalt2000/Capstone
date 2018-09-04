@@ -20,7 +20,7 @@ RandomAuthor.prototype._openRandomAuthorModal = function () {
 
 RandomAuthor.prototype._showRandomAuthor = function () {
   var randomAuthor = this.getRandomAuthorName();
-  console.log(typeof(randomAuthor), 'randomAuthor');
+  // console.log(randomAuthor, 'randomAuthor');
   if(randomAuthor !== ""){
     this._openRandomAuthorModal();
     this.$container.find('.modal-body').html(this._createRandomAuthor(randomAuthor));
