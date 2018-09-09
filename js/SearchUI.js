@@ -27,23 +27,23 @@ Search.prototype._getSearchResults = function(e) {
 
   if (result.length > 0) {
     for (var i = 0; i < result.length; i++) {
-      var container=$('<div>', {class: 'custom-container'});
-      var back = $('<div>', {class: 'front back text-center'});
-      var columnDiv = $('<div>', {class: "col-md-10 flipper"});
+      var container=$('<div>', {class: 'custom-container m-5'});
+      var back = $('<div>', {class: 'back'});
+      var columnDiv = $('<div>', {class: "flipper"});
       var span = $('<span>', {class: 'front'});
       var cardDiv = $('<div>', {class: 'card card-inverse card-info animated zoomIn'});
       var bookCover = $('<img>', {class: 'card-img-top book-card'}).text(result[i].cover);
-      bookCover.attr("src", "assets/books/hkeller.jpg").attr("alt", "Book Cover");
+      bookCover.attr("src", `${result[i].cover}`).attr("alt", `${result[i].title} cover`);
       var innerDiv = $("<div>", {class: "card-block p-2"});
       var cardTitle = $("<h5>", {class: "card-title "}).text(result[i].title);
       var cardAuthor = $("<h6>", {class: "card-author "}).text(result[i].author);
-      var cardText = $("<p>", {class: "card-text"}).text(result[i].synopsis);
+      var cardText = $("<p>", {class: "card-text text-justify p-2"}).text(result[i].synopsis);
 
       span.html(cardDiv);
       cardDiv.html(bookCover).append(innerDiv);
       innerDiv.html(cardTitle);
       innerDiv.append(cardAuthor)
-      back.html(cardText);
+      result[i].synopsis === "" ? back.html("No Synopsis Available!") : back.html(cardText);
       columnDiv.append(back);
       columnDiv.append(span)
       container.append(columnDiv);

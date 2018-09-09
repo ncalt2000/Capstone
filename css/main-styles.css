@@ -1,8 +1,8 @@
-/* html {
+html {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-} */
+}
 body{
   background-color: rgba(78, 72, 72, 0.43);
 }
@@ -21,6 +21,7 @@ nav {
   /* width: 100%; */
   background-color: rgb(29, 32, 42);
   color: #E5E5E8;
+  height: 80px;
 }
 
 .navbar a {
@@ -34,6 +35,10 @@ nav {
 .logout {
   align-items: center;
   display: none;
+}
+.logo {
+  width: 100px;
+  border-radius: 10px;;
 }
 
 /* //////////////////////////// */
@@ -127,34 +132,53 @@ td .edit, td .delete {
 /* CARD FLIPPER */
 /* //////////////////////////// */
 
+/* entire container, keeps perspective */
 .custom-container {
-  cursor: pointer;
-  height: 500px;
-  perspective: 1000;
-  position: relative;
-  width: 300px;
+	perspective: 1000px;
 }
-.flipper{
+	/* flip the pane when hovered */
+.custom-container:hover .flipper, .custom-container.hover .flipper {
+	transform: rotateY(180deg);
+}
+
+.custom-container, .front, .back {
+	width: 250px;
+	height: 400px;
+  margin: 10px;
+}
+
+/* flip speed goes here */
+.flipper {
   height: 100%;
-  position: absolute;
-  transform-style: preserve-3d;
-  transition: all .7s ease-in-out;
   width: 100%;
+	transition: 0.9s;
+	transform-style: preserve-3d;
+	position: relative;
 }
-.flipper:hover {
-  transform: rotateY(180deg);
+
+/* hide back of pane during swap */
+.front, .back {
+	backface-visibility: hidden;
+	position: absolute;
+	/* top: 0;
+	left: 20px; */
 }
-.custom-container .front {
-  backface-visibility: hidden;
-  border-radius: 6px;
-  height: 100%;
-  position: absolute;
-  overflow: hidden;
+
+/* front pane, placed above back */
+.front {
+	z-index: 2;
+	/* for firefox 31 */
+	transform: rotateY(0deg);
 }
-.custom-container .back {
-  background: #eaeaed;
-  text-align: center;
-  transform: rotateY(180deg);
+
+/* back, initially hidden pane */
+.back {
+  background-color: #eaeaed;
+	transform: rotateY(180deg);
+  min-height: auto;
+  overflow: scroll;
+
+  /* margin: 20px; */
 }
 
 /* //////////////////////////// */
