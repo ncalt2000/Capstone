@@ -6,7 +6,7 @@ $(function() {
   $('[data-toggle="tooltip"]').tooltip()
 });
 
-//formate a date methods here:
+//format a date methods here:
 function parseDate(pubDate) {
   var date = new Date(pubDate);
   var month = date.getMonth();
@@ -16,6 +16,7 @@ function parseDate(pubDate) {
   return `${month} ${year}`
 };
 
+//from "February 2000" into 02/01/2000:
 function parseFormDate (pubDate) {
   var date = new Date(pubDate);
   var month = (date.getMonth()+1).toString().padStart(2, '0');
