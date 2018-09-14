@@ -1,51 +1,50 @@
-class AddBooksUI {
-  constructor() {
-    //placeholder for an id='addBooksModal'
-    // allow us to access anythign in the Library
-    // Library.call(this);
-    // temp bookshelf is to hold multiple books, then pass it in addBooks function, and tie to Add btn.
-    this._tempBookshelf = new Array();
-    this._encodedImg;
-    this.libraryURL = 'http://127.0.0.1:3002/library/'
-  }
+// create a contructor: addBooksUI
+var AddBooksUI = function(container) {
+  //placeholder for an id='addBooksModal'
+  this.$container = container;
+  // allow us to access anythign in the Library
+  Library.call(this);
+  // temp bookshelf is to hold multiple books, then pass it in addBooks function, and tie to Add btn.
+  this._tempBookshelf = new Array();
+  this._encodedImg;
+  this.libraryURL = 'http://127.0.0.1:3002/library/'
 
+};
 // new instance of Library.prototype is created
-// AddBooksUI.prototype = Object.create(Library.prototype);
+AddBooksUI.prototype = Object.create(Library.prototype);
 //data-target and data-value are removed from html. This will be added in js.
 
 // init fires whatever is in the _bindEvents.
-_init() {
-  // this.getStorage();
+AddBooksUI.prototype.init = function() {
+  this.getStorage();
   this._bindEvents();
   return;
 };
 
 // this opens the modal
 // proxy is doing similar ot call(this)
-_bindEvents() {
+AddBooksUI.prototype._bindEvents = function() {
   // add an id=''
-  $('button#add-book-btn').on('click', this._handleModalOpen.bind(this));
+  $('button#add-book-btn').on('click', $.proxy(this._handleModalOpen, this));
 
-  $('button#add-another-btn').on('click', this._bookInLine.bind(this));
+  $('button#add-another-btn').on('click', $.proxy(this._bookInLine, this));
 
-  $('button#save-book-btn').on('click', this._saveBook.bind(this));
+  $('button#save-book-btn').on('click', $.proxy(this._saveBook, this));
 };
 
-_handleModalOpen() {
-  $('#addBookModal').modal('show');
+// event handlers
+AddBooksUI.prototype._handleModalOpen = function() {
+  this.$container.modal('show');
   return;
 }
 
-_getBookFields() {
-  let fieldsData = $('#add-book-form').serializeArray();
-  let oData = new Object();
-  fieldsData.map((item, index) => {
-    oData[item.name] = item.value;
-  })
-  return oData;
-};
-
-_bookInLine() {
+AddBooksUI.prototype._bookInLine = function() {
+  var title = $('#title-text').val();
+  var author = $('#author').val();
+  var genre = $('#genre').val();
+  var pages = $('#pages').val();
+  var publishDate = $('#publicationDate').val();
+  var synopsis = $('#synopsis').val();
   var bookCover = '';
   var deleteCol = '';
   var edit = '';
@@ -53,59 +52,46 @@ _bookInLine() {
   var noCover = '../assets/books/noCover.jpg';
   // console.log(noCover);
 
-  const bookData = this._getBookFields();
-  console.log(bookData, 'BookData');
+  createBook = function() {
 
-  $.ajax({
-    url: this.libraryURL,
-    method: 'POST',
-    dataType: 'json',
-    data: bookData, //this is our request
-    success: (data) => {
+    if (title === "") {
+      $('#title-text').addClass('required animated pulse');
       return;
     }
-  })
+    if (author === "") {
+      $('#title-text').removeClass('required');
+      $('#author').addClass('required animated pulse');
+      return;
+    }
 
-  // createBook = function() {
-  //
-  //   if (title === "") {
-  //     $('#title-text').addClass('required animated pulse');
-  //     return;
-  //   }
-  //   if (author === "") {
-  //     $('#title-text').removeClass('required');
-  //     $('#author').addClass('required animated pulse');
-  //     return;
-  //   }
-  //
-  //   var book = new Book(bookCover, title, author, genre, pages, publishDate, rating, deleteCol, synopsis, edit);
-  //   $('#title-text').removeClass('required');
-  //   $('#author').removeClass('required');
-  //   this._tempBookshelf.push(book);
-  //
-  //   var $booksToAdd = $('<p>', {'class': 'booksToAdd'});
-  //   $('.booksInLine').append($booksToAdd).text(`Books to be added: ${this._tempBookshelf.length}`);
-  //   $('#add-book-form')[0].reset();
-  // }.bind(this);
-  //
-  // var file = document.querySelector('#file-upload').files[0];
-  // var reader = new FileReader();
-  // console.log(reader);
-  //
-  // if (file) {
-  //   reader.readAsDataURL(file);
-  //   reader.onload = function() {
-  //     console.log(reader.result);
-  //     bookCover = reader.result;
-  //     createBook();
-  //   };
-  // } else {
-  //   bookCover = noCover;
-  //   createBook();
-  // }
+    var book = new Book(bookCover, title, author, genre, pages, publishDate, rating, deleteCol, synopsis, edit);
+    $('#title-text').removeClass('required');
+    $('#author').removeClass('required');
+    this._tempBookshelf.push(book);
+
+    var $booksToAdd = $('<p>', {'class': 'booksToAdd'});
+    $('.booksInLine').append($booksToAdd).text(`Books to be added: ${this._tempBookshelf.length}`);
+    $('#add-book-form')[0].reset();
+  }.bind(this);
+
+  var file = document.querySelector('#file-upload').files[0];
+  var reader = new FileReader();
+  console.log(reader);
+
+  if (file) {
+    reader.readAsDataURL(file);
+    reader.onload = function() {
+      console.log(reader.result);
+      bookCover = reader.result;
+      createBook();
+    };
+  } else {
+    bookCover = noCover;
+    createBook();
+  }
 };
 
-// _getBase64 = function (callback) {
+// AddBooksUI.prototype._getBase64 = function (callback) {
 //   var file = document.querySelector('#file-upload').files[0];
 //   var reader = new FileReader();
 //   reader.readAsDataURL(file);
@@ -114,7 +100,7 @@ _bookInLine() {
 //   };
 // };
 
-_saveBook() {
+AddBooksUI.prototype._saveBook = function() {
   var title = $('#title-text').val();
   var author = $('#author').val();
   var genre = $('#genre').val();
@@ -179,10 +165,8 @@ _saveBook() {
   }
 
 };
-};
-
 
 $(function() {
-  window.gAddBooksUI = new AddBooksUI();
-  window.gAddBooksUI._init();
+  window.gAddBooksUI = new AddBooksUI($('#addBookModal'));
+  window.gAddBooksUI.init();
 });
