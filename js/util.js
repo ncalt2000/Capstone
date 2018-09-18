@@ -1,6 +1,3 @@
-// create window.bookshelf:
-var bookshelf = new Array();
-
 // Enable tooltips everywhere:
 $(function() {
   $('[data-toggle="tooltip"]').tooltip()

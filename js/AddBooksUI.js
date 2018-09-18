@@ -62,7 +62,7 @@ _bookInLine() {
     dataType: 'json',
     data: bookData, //this is our request
     success: (data) => {
-      return;
+      console.log("Success book in line");;
     }
   })
 

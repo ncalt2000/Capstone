@@ -1,38 +1,50 @@
-var DataTable = function() {
-  Library.call(this);
-  this.$container = $('#book-table');
-  var _titleToDelete = '';
-  var _titleToEdit = '';
-  var _keepRating = 0;
-  var _sorted = false;
-  var currentCover;
-};
+class DataTable {
+  constructor() {
+    //placeholder for an id='addBooksModal'
+    // allow us to access anythign in the Library
+    // Library.call(this);
+    // temp bookshelf is to hold multiple books, then pass it in addBooks function, and tie to Add btn.
+    this.libraryURL = 'http://127.0.0.1:3002/library/'
+    this.allBooks = [];
+  }
 
-DataTable.prototype = Object.create(Library.prototype);
 
-DataTable.prototype.init = function() {
+// var DataTable () {
+//   Library.call(this);
+//   this.$container = $('#book-table');
+//   var _titleToDelete = '';
+//   var _titleToEdit = '';
+//   var _keepRating = 0;
+//   var _sorted = false;
+//   var currentCover;
+// };
+
+// DataTable.prototype = Object.create(Library.prototype);
+
+_init () {
   // when the page initially loads
-  this._updateTable();
+  this._getAllBooks();
+  // this._updateTable();
   this._bindEvents();
   this._bindCustomListeners();
   this._ratingBook();
 };
 
-DataTable.prototype._reload = function() {
+_reload () {
   //after addind, editing, deleting, these methods must run to add event handlers back to the btns!
   this._updateTable();
   this._bindEvents();
   this._ratingBook();
 };
 
-DataTable.prototype._bindEvents = function() {
+_bindEvents () {
   //add native events here
   //Must run this._bindEvents() to attach event handlers to the btns.
   $('.delete').on('click', $.proxy(this._openDeleteModal, this));
   $('.edit').on('click', $.proxy(this._openEditModal, this));
 };
 
-DataTable.prototype._bindCustomListeners = function() {
+_bindCustomListeners () {
   //every time table updates, this._bindEvents must reload again.
   $(document).on('objUpdate', $.proxy(this._reload, this));
   $('#confirm-cancel-btn').on('click', $.proxy(this._closeModalOnCancel, this));
@@ -46,28 +58,40 @@ DataTable.prototype._bindCustomListeners = function() {
   $("#sort-rating").on('click', $.proxy(this._sortBy, this));
 };
 
-DataTable.prototype._closeModalOnCancel = function () {
+_closeModalOnCancel () {
   $('.confirm-delete-text').empty();
   $('#confirm-delete-modal').modal('hide')
 };
 
-DataTable.prototype._updateTable = function(book) {
+_getAllBooks(){
+  $.ajax({
+    url: this.libraryURL,
+    method: 'GET',
+    dataType: 'json',
+    success: (data) => {
+      $('#display-data').empty();
+      this.allBooks = data;
+      console.log(this.allBooks, 'All Books');
+      this._updateTable();
+    }
+  })
+}
+
+_updateTable () {
   // alert(e.detail.data);
-  var _self = this;
-  var $tbody = this.$container.find('tbody');
+  var $tbody = $('#table-body');
   $tbody.empty();
 
-  var $thead = this.$container.find('thead');
+  var $thead = $('thead');
   $thead.empty();
 
-  $thead.append(_self._createHeader());
-
-  $.each(window.bookshelf, function(index, book) {
-    $tbody.append(_self._createRow(index, book));
+  $thead.append(this._createHeader());
+  $.each(this.allBooks, (index, book) => {
+    $tbody.append(this._createRow(index, book));
   });
 };
 
-DataTable.prototype._openDeleteModal = function(e) {
+_openDeleteModal (e) {
   this._titleToDelete = $(e.target).data('title');
   // console.log(this._titleToDelete, 'title');
   var strong = $('<span>', {class: 'text-danger font-weight-bold'})
@@ -79,7 +103,7 @@ DataTable.prototype._openDeleteModal = function(e) {
   $('#confirm-delete-modal').modal('show')
 };
 
-DataTable.prototype._openEditModal = function(e) {
+_openEditModal (e) {
 
   // 1. open modal:
   $('#edit-book-modal').modal('show')
@@ -101,7 +125,7 @@ DataTable.prototype._openEditModal = function(e) {
   this._keepRating = bookToEdit.rating;
 };
 
-DataTable.prototype._handleDeleteBook = function() {
+_handleDeleteBook () {
   if (this.removeBook(this._titleToDelete)) {
     $('#success-modal').modal('show');
     setTimeout(function () {
@@ -116,7 +140,7 @@ DataTable.prototype._handleDeleteBook = function() {
   }
 };
 
-DataTable.prototype._createHeader = function() {
+_createHeader () {
   var book = new Book();
   var tr = document.createElement('tr');
 
@@ -150,15 +174,8 @@ DataTable.prototype._createHeader = function() {
   return tr;
 };
 
-DataTable.prototype._createRow = function(index, book) {
-
+_createRow (index, book) {
   var tr = $('<tr>', {id: 'row', class: 'animated fadeIn'});
-  // *** create deleteIcon in vanillaJS: ***
-  // var deleteIcon = document.createElement('i');
-  // var deleteIconAttr = document.createAttribute("class");
-  // deleteIconAttr.value = "far fa-times-circle fa-lg delete";
-  // deleteIcon.setAttributeNode(deleteIconAttr);
-  // *** create deleteIcon in jQuery: ***
   var deleteIcon = $('<i>', {
     class: 'far fa-times-circle fa-lg delete',
     'data-title': book['title']
@@ -187,8 +204,8 @@ DataTable.prototype._createRow = function(index, book) {
 
   for (var key in book) {
     var td = $('<td>');
-    if (key === 'publishDate') {
-      var parsedDate = window.parseDate(book[key])
+    if (key === 'pubDate') {
+      var parsedDate = parseDate(book[key])
       $(td).append(parsedDate)
     } else if (key === 'rating') {
       for (var i = 0; i < 5; i++) {
@@ -209,32 +226,26 @@ DataTable.prototype._createRow = function(index, book) {
       }
       $(td).addClass('rating-stars');
       $(td).append(ratingList);
-    } else if (key === 'deleteCol') {
-      $(td).append(deleteIcon)
     } else if (key === 'synopsis') {
       $(td).hide();
-    } else if (key === 'edit') {
-      $(td).append(editIcon)
+    } else if (key === '_id') {
+      $(td).hide();
     } else if (key === 'cover') {
-      $(td).append(bookImg)
-    }
-    // else if (key === 'title') {
-    //   $(td).attr('id', 'new-book')
-    //   $(td).text(book[key]);
-    // }
-    else if (book[key]) {
+      $(td).append(bookImg || 'cover')
+    } else if (book[key]) {
       $(td).text(book[key]);
     } else {
-      $(td).text(null);
+      $(td).text('null');
     }
     $(tr).append(td);
   }
-  // console.log(tr);
+  $(tr).append($('<td>').append(deleteIcon))
+  $(tr).append($('<td>').append(editIcon))
 
   return tr;
 };
 
-DataTable.prototype._ratingBook = function() {
+_ratingBook () {
   /* 1. Visualizing things on Hover - See next part for action on click */
   $('.stars li').on('mouseover', function() {
     var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
@@ -275,7 +286,7 @@ DataTable.prototype._ratingBook = function() {
   });
 };
 
-DataTable.prototype._editBook = function() {
+_editBook () {
 
   var newTitle = $('#title-edit').val();
   var newAuthor = $('#author-edit').val();
@@ -347,7 +358,7 @@ DataTable.prototype._editBook = function() {
   document.getElementById("file-upload-edit").value = "";
 };
 
-DataTable.prototype._sortBy = function(e, book) {
+_sortBy (e, book) {
   var val = $(e.target).data("sort");
   // console.log(val);
   window.bookshelf.sort((a, b) => {
@@ -366,7 +377,9 @@ DataTable.prototype._sortBy = function(e, book) {
   this._handleEventTrigger("objUpdate");
 };
 
+};
+
 $(function() {
   window.gDataTable = new DataTable();
-  window.gDataTable.init();
+  window.gDataTable._init();
 });
