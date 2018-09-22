@@ -71,7 +71,7 @@ _getAllBooks(){
     success: (data) => {
       $('#display-data').empty();
       this.allBooks = data;
-      console.log(this.allBooks, 'All Books');
+      console.log(this.allBooks, 'All Books from DB');
       this._updateTable();
     }
   })
@@ -202,43 +202,29 @@ _createRow (index, book) {
   })
   // end book cover cell ***
 
-  for (var key in book) {
-    var td = $('<td>');
-    if (key === 'pubDate') {
-      var parsedDate = parseDate(book[key])
-      $(td).append(parsedDate)
-    } else if (key === 'rating') {
-      for (var i = 0; i < 5; i++) {
-        var ratingItem = $('<li>', {
-          class: 'star',
-          'data-value': i + 1
-        });
-        // console.log(book.rating, 'book.rating');
-        if (book.rating && book.rating > i) {
-          $(ratingItem).addClass('selected');
-        }
-        var star = $('<i>', {
-          class: 'fa fa-star',
-          'data-title': book['title']
-        });
-        var rating = $(ratingItem).append(star);
-        $(ratingList).append(rating);
-      }
-      $(td).addClass('rating-stars');
-      $(td).append(ratingList);
-    } else if (key === 'synopsis') {
-      $(td).hide();
-    } else if (key === '_id') {
-      $(td).hide();
-    } else if (key === 'cover') {
-      $(td).append(bookImg || 'cover')
-    } else if (book[key]) {
-      $(td).text(book[key]);
-    } else {
-      $(td).text('null');
+  for (var i = 0; i < 5; i++) {
+    var ratingItem = $('<li>', {
+      class: 'star',
+      'data-value': i + 1
+    });
+    if (book.rating && book.rating > i) {
+      $(ratingItem).addClass('selected');
     }
-    $(tr).append(td);
+    var star = $('<i>', {
+      class: 'fa fa-star',
+      'data-title': book['title']
+    });
+    var rating = $(ratingItem).append(star);
+    $(ratingList).append(rating);
   }
+
+  $(tr).append($('<td>').append(book.cover))
+  $(tr).append($('<td>').append(book.title))
+  $(tr).append($('<td>').append(book.author))
+  $(tr).append($('<td>').append(book.genre))
+  $(tr).append($('<td>').append(book.pages))
+  $(tr).append($('<td>').append(parseDate(book.pubDate)))
+  $(tr).append($('<td>').append(ratingList).addClass('rating-stars'))
   $(tr).append($('<td>').append(deleteIcon))
   $(tr).append($('<td>').append(editIcon))
 

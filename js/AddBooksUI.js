@@ -42,29 +42,43 @@ _getBookFields() {
   fieldsData.map((item, index) => {
     oData[item.name] = item.value;
   })
+  // console.log(oData, "DATA");
   return oData;
 };
 
 _bookInLine() {
-  var bookCover = '';
-  var deleteCol = '';
-  var edit = '';
-  var rating = '1';
-  var noCover = '../assets/books/noCover.jpg';
-  // console.log(noCover);
-
   const bookData = this._getBookFields();
-  console.log(bookData, 'BookData');
+  bookData["rating"] = 1;
+  // console.log(bookData, 'BookData');
+
+  // this._tempBookshelf = [];
+  this._tempBookshelf.push(bookData);
+  console.log(this._tempBookshelf, "TEMP SHelf");
+  var $booksToAdd = $('<p>', {'class': 'booksToAdd'});
+    $('.booksInLine').append($booksToAdd).text(`Books to be added: ${this._tempBookshelf.length}`);
+    $('#add-book-form')[0].reset();
+};
+
+_saveBook() {
+  const bookData = this._getBookFields();
+  bookData["rating"] = 1;
+  // console.log(bookData, 'BookData');
+  if(bookData.title !== ""){
+    this._tempBookshelf.push(bookData);
+  }
 
   $.ajax({
     url: this.libraryURL,
     method: 'POST',
     dataType: 'json',
-    data: bookData, //this is our request
-    success: (data) => {
-      console.log("Success book in line");;
+    data: {bookshelf: this._tempBookshelf}, //this is our request
+    success: (data) => { //this is the response from DB
+      console.log(data, "Success");;
     }
   })
+  $('#add-book-form')[0].reset();
+  $('#addBookModal').modal('hide');
+};
 
   // createBook = function() {
   //
@@ -103,7 +117,6 @@ _bookInLine() {
   //   bookCover = noCover;
   //   createBook();
   // }
-};
 
 // _getBase64 = function (callback) {
 //   var file = document.querySelector('#file-upload').files[0];
@@ -114,7 +127,7 @@ _bookInLine() {
 //   };
 // };
 
-_saveBook() {
+saveBook() {
   var title = $('#title-text').val();
   var author = $('#author').val();
   var genre = $('#genre').val();
@@ -177,7 +190,6 @@ _saveBook() {
     bookCover = noCover;
     createBook();
   }
-
 };
 };
 

@@ -35,7 +35,7 @@ RandomBook.prototype._createRandomBook = function (book) {
   var form = $('<form>', {'class': 'form-inline'})
   var image = $('<img>', {'class': 'img-thumbnail col-md-4',
 'src': 'book.cover',
-'alt': 'random book cover'})
+'alt': 'random cover'})
   var div = $('<div>', {'class': 'col-md-6'});
 
   image.text(book.cover);
