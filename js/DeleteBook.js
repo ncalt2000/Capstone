@@ -1,22 +1,25 @@
-var DeleteBook = function(){
-  this.$container = $('#confirm-delete-modal');
+class DeleteBook {
+  constructor(){
+
+  }
+  // this.$container = $('#confirm-delete-modal');
   // this.$container = $('#table-body');
-  Library.call(this);
-};
+  // Library.call(this);
 
-DeleteBook.prototype = Object.create(Library.prototype);
+// DeleteBook.prototype = Object.create(Library.prototype);
 
-DeleteBook.prototype.init = function(){
+_init (){
   // this.getStorage();
   this._bindEvents();
   // return;
 };
 
-DeleteBook.prototype._bindEvents = function(){
+_bindEvents (){
   // $('.delete').on('click',
   // $.proxy(this._handleModalOpen, this));
 
-  $('#confirm-delete-btn').on('click', $.proxy(this._handleDeleteBook, this));
+  // $('#confirm-delete-btn').on('click', this._handleDeleteBook.bind(this));
+  $('.delete').on('click', this._handleDeleteBook.bind(this));
 
 };
 
@@ -27,7 +30,7 @@ DeleteBook.prototype._bindEvents = function(){
 //   return;
 // };
 
-DeleteBook.prototype._handleDeleteBook = function() {
+_handleDeleteBook () {
   var value = $('.delete');
   var title = value.data('title');
   // console.log(title, 'title');
@@ -47,8 +50,9 @@ DeleteBook.prototype._handleDeleteBook = function() {
   console.log('deleting');
 };
 
+};
 
 $(function(){
   window.gDeleteBook = new DeleteBook();
-  window.gDeleteBook.init();
+  window.gDeleteBook._init();
 });

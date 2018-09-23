@@ -51,7 +51,18 @@ _bookInLine() {
   bookData["rating"] = 1;
   // console.log(bookData, 'BookData');
 
-  // this._tempBookshelf = [];
+  if (bookData.title === "") {
+      $('#title-text').addClass('required animated pulse');
+      return;
+  }
+  if (bookData.author === "") {
+    $('#title-text').removeClass('required');
+    $('#author').addClass('required animated pulse');
+    return;
+  }
+  $('#title-text').removeClass('required');
+  $('#author').removeClass('required');
+ //   this._tempBookshelf.push(book);
   this._tempBookshelf.push(bookData);
   console.log(this._tempBookshelf, "TEMP SHelf");
   var $booksToAdd = $('<p>', {'class': 'booksToAdd'});
@@ -63,9 +74,17 @@ _saveBook() {
   const bookData = this._getBookFields();
   bookData["rating"] = 1;
   // console.log(bookData, 'BookData');
-  if(bookData.title !== ""){
-    this._tempBookshelf.push(bookData);
+  if(bookData.title === ""){
+    $('#title-text').addClass('required animated pulse');
+    return;
   }
+
+  if(bookData.author === ""){
+    $('#title-text').removeClass('required');
+    $('#author-text').addClass('required animated pulse');
+    return;
+  }
+  this._tempBookshelf.push(bookData);
 
   $.ajax({
     url: this.libraryURL,

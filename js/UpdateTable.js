@@ -8,19 +8,6 @@ class DataTable {
     this.allBooks = [];
   }
 
-
-// var DataTable () {
-//   Library.call(this);
-//   this.$container = $('#book-table');
-//   var _titleToDelete = '';
-//   var _titleToEdit = '';
-//   var _keepRating = 0;
-//   var _sorted = false;
-//   var currentCover;
-// };
-
-// DataTable.prototype = Object.create(Library.prototype);
-
 _init () {
   // when the page initially loads
   this._getAllBooks();
@@ -34,14 +21,15 @@ _reload () {
   //after addind, editing, deleting, these methods must run to add event handlers back to the btns!
   this._updateTable();
   this._bindEvents();
-  this._ratingBook();
+  // this._ratingBook();
 };
 
 _bindEvents () {
   //add native events here
   //Must run this._bindEvents() to attach event handlers to the btns.
-  $('.delete').on('click', $.proxy(this._openDeleteModal, this));
-  $('.edit').on('click', $.proxy(this._openEditModal, this));
+  // $('.delete').on('click', this._openDeleteModal.bind(this));
+  $('.delete').on('click', this._handleDeleteBook.bind(this));
+  $('.edit').on('click', this._openEditModal.bind(this));
 };
 
 _bindCustomListeners () {
@@ -78,7 +66,6 @@ _getAllBooks(){
 }
 
 _updateTable () {
-  // alert(e.detail.data);
   var $tbody = $('#table-body');
   $tbody.empty();
 
@@ -91,23 +78,25 @@ _updateTable () {
   });
 };
 
-_openDeleteModal (e) {
-  this._titleToDelete = $(e.target).data('title');
-  // console.log(this._titleToDelete, 'title');
-  var strong = $('<span>', {class: 'text-danger font-weight-bold'})
-  var styledTitle = strong.append(this._titleToDelete);
-  // console.log(styledTitle);
-  var deleteText = $('<p>', {id: 'delete-text'});
-  deleteText.html(`Are you sure you want to delete ${styledTitle[0].textContent}?`)
-  var confirmDeleteText = $('.confirm-delete-text').append(deleteText)
-  $('#confirm-delete-modal').modal('show')
+_openDeleteModal () {
+  // const _titleToDelete = $(e.target).data('title');
+  console.log("Hello");
+  // console.log(_titleToDelete, 'title');
+  // var strong = $('<span>', {class: 'text-danger font-weight-bold'})
+  // var styledTitle = strong.append(this._titleToDelete);
+  // // console.log(styledTitle);
+  // var deleteText = $('<p>', {id: 'delete-text'});
+  // deleteText.html(`Are you sure you want to delete ${styledTitle[0].textContent}?`)
+  // var confirmDeleteText = $('.confirm-delete-text').append(deleteText)
+  $('#confirm-delete-modal').modal('show');
+  return;
 };
 
 _openEditModal (e) {
-
+console.log("Edit modal");
   // 1. open modal:
   $('#edit-book-modal').modal('show')
-  // 2. get the title fo the book you are clicking on:
+  //2. get the title fo the book you are clicking on:
   this._titleToEdit = $(e.target).data('title');
   // 3. getBookByTitle(it comes in as an array):
   var bookToEdit = this.getBookByTitle(this._titleToEdit)[0];
@@ -125,19 +114,28 @@ _openEditModal (e) {
   this._keepRating = bookToEdit.rating;
 };
 
-_handleDeleteBook () {
-  if (this.removeBook(this._titleToDelete)) {
-    $('#success-modal').modal('show');
-    setTimeout(function () {
-      $('#success-modal').removeClass('zoomIn');
-      $('#success-modal').addClass('zoomOut');
-    }, 1000);
-    setTimeout(function () {
-      $('#success-modal').modal('hide');
-      $('#success-modal').removeClass('zoomOut');
-      $('#success-modal').addClass('zoomIn');
-    }, 1500);    $('.confirm-delete-text').empty();
-  }
+_handleDeleteBook (id) {
+  $.ajax({
+    url: this.libraryURL,
+    method: 'DELETE',
+    dataType: 'json',
+    data: id, //this is our request
+    success: (data) => { //this is the response from DB
+      console.log(data, "Success");;
+    }
+  })
+  // if (this.removeBook(this._titleToDelete)) {
+  //   $('#success-modal').modal('show');
+  //   setTimeout(function () {
+  //     $('#success-modal').removeClass('zoomIn');
+  //     $('#success-modal').addClass('zoomOut');
+  //   }, 1000);
+  //   setTimeout(function () {
+  //     $('#success-modal').modal('hide');
+  //     $('#success-modal').removeClass('zoomOut');
+  //     $('#success-modal').addClass('zoomIn');
+  //   }, 1500);    $('.confirm-delete-text').empty();
+  // }
 };
 
 _createHeader () {
@@ -197,7 +195,7 @@ _createRow (index, book) {
   // console.log(book, 'book');
   var bookImg = $('<img>', {
     class: 'coverToEdit',
-    src: `${book.cover}`,
+    // src: `${book.cover}`, //keep this line until you figure out Base64
     alt: 'book cover'
   })
   // end book cover cell ***
@@ -219,14 +217,14 @@ _createRow (index, book) {
   }
 
   $(tr).append($('<td>').append(book.cover))
-  $(tr).append($('<td>').append(book.title))
+  $(tr).append($('<td>', {class: 'h5'}).append(book.title))
   $(tr).append($('<td>').append(book.author))
   $(tr).append($('<td>').append(book.genre))
   $(tr).append($('<td>').append(book.pages))
   $(tr).append($('<td>').append(parseDate(book.pubDate)))
   $(tr).append($('<td>').append(ratingList).addClass('rating-stars'))
-  $(tr).append($('<td>').append(deleteIcon))
-  $(tr).append($('<td>').append(editIcon))
+  $(tr).append($('<td>', {class: 'text-center'}).append(deleteIcon))
+  $(tr).append($('<td>', {class: 'text-center'}).append(editIcon))
 
   return tr;
 };
