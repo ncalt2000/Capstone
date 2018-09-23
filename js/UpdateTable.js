@@ -1,19 +1,14 @@
 class DataTable {
   constructor() {
-    //placeholder for an id='addBooksModal'
-    // allow us to access anythign in the Library
-    // Library.call(this);
-    // temp bookshelf is to hold multiple books, then pass it in addBooks function, and tie to Add btn.
     this.libraryURL = 'http://127.0.0.1:3002/library/'
     this.allBooks = [];
+    const bookId = null;
+    const data = "";
   }
 
 _init () {
   // when the page initially loads
-
   this._getAllBooks();
-  // this._updateTable();
-  // this._bindEvents();
   this._bindCustomListeners();
   this._ratingBook();
 };
@@ -21,7 +16,7 @@ _init () {
 _getGlobalBooks(){
   //make this.allBooks available in other classes
   //and avoid making another API call
-return this.allBooks;
+  return this.allBooks;
 }
 
 _reload () {
@@ -35,15 +30,14 @@ _bindEvents () {
   //add native events here
   //Must run this._bindEvents() to attach event handlers to the btns.
   $('.delete').on('click', this._openDeleteModal.bind(this));
-  // $('.delete').on('click', this._handleDeleteBook.bind(this));
   $('.edit').on('click', this._openEditModal.bind(this));
 };
 
 _bindCustomListeners () {
   //every time table updates, this._bindEvents must reload again.
   $(document).on('objUpdate', $.proxy(this._reload, this));
-  $('#confirm-cancel-btn').on('click', $.proxy(this._closeModalOnCancel, this));
-  $('#confirm-delete-btn').on('click', $.proxy(this._handleDeleteBook, this));
+  $('#confirm-cancel-btn').on('click', this._closeModalOnCancel.bind(this));
+  $('#confirm-delete-btn').on('click', this._confirmDeleteBook.bind(this));
 
   $('#save-edit-btn').on('click', $.proxy(this._editBook, this));
 
@@ -67,7 +61,6 @@ _getAllBooks(){
       $('#display-data').empty();
       this.allBooks = data;
       console.log(this.allBooks, 'All Books from DB');
-      // this._updateTable();
       this._reload();
     }
   })
@@ -86,22 +79,19 @@ _updateTable () {
   });
 };
 
-_openDeleteModal () {
-  // const _titleToDelete = $(e.target).data('title');
-  console.log("Hello");
-  // console.log(_titleToDelete, 'title');
-  // var strong = $('<span>', {class: 'text-danger font-weight-bold'})
-  // var styledTitle = strong.append(this._titleToDelete);
-  // // console.log(styledTitle);
-  // var deleteText = $('<p>', {id: 'delete-text'});
-  // deleteText.html(`Are you sure you want to delete ${styledTitle[0].textContent}?`)
-  // var confirmDeleteText = $('.confirm-delete-text').append(deleteText)
+_openDeleteModal (e) {
+  this.bookId = $(e.target).data('id');
+  const _titleToDelete = $(e.target).data('title');
+  console.log(_titleToDelete, 'title');
+  let deleteText = $('<p>', {id: 'delete-text'});
+  deleteText.html(`Are you sure you want to delete ${_titleToDelete}?`)
+  let confirmDeleteText = $('.confirm-delete-text').append(deleteText)
   $('#confirm-delete-modal').modal('show');
   return;
 };
 
 _openEditModal (e) {
-console.log("Edit modal");
+  console.log("Edit modal");
   // 1. open modal:
   $('#edit-book-modal').modal('show')
   //2. get the title fo the book you are clicking on:
@@ -122,28 +112,35 @@ console.log("Edit modal");
   this._keepRating = bookToEdit.rating;
 };
 
+_confirmDeleteBook () {
+  this._handleDeleteBook(this.bookId);
+  return;
+}
+
 _handleDeleteBook (id) {
   $.ajax({
-    url: this.libraryURL,
+    url: `${this.libraryURL}${id}`,
     method: 'DELETE',
     dataType: 'json',
     data: id, //this is our request
     success: (data) => { //this is the response from DB
+      this.data = data;
       console.log(data, "Success");;
     }
   })
-  // if (this.removeBook(this._titleToDelete)) {
-  //   $('#success-modal').modal('show');
-  //   setTimeout(function () {
-  //     $('#success-modal').removeClass('zoomIn');
-  //     $('#success-modal').addClass('zoomOut');
-  //   }, 1000);
-  //   setTimeout(function () {
-  //     $('#success-modal').modal('hide');
-  //     $('#success-modal').removeClass('zoomOut');
-  //     $('#success-modal').addClass('zoomIn');
-  //   }, 1500);    $('.confirm-delete-text').empty();
-  // }
+  if (this.data !== "") {
+    $('#success-modal').modal('show');
+    setTimeout(function () {
+      $('#success-modal').removeClass('zoomIn');
+      $('#success-modal').addClass('zoomOut');
+    }, 1000);
+    setTimeout(function () {
+      $('#success-modal').modal('hide');
+      $('#success-modal').removeClass('zoomOut');
+      $('#success-modal').addClass('zoomIn');
+    }, 1500);
+  $('.confirm-delete-text').empty();
+  }
 };
 
 _createHeader () {
@@ -184,11 +181,13 @@ _createRow (index, book) {
   var tr = $('<tr>', {id: 'row', class: 'animated fadeIn'});
   var deleteIcon = $('<i>', {
     class: 'far fa-times-circle fa-lg delete',
-    'data-title': book['title']
+    'data-title': book['title'],
+    'data-id': book['_id']
   });
   var editIcon = $('<i>', {
     class: 'far fa-edit fa-lg edit',
-    'data-title': book['title']
+    'data-title': book['title'],
+    'data-id': book['_id']
   });
   var ratingList = $('<ul>', {
     class: 'stars w-100',
