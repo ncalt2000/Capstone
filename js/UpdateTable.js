@@ -10,12 +10,19 @@ class DataTable {
 
 _init () {
   // when the page initially loads
+
   this._getAllBooks();
   // this._updateTable();
-  this._bindEvents();
+  // this._bindEvents();
   this._bindCustomListeners();
   this._ratingBook();
 };
+
+_getGlobalBooks(){
+  //make this.allBooks available in other classes
+  //and avoid making another API call
+return this.allBooks;
+}
 
 _reload () {
   //after addind, editing, deleting, these methods must run to add event handlers back to the btns!
@@ -27,8 +34,8 @@ _reload () {
 _bindEvents () {
   //add native events here
   //Must run this._bindEvents() to attach event handlers to the btns.
-  // $('.delete').on('click', this._openDeleteModal.bind(this));
-  $('.delete').on('click', this._handleDeleteBook.bind(this));
+  $('.delete').on('click', this._openDeleteModal.bind(this));
+  // $('.delete').on('click', this._handleDeleteBook.bind(this));
   $('.edit').on('click', this._openEditModal.bind(this));
 };
 
@@ -60,7 +67,8 @@ _getAllBooks(){
       $('#display-data').empty();
       this.allBooks = data;
       console.log(this.allBooks, 'All Books from DB');
-      this._updateTable();
+      // this._updateTable();
+      this._reload();
     }
   })
 }
