@@ -15,6 +15,7 @@ function parseDate(pubDate) {
 
 //from "February 2000" into 02/01/2000:
 function parseFormDate (pubDate) {
+  // console.log("it's working");
   var date = new Date(pubDate);
   var month = (date.getMonth()+1).toString().padStart(2, '0');
   var day = date.getDay().toString().padStart(2, '0');

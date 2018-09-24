@@ -20,10 +20,11 @@ _getGlobalBooks(){
 }
 
 _reload () {
-  //after addind, editing, deleting, these methods must run to add event handlers back to the btns!
+  // console.log("RELOADED!!!");
+  //after addind, editing, deleting, updating these methods must run to add event handlers back to the btns!
+  this._ratingBook();
   this._updateTable();
   this._bindEvents();
-  // this._ratingBook();
 };
 
 _bindEvents () {
@@ -31,21 +32,33 @@ _bindEvents () {
   //Must run this._bindEvents() to attach event handlers to the btns.
   $('.delete').on('click', this._openDeleteModal.bind(this));
   $('.edit').on('click', this._openEditModal.bind(this));
+  $('.stars li').on('click',this._rateBook.bind(this));
 };
 
 _bindCustomListeners () {
   //every time table updates, this._bindEvents must reload again.
-  $(document).on('objUpdate', $.proxy(this._reload, this));
+  $(gDataTable).on('Updated', this._reload.bind(this));
   $('#confirm-cancel-btn').on('click', this._closeModalOnCancel.bind(this));
   $('#confirm-delete-btn').on('click', this._confirmDeleteBook.bind(this));
 
-  $('#save-edit-btn').on('click', $.proxy(this._editBook, this));
+  $('#save-edit-btn').on('click', this._editBook.bind(this));
 
   $("#sort-title").on('click', $.proxy(this._sortBy, this));
   $("#sort-author").on('click', $.proxy(this._sortBy, this));
   $("#sort-genre").on('click', $.proxy(this._sortBy, this));
   $("#sort-rating").on('click', $.proxy(this._sortBy, this));
 };
+
+_handleEventTrigger (sEvent, oData) {
+  console.log("Event triggered!");
+  var oData = oData || {}; //sets oData to an empty object if it does not have data
+  // console.log(oData, 'Data');
+  if (sEvent) {
+    var event = new CustomEvent(sEvent, oData);
+    // console.log(event, 'Event');
+    document.dispatchEvent(event);
+  }
+}
 
 _closeModalOnCancel () {
   $('.confirm-delete-text').empty();
@@ -91,26 +104,62 @@ _openDeleteModal (e) {
 };
 
 _openEditModal (e) {
-  console.log("Edit modal");
-  // 1. open modal:
   $('#edit-book-modal').modal('show')
-  //2. get the title fo the book you are clicking on:
-  this._titleToEdit = $(e.target).data('title');
-  // 3. getBookByTitle(it comes in as an array):
-  var bookToEdit = this.getBookByTitle(this._titleToEdit)[0];
-  // 4. grab all the values from the book and put it in the modal:
-  var parsedDate = window.parseFormDate(bookToEdit.publishDate);
-  // console.log(bookToEdit.cover);
-  this.currentCover = bookToEdit.cover;
+
+  this.bookId = $(e.target).data('id');
+  let bookToEdit = this.allBooks.filter(item => {
+    return item._id === this.bookId
+  })
+
+  let parsedDate = parseFormDate(bookToEdit[0].pubDate);
+  console.log(parsedDate);
+  // this.currentCover = bookToEdit[0].cover;
   // console.log(this.currentCover, 'from OpenModal');
-  $('#title-edit').val(bookToEdit.title);
-  $('#author-edit').val(bookToEdit.author);
-  $('#genre-edit').val(bookToEdit.genre);
-  $('#pages-edit').val(bookToEdit.pages);
+  $('#title-edit').val(bookToEdit[0].title);
+  $('#author-edit').val(bookToEdit[0].author);
+  $('#genre-edit').val(bookToEdit[0].genre);
+  $('#pages-edit').val(bookToEdit[0].pages);
   $('#publicationDate-edit').val(parsedDate);
-  $('#synopsis-edit').val(bookToEdit.synopsis);
+  $('#synopsis-edit').val(bookToEdit[0].synopsis);
   this._keepRating = bookToEdit.rating;
 };
+
+_saveEditedBook(id){
+  const newTitle = $('#title-edit').val();
+  const newAuthor = $('#author-edit').val();
+  const newGenre = $('#genre-edit').val();
+  const newPages = $('#pages-edit').val();
+  const newPubDate = $('#publicationDate-edit').val();
+  const newSynopsis = $('#synopsis-edit').val();
+
+  const editedBook = {
+    title: newTitle,
+    author: newAuthor,
+    genre: newGenre,
+    pages: newPages,
+    pubDate: newPubDate,
+    synopsis: newSynopsis
+  }
+  // console.log(editedBook, 'Book to send to DB');
+
+  $.ajax({
+    url: `${this.libraryURL}${id}`,
+    method: 'PUT',
+    dataType: 'json',
+    data: editedBook,
+    success: (data) => {
+      // console.log(data, 'Edited Book from DB');
+      this._reload();
+      this._handleEventTrigger("Updated")
+
+    }
+  })
+  $('#edit-book-modal').modal('hide');
+}
+
+_editBook () {
+  this._saveEditedBook(this.bookId);
+}
 
 _confirmDeleteBook () {
   this._handleDeleteBook(this.bookId);
@@ -141,6 +190,7 @@ _handleDeleteBook (id) {
     }, 1500);
   $('.confirm-delete-text').empty();
   }
+  this._handleEventTrigger("Updated")
 };
 
 _createHeader () {
@@ -210,13 +260,14 @@ _createRow (index, book) {
   for (var i = 0; i < 5; i++) {
     var ratingItem = $('<li>', {
       class: 'star',
-      'data-value': i + 1
     });
     if (book.rating && book.rating > i) {
       $(ratingItem).addClass('selected');
     }
     var star = $('<i>', {
       class: 'fa fa-star',
+      'data-id': book['_id'],
+      'data-value': i + 1,
       'data-title': book['title']
     });
     var rating = $(ratingItem).append(star);
@@ -236,11 +287,31 @@ _createRow (index, book) {
   return tr;
 };
 
+_rateBook (e) {
+
+  // console.log(e, 'event');
+  this.bookId = $(e.target).data('id');
+  console.log(this.bookId, 'Book ID');
+  // console.log(this, 'THIS');
+  var onStar = parseInt($(e.target).data('value'), 10); // The star currently selected
+  console.log(onStar, 'onStar');
+  var stars = $('.star');
+  // console.log(stars, 'STARS');
+  for (var i = 0; i < stars.length; i++) {
+    $(stars[i]).removeClass('selected');
+  }
+  for (var i = 0; i < onStar; i++) {
+    $(stars[i]).addClass('selected');
+  }
+}
+
 _ratingBook () {
+  console.log("From Rating");
   /* 1. Visualizing things on Hover - See next part for action on click */
   $('.stars li').on('mouseover', function() {
     var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
-    // console.log(onStar, 'first');
+    // console.log(this);
+    console.log(onStar, 'first');
 
     // Now highlight all the stars that's not after the current hovered star
     $(this).parent().children('.star').each(function(e) {
@@ -257,7 +328,8 @@ _ratingBook () {
   });
   /* 2. Action to perform on click */
   $('.stars li').on('click', function(e) {
-    var currentTitle = $(e.target).data('title');
+    // console.log(e, 'event');
+    this.bookId = $(e.target).data('id');
     // console.log(currentTitle, 'currentTitle');
     var onStar = parseInt($(this).data('value'), 10); // The star currently selected
     // console.log(onStar, 'onStar');
@@ -277,7 +349,7 @@ _ratingBook () {
   });
 };
 
-_editBook () {
+editBook () {
 
   var newTitle = $('#title-edit').val();
   var newAuthor = $('#author-edit').val();
