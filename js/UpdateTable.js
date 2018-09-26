@@ -10,7 +10,6 @@ _init () {
   // when the page initially loads
   this._getAllBooks();
   this._bindCustomListeners();
-  this._ratingBook();
 };
 
 _getGlobalBooks(){
@@ -22,7 +21,6 @@ _getGlobalBooks(){
 _reload () {
   // console.log("RELOADED!!!");
   //after addind, editing, deleting, updating these methods must run to add event handlers back to the btns!
-  this._ratingBook();
   this._updateTable();
   this._bindEvents();
 };
@@ -32,7 +30,7 @@ _bindEvents () {
   //Must run this._bindEvents() to attach event handlers to the btns.
   $('.delete').on('click', this._openDeleteModal.bind(this));
   $('.edit').on('click', this._openEditModal.bind(this));
-  $('.stars li').on('click',this._rateBook.bind(this));
+  $('.star').on('click', this._rateBook.bind(this));
 };
 
 _bindCustomListeners () {
@@ -291,22 +289,24 @@ _rateBook (e) {
 
   // console.log(e, 'event');
   this.bookId = $(e.target).data('id');
-  console.log(this.bookId, 'Book ID');
-  // console.log(this, 'THIS');
+  // console.log(this.bookId, 'Book ID');
   var onStar = parseInt($(e.target).data('value'), 10); // The star currently selected
-  console.log(onStar, 'onStar');
-  var stars = $('.star');
-  // console.log(stars, 'STARS');
-  for (var i = 0; i < stars.length; i++) {
-    $(stars[i]).removeClass('selected');
-  }
-  for (var i = 0; i < onStar; i++) {
-    $(stars[i]).addClass('selected');
-  }
+  // console.log(onStar, 'onStar');
+  $.ajax({
+    url: `${this.libraryURL}${this.bookId}`,
+    method: 'PUT',
+    dataType: 'json',
+    data: {rating: onStar},
+    success: (data) => {
+      // console.log(data, 'Edited Book with rating from DB');
+      this._reload();
+      this._handleEventTrigger("Updated")
+    }
+  })
 }
 
-_ratingBook () {
-  console.log("From Rating");
+ratingBook () {
+  // console.log("From Rating");
   /* 1. Visualizing things on Hover - See next part for action on click */
   $('.stars li').on('mouseover', function() {
     var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
