@@ -15,9 +15,7 @@ class AddBooksUI {
 
 // init fires whatever is in the _bindEvents.
 _init() {
-  // this.getStorage();
   this._bindEvents();
-  return;
 };
 
 // this opens the modal
@@ -33,7 +31,6 @@ _bindEvents() {
 
 _handleModalOpen() {
   $('#addBookModal').modal('show');
-  return;
 }
 
 _getBookFields() {
@@ -64,7 +61,7 @@ _bookInLine() {
   $('#author').removeClass('required');
  //   this._tempBookshelf.push(book);
   this._tempBookshelf.push(bookData);
-  console.log(this._tempBookshelf, "TEMP SHelf");
+  // console.log(this._tempBookshelf, "TEMP SHelf");
   var $booksToAdd = $('<p>', {'class': 'booksToAdd'});
     $('.booksInLine').append($booksToAdd).text(`Books to be added: ${this._tempBookshelf.length}`);
     $('#add-book-form')[0].reset();
@@ -92,7 +89,8 @@ _saveBook() {
     dataType: 'json',
     data: {bookshelf: this._tempBookshelf}, //this is our request
     success: (data) => { //this is the response from DB
-      console.log(data, "Success");;
+      gDataTable._getAllBooks();
+      // console.log(data, "Success");;
     }
   })
   $('#add-book-form')[0].reset();

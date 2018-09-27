@@ -1,21 +1,19 @@
-class RandomBook {
+class RandomBookOrAuthor {
   constructor() {
-    this.allBooks = [];
-    this.libraryURL = 'http://127.0.0.1:3002/library/'
+
   }
 
   _init() {
     this._bindEvents();
-    return;
   };
 
   _bindEvents() {
     $('button#random-book-btn').on('click', this._showRandomBook.bind(this));
-    return;
+    $('button#random-author-btn').on('click', this._showRandomAuthor.bind(this));
   };
 
   _createRandomBook(book) {
-    this._openRandomBookModal()
+    // $('#randomBookModal').modal('show');
     var form = $('<form>', {'class': 'form-inline'})
     var image = $('<img>', {
       'class': 'img-thumbnail col-md-4',
@@ -36,11 +34,6 @@ class RandomBook {
     return form;
   };
 
-  _openRandomBookModal() {
-    $('#randomBookModal').modal('show');
-    return;
-  };
-
   _showRandomBook() {
     let allBooks = gDataTable._getGlobalBooks();
     if (allBooks.length === 0) {
@@ -49,8 +42,8 @@ class RandomBook {
     let randomBook = allBooks[Math.floor(Math.random() * allBooks.length)];
 
     if(randomBook){
-      this._openRandomBookModal();
-    $('#randomBookModal').find('.modal-body').html(this._createRandomBook(randomBook));
+      $('#randomBookModal').modal('show');
+      $('#randomBookModal').find('.modal-body').html(this._createRandomBook(randomBook));
     }
     else {
       alert("Your library is empty!")
@@ -58,9 +51,26 @@ class RandomBook {
     return;
   };
 
+  _createRandomAuthor(randomAuthorName){
+    const form = $('<form>', {'class': 'form-inline'})
+    const author = $('<h4>').text(randomAuthorName);
+    form.append(author);
+    return form;
+  }
+
+  _showRandomAuthor(){
+    let allBooks = gDataTable._getGlobalBooks();
+    let randomBook = allBooks[Math.floor(Math.random() * allBooks.length)];
+    if(randomBook){
+      $('#randomAuthorModal').modal('show');
+      $('#randomAuthorModal').find('.modal-body').html(this._createRandomAuthor(randomBook.author));
+    }
+    return;
+  }
+
 };
 
 $(function() {
-  window.gRandomBook = new RandomBook();
+  window.gRandomBook = new RandomBookOrAuthor();
   window.gRandomBook._init();
 });

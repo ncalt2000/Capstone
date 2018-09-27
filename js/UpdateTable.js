@@ -31,11 +31,12 @@ _bindEvents () {
   $('.delete').on('click', this._openDeleteModal.bind(this));
   $('.edit').on('click', this._openEditModal.bind(this));
   $('.star').on('click', this._rateBook.bind(this));
+
 };
 
 _bindCustomListeners () {
   //every time table updates, this._bindEvents must reload again.
-  $(gDataTable).on('Updated', this._reload.bind(this));
+  // $(document.gDataTable).on('Updated', this._getAllBooks.bind(this));
   $('#confirm-cancel-btn').on('click', this._closeModalOnCancel.bind(this));
   $('#confirm-delete-btn').on('click', this._confirmDeleteBook.bind(this));
 
@@ -47,23 +48,13 @@ _bindCustomListeners () {
   $("#sort-rating").on('click', $.proxy(this._sortBy, this));
 };
 
-_handleEventTrigger (sEvent, oData) {
-  console.log("Event triggered!");
-  var oData = oData || {}; //sets oData to an empty object if it does not have data
-  // console.log(oData, 'Data');
-  if (sEvent) {
-    var event = new CustomEvent(sEvent, oData);
-    // console.log(event, 'Event');
-    document.dispatchEvent(event);
-  }
-}
-
 _closeModalOnCancel () {
   $('.confirm-delete-text').empty();
   $('#confirm-delete-modal').modal('hide')
 };
 
 _getAllBooks(){
+  console.log("News books comming in");
   $.ajax({
     url: this.libraryURL,
     method: 'GET',
@@ -78,6 +69,8 @@ _getAllBooks(){
 }
 
 _updateTable () {
+  console.log("Table updated");
+  // this._getAllBooks();
   var $tbody = $('#table-body');
   $tbody.empty();
 
@@ -93,7 +86,7 @@ _updateTable () {
 _openDeleteModal (e) {
   this.bookId = $(e.target).data('id');
   const _titleToDelete = $(e.target).data('title');
-  console.log(_titleToDelete, 'title');
+  // console.log(_titleToDelete, 'title');
   let deleteText = $('<p>', {id: 'delete-text'});
   deleteText.html(`Are you sure you want to delete ${_titleToDelete}?`)
   let confirmDeleteText = $('.confirm-delete-text').append(deleteText)
@@ -131,6 +124,7 @@ _saveEditedBook(id){
   const newSynopsis = $('#synopsis-edit').val();
 
   const editedBook = {
+    // cover: newCover     //when available
     title: newTitle,
     author: newAuthor,
     genre: newGenre,
@@ -147,9 +141,7 @@ _saveEditedBook(id){
     data: editedBook,
     success: (data) => {
       // console.log(data, 'Edited Book from DB');
-      this._reload();
-      this._handleEventTrigger("Updated")
-
+      this._getAllBooks();
     }
   })
   $('#edit-book-modal').modal('hide');
@@ -172,7 +164,8 @@ _handleDeleteBook (id) {
     data: id, //this is our request
     success: (data) => { //this is the response from DB
       this.data = data;
-      console.log(data, "Success");;
+      this._getAllBooks();
+      // console.log(data, "Success");;
     }
   })
   if (this.data !== "") {
@@ -188,7 +181,6 @@ _handleDeleteBook (id) {
     }, 1500);
   $('.confirm-delete-text').empty();
   }
-  this._handleEventTrigger("Updated")
 };
 
 _createHeader () {
@@ -226,6 +218,7 @@ _createHeader () {
 };
 
 _createRow (index, book) {
+  console.log("row created!");
   var tr = $('<tr>', {id: 'row', class: 'animated fadeIn'});
   var deleteIcon = $('<i>', {
     class: 'far fa-times-circle fa-lg delete',
@@ -299,8 +292,7 @@ _rateBook (e) {
     data: {rating: onStar},
     success: (data) => {
       // console.log(data, 'Edited Book with rating from DB');
-      this._reload();
-      this._handleEventTrigger("Updated")
+      this._getAllBooks();
     }
   })
 }
@@ -382,7 +374,7 @@ editBook () {
     window.bookshelf.splice(index, 1, newBook);
 
     this.setStorage();
-    this._handleEventTrigger("objUpdate", {bookEdited: "Book is Edited!"});
+    // this._handleEventTrigger("objUpdate", {bookEdited: "Book is Edited!"});
 
     $('#edit-book-modal').modal('hide');
 
@@ -437,7 +429,7 @@ _sortBy (e, book) {
     return 0 //default return value (no sorting)
   })
 
-  this._handleEventTrigger("objUpdate");
+  // this._handleEventTrigger("objUpdate");
 };
 
 };
