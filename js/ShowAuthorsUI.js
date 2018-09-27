@@ -1,43 +1,36 @@
-var ShowAuthorsUI = function(container) {
-  // placeholder for #allAuthorModal
-  this.$container = container;
-  Library.call(this);//set the this keyword to Library so that we can call anything in the library using 'this': "resetting scope"
-};
+class ShowAuthorsUI {
+  constructor(){
 
-//make a new reference to the Library
-ShowAuthorsUI.prototype = Object.create(Library.prototype);
 
-//make an initialization function - put things you want immediately loaded here
-ShowAuthorsUI.prototype.init = function () {
-  //separate concerns - recover should be in the Library not here
-  //use return to make sure the function finishes
-    // this is my call to get stuff out of local storage
-  // this.getAuthorsFromStorage();
+  }
+
+_init () {
   this._bindEvents();
   return;
 };
 
-//function to bind jquery events to button
-ShowAuthorsUI.prototype._bindEvents = function () {
-  //using proxy to force 'this' to be the scope and not the element
-  //use id on my button to bind to a click event
-  $('button#showAllAuthorsBtn').on('click', $.proxy(this._handleShowAuthors, this));
+_bindEvents () {
+  $('button#showAllAuthorsBtn').on('click', this._handleShowAuthors.bind(this));
   return;
 };
 
-//function to show authors
-ShowAuthorsUI.prototype._handleShowAuthors = function () {
-  //console.log(this.getAuthors());
-  //make a holding array for the results of getAuthors
-  var authors = this.getAuthors();
-  //if there are authors in the array, show the modal and append <li>
-  // console.log(authors, 'authors');
+_handleShowAuthors () {
+  let allBooks = gDataTable._getGlobalBooks();
+  var resultArr = [];
+  for (var i = 0; i < allBooks.length; i++) {
+    resultArr.push(allBooks[i]['author']);
+  }
 
-  if(authors){
-    this.$container.modal('show');
-    //use _createUlOfAuthors to make this function less complecated
-    //find the class labelled modal body and add html
-    this.$container.find('.modal-body').html(this._createUlOfAuthors(authors));
+  var finalArr = resultArr.reduce(function(a, b) {
+    if (a.indexOf(b) < 0) {
+      a.push(b)
+    }
+    return a;
+  }, [])
+
+  if(finalArr.length){
+    $('#allAuthorsModal').modal('show');
+    $('#allAuthorsModal').find('.modal-body').html(this._createUlOfAuthors(finalArr));
   }
   else {
     alert('Nothing in library!')
@@ -45,25 +38,18 @@ ShowAuthorsUI.prototype._handleShowAuthors = function () {
   return;
 };
 
-ShowAuthorsUI.prototype._createUlOfAuthors = function (authors){
-  // console.log(authors);
-
-  //create unordered list
-  var ul = document.createElement('ul');
-  //for elements returned from getAuthors create an <li> with text from getAuthors
+_createUlOfAuthors (authors){
+  const ol = $('<ol>');
   for (var i = 0; i < authors.length; i++) {
-    //create element
-    var li = document.createElement('li');
-    //add text
+    const li = $('<li>');
     $(li).text(authors[i]);
-    //append to ul element
-    ul.append(li);
+    ol.append(li);
   }
-  return ul;
+  return ol;
 };
 
+};
 
-//use singleton to start up the process
 $(function(){
   //creating a new instance here will create a new instance of library
   //can access anything on the Library
@@ -71,7 +57,7 @@ $(function(){
 
   // window.gShowAuthUI = new ShowAuthorsUI(); //first round of code
 
-  window.gShowAuthUI = new ShowAuthorsUI($('#allAuthorsModal'));//refactored to make a holding variable
+  gShowAuthUI = new ShowAuthorsUI();//refactored to make a holding variable
   //initialize with your init function
-  window.gShowAuthUI.init();
+  gShowAuthUI._init();
 });

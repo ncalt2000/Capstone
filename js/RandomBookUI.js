@@ -1,9 +1,4 @@
 class RandomBookOrAuthor {
-  constructor() {
-    this.allBooks = [];
-    this.randomBook = {};
-
-  }
 
   _init() {
     this._bindEvents();
