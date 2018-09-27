@@ -1,4 +1,4 @@
-
+var bookshelf = new Array();
 
 // Enable tooltips everywhere:
 $(function() {

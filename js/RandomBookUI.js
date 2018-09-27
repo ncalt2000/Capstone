@@ -1,5 +1,7 @@
 class RandomBookOrAuthor {
   constructor() {
+    this.allBooks = [];
+    this.randomBook = {};
 
   }
 
@@ -36,9 +38,6 @@ class RandomBookOrAuthor {
 
   _showRandomBook() {
     let allBooks = gDataTable._getGlobalBooks();
-    if (allBooks.length === 0) {
-      return null;
-    }
     let randomBook = allBooks[Math.floor(Math.random() * allBooks.length)];
 
     if(randomBook){
@@ -51,19 +50,15 @@ class RandomBookOrAuthor {
     return;
   };
 
-  _createRandomAuthor(randomAuthorName){
-    const form = $('<form>', {'class': 'form-inline'})
-    const author = $('<h4>').text(randomAuthorName);
-    form.append(author);
-    return form;
-  }
-
   _showRandomAuthor(){
     let allBooks = gDataTable._getGlobalBooks();
     let randomBook = allBooks[Math.floor(Math.random() * allBooks.length)];
     if(randomBook){
+      const body = $('<div>', {'class': 'text-center'})
+      const author = $('<h4>').text(randomBook.author);
+      body.append(author);
       $('#randomAuthorModal').modal('show');
-      $('#randomAuthorModal').find('.modal-body').html(this._createRandomAuthor(randomBook.author));
+      $('#randomAuthorModal').find('.modal-body').html(body);
     }
     return;
   }
