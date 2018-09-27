@@ -42,10 +42,10 @@ _bindCustomListeners () {
 
   $('#save-edit-btn').on('click', this._editBook.bind(this));
 
-  $("#sort-title").on('click', $.proxy(this._sortBy, this));
-  $("#sort-author").on('click', $.proxy(this._sortBy, this));
-  $("#sort-genre").on('click', $.proxy(this._sortBy, this));
-  $("#sort-rating").on('click', $.proxy(this._sortBy, this));
+  $("#sort-title").on('click', this._sortBy.bind(this));
+  $("#sort-author").on('click', this._sortBy.bind(this));
+  $("#sort-genre").on('click', this._sortBy.bind(this));
+  $("#sort-rating").on('click', this._sortBy.bind(this));
 };
 
 _closeModalOnCancel () {
@@ -54,7 +54,7 @@ _closeModalOnCancel () {
 };
 
 _getAllBooks(){
-  console.log("News books comming in");
+  // console.log("News books comming in");
   $.ajax({
     url: this.libraryURL,
     method: 'GET',
@@ -62,15 +62,13 @@ _getAllBooks(){
     success: (data) => {
       $('#display-data').empty();
       this.allBooks = data;
-      console.log(this.allBooks, 'All Books from DB');
+      // console.log(this.allBooks, 'All Books from DB');
       this._reload();
     }
   })
 }
 
 _updateTable () {
-  console.log("Table updated");
-  // this._getAllBooks();
   var $tbody = $('#table-body');
   $tbody.empty();
 
@@ -86,7 +84,6 @@ _updateTable () {
 _openDeleteModal (e) {
   this.bookId = $(e.target).data('id');
   const _titleToDelete = $(e.target).data('title');
-  // console.log(_titleToDelete, 'title');
   let deleteText = $('<p>', {id: 'delete-text'});
   deleteText.html(`Are you sure you want to delete ${_titleToDelete}?`)
   let confirmDeleteText = $('.confirm-delete-text').append(deleteText)
@@ -103,7 +100,7 @@ _openEditModal (e) {
   })
 
   let parsedDate = parseFormDate(bookToEdit[0].pubDate);
-  console.log(parsedDate);
+  // console.log(parsedDate);
   // this.currentCover = bookToEdit[0].cover;
   // console.log(this.currentCover, 'from OpenModal');
   $('#title-edit').val(bookToEdit[0].title);
@@ -218,7 +215,7 @@ _createHeader () {
 };
 
 _createRow (index, book) {
-  console.log("row created!");
+  // console.log("row created!");
   var tr = $('<tr>', {id: 'row', class: 'animated fadeIn'});
   var deleteIcon = $('<i>', {
     class: 'far fa-times-circle fa-lg delete',
@@ -303,7 +300,7 @@ ratingBook () {
   $('.stars li').on('mouseover', function() {
     var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
     // console.log(this);
-    console.log(onStar, 'first');
+    // console.log(onStar, 'first');
 
     // Now highlight all the stars that's not after the current hovered star
     $(this).parent().children('.star').each(function(e) {
@@ -415,8 +412,8 @@ editBook () {
 
 _sortBy (e, book) {
   var val = $(e.target).data("sort");
-  // console.log(val);
-  window.bookshelf.sort((a, b) => {
+  // console.log(val, "VALUE");
+  this.allBooks.sort((a, b) => {
     if (typeof a[val] === "number") {
       return b[val] - a[val]
     }
@@ -428,8 +425,7 @@ _sortBy (e, book) {
       return 1
     return 0 //default return value (no sorting)
   })
-
-  // this._handleEventTrigger("objUpdate");
+  this._reload();
 };
 
 };
