@@ -13,9 +13,9 @@ body h2{
   border: 3px solid red;
 }
 
-/* //////////////////////////// */
-/* NAVBAR */
-/* //////////////////////////// */
+/* ---------------------- */
+/* NAVBAR                 */
+/* ---------------------- */
 
 nav {
   /* width: 100%; */
@@ -41,9 +41,9 @@ nav {
   border-radius: 10px;;
 }
 
-/* //////////////////////////// */
-/* BANNER */
-/* //////////////////////////// */
+/* ---------------------- */
+/* BANNER                 */
+/* ---------------------- */
 
 .banner {
   height: 100vh;
@@ -65,16 +65,16 @@ nav {
   background-color: rgba(7, 8, 8, 0.7)
 }
 
-/* //////////////////////////// */
-/* CARDS */
-/* //////////////////////////// */
+/* ---------------------------- */
+/* CARDS                        */
+/* ---------------------------- */
 .book-card{
   max-height: 500px !important;
 }
 
-/* //////////////////////////// */
-/* TABLE */
-/* //////////////////////////// */
+/* ---------------------------- */
+/* TABLE                        */
+/* ---------------------------- */
 table{
   background-color: #EBE7E1 !important;
 }
@@ -95,9 +95,9 @@ td .edit, td .delete {
   border: 2px solid rgb(236, 43, 9);
 }
 
-/* //////////////////////////// */
-/* RATINGS */
-/* //////////////////////////// */
+/* ---------------------- */
+/* RATINGS                */
+/* ---------------------- */
 .rating-stars ul {
   list-style-type: none;
   padding: 0;
@@ -128,9 +128,9 @@ td .edit, td .delete {
   color: #FF652D;
 }
 
-/* //////////////////////////// */
-/* CARD FLIPPER */
-/* //////////////////////////// */
+/* -------------------------- */
+/* CARD FLIPPER               */
+/* -------------------------- */
 
 /* entire container, keeps perspective */
 .custom-container {
@@ -181,9 +181,9 @@ td .edit, td .delete {
   /* margin: 20px; */
 }
 
-/* //////////////////////////// */
+/* ---------------------------- */
 /* CHECKMARK ANIMATION */
-/* //////////////////////////// */
+/* ---------------------------- */
 
 .path {
   stroke-dasharray: 1000;
@@ -243,9 +243,9 @@ td .edit, td .delete {
   }
 }
 
-/* //////////////////////////// */
+/* -------------------- */
 /* Cross mark ANIMATION */
-/* //////////////////////////// */
+/* -------------------- */
 .cross__svg {
   border-radius: 50%;
   display: block;
@@ -266,7 +266,7 @@ td .edit, td .delete {
 }
 
 .cross__path {
-  stroke: $color;
+  stroke: #e55454;
   stroke-dasharray: 48;
   stroke-dashoffset: 48;
   transform-origin: 50% 50% 0;
@@ -284,5 +284,38 @@ td .edit, td .delete {
 @keyframes stroke {
   100% {
     stroke-dashoffset: 0;
+  }
+}
+
+/* -------------------- */
+/* Loader ANIMATION */
+/* -------------------- */
+.loader {
+  height: 100vh;
+  position: relative;
+}
+.loader::before {
+  animation: 2s linear infinite loader;
+  border: solid 13px #eee;
+  border-left-color: #73AF55;
+  border-radius: 100%;
+  content: "";
+  height: 100px;
+  width: 100px;
+  left: 50%;
+  opacity: inherit;
+  position: absolute;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  transform-origin: center;
+  will-change: transform;
+}
+
+@keyframes loader {
+  0% {
+      transform: translate3d(-50%, -50%, 0) rotate(0deg);
+  }
+  100% {
+       transform: translate3d(-50%, -50%, 0) rotate(360deg);
   }
 }

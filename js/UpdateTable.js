@@ -3,7 +3,7 @@ class DataTable {
     this.libraryURL = 'http://127.0.0.1:3002/library/'
     this.allBooks = [];
     const bookId = null;
-    const data = "";
+    // const data = "";
   }
 
 _init () {
@@ -26,7 +26,6 @@ _reload () {
 };
 
 _bindEvents () {
-  //add native events here
   //Must run this._bindEvents() to attach event handlers to the btns.
   $('.delete').on('click', this._openDeleteModal.bind(this));
   $('.edit').on('click', this._openEditModal.bind(this));
@@ -36,7 +35,6 @@ _bindEvents () {
 
 _bindCustomListeners () {
   //every time table updates, this._bindEvents must reload again.
-  // $(document.gDataTable).on('Updated', this._getAllBooks.bind(this));
   $('#confirm-cancel-btn').on('click', this._closeModalOnCancel.bind(this));
   $('#confirm-delete-btn').on('click', this._confirmDeleteBook.bind(this));
 
@@ -60,10 +58,15 @@ _getAllBooks(){
     method: 'GET',
     dataType: 'json',
     success: (data) => {
-      $('#display-data').empty();
-      this.allBooks = data;
-      // console.log(this.allBooks, 'All Books from DB');
-      this._reload();
+      if(data.length){
+        $('#display-data').empty();
+        this.allBooks = data;
+        // console.log(this.allBooks, 'All Books from DB');
+        this._reload();
+      } else{
+        var loader = $('<div>', {class: 'loader'})
+        $('#book-table').append(loader);
+      }
     }
   })
 }
@@ -167,24 +170,24 @@ _handleDeleteBook (id) {
     dataType: 'json',
     data: id, //this is our request
     success: (data) => { //this is the response from DB
-      this.data = data;
+      if (data) {
+        $('#success-modal').modal('show');
+        setTimeout(function () {
+          $('#success-modal').removeClass('zoomIn');
+          $('#success-modal').addClass('zoomOut');
+        }, 1000);
+        setTimeout(function () {
+          $('#success-modal').modal('hide');
+          $('#success-modal').removeClass('zoomOut');
+          $('#success-modal').addClass('zoomIn');
+        }, 1500);
+      $('.confirm-delete-text').empty();
+      }
       this._getAllBooks();
       // console.log(data, "Success");;
     }
   })
-  if (this.data !== "") {
-    $('#success-modal').modal('show');
-    setTimeout(function () {
-      $('#success-modal').removeClass('zoomIn');
-      $('#success-modal').addClass('zoomOut');
-    }, 1000);
-    setTimeout(function () {
-      $('#success-modal').modal('hide');
-      $('#success-modal').removeClass('zoomOut');
-      $('#success-modal').addClass('zoomIn');
-    }, 1500);
-  $('.confirm-delete-text').empty();
-  }
+  return true;
 };
 
 _createHeader () {
@@ -247,10 +250,9 @@ _createRow (index, book) {
   // console.log(book, 'book');
   var bookImg = $('<img>', {
     class: 'coverToEdit',
-    src: `${book.cover}`, //keep this line until you figure out Base64
+    src: `${book.cover}`,
     alt: 'book cover'
   })
-  // console.log(bookImg, 'BookImg');
   // end book cover cell ***
 
   for (var i = 0; i < 5; i++) {

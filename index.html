@@ -149,7 +149,7 @@
             </form>
           </div>
           <div class="modal-footer">
-            <div class="booksInLine mr-5  text-success"></div>
+            <div class="booksInLine mr-5"></div>
             <button id="add-another-btn" type="submit" class="btn btn-primary transition-3d-hover">Add Another Book</button>
             <button type="button" class="btn btn-secondary transition-3d-hover" id="save-book-btn">Save</button>
           </div>
@@ -226,7 +226,7 @@
             </form>
           </div>
           <div class="modal-footer">
-            <div class="booksInLine mr-5  text-success"></div>
+            <div class="booksInLine mr-5"></div>
             <button id="save-edit-btn" type="submit" class="btn btn-primary transition-3d-hover">Save Edits</button>
             <button type="button" class="btn btn-secondary transition-3d-hover" data-dismiss="modal" id="cancel-edit-btn">Cancel</button>
           </div>
@@ -343,7 +343,7 @@
             <!-- Checkmark -->
             <figure class="w-100">
               <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2" xml:space="preserve" width="200px" height="200px">
-                  <circle class="path circle" fill="#CCFF90" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
+                  <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
                   <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="12" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/>
                 </svg>
             </figure>
@@ -357,19 +357,20 @@
     <!-- End of Success modal -->
 
     <!-- Failure Modal -->
-    <div id="failure-modal" class="modal animated zoomIn" tabindex="-1" role="dialog">
+    <div id="failure-modal" class="modal animated zoomIn bg-dander" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-dialog-centered" role="document" data-dismiss="modal">
         <div class="modal-content">
           <div class="modal-body mx-auto">
             <!-- Cross -->
             <svg class="cross__svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
               <circle class="cross__circle" cx="26" cy="26" r="25" fill="none"/>
-            	<path class="cross__path cross__path--right" fill="none" d="M16,16 l20,20" />
-              <path class="cross__path cross__path--right" fill="none" d="M16,36 l20,-20" />
+            	<path class="cross__path cross__path--right" stroke-linecap="round" fill="none" d="M16,16 l20,20" />
+              <path class="cross__path cross__path--left" stroke-linecap="round" fill="none" d="M16,36 l20,-20" />
             </svg>
             <!-- End Cross -->
-            <h3 class="text-danger font-weight-bold text-center">Nope!!!</h3>
+            <!-- <h3 class="text-danger font-weight-bold text-center">Nope!!!</h3> -->
           </div>
+          <div class="modal-footer mx-auto"></div>
         </div>
       </div>
     </div>
