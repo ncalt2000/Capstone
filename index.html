@@ -27,8 +27,8 @@
             <!-- End Logo -->
 
             <!-- Responsive Toggle Button -->
-            <button type="button" class="navbar-toggler btn u-hamburger" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navBar" data-toggle="collapse" data-target="#navBar">
-            <span id="hamburgerTrigger" class="u-hamburger__box">
+            <button type="button" class="navbar-toggler btn u-hamburger bg-white" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navBar" data-toggle="collapse" data-target="#navBar">
+            <span id="hamburgerTrigger" class="u-hamburger__box bg-warning">
               <span class="u-hamburger__inner"></span>
             </span>
           </button>
@@ -39,8 +39,8 @@
               <ul class="navbar-nav u-header__navbar-nav ml-lg-auto">
                 <!-- Data Centers -->
                 <li class="nav-item hs-has-sub-menu u-header__nav-item" data-event="hover" data-animation-in="slideInUp" data-animation-out="fadeOut">
-                  <a class="nav-link u-header__nav-link" href="javascript:;" aria-haspopup="true" aria-expanded="false">
-                  My Books
+                  <a class="nav-link u-header__nav-link" href="#library" aria-haspopup="true" aria-expanded="false">
+                  My Library
                 </a>
 
                   <!-- Sign In - Link -->
@@ -73,7 +73,7 @@
         <span class="custom-box d-flex justify-content-center align-items-center shadow-lg p-3 mb-5 rounded">
         <div class="input-border d-flex justify-content-center align-items-center">
         <input
-        id="search-input" class="form-control col-6 mr-3" type="search" placeholder="Search" aria-label="Search">
+        id="search-input" class="form-control col-6 mr-3" type="search" placeholder="Enter Book title or Author name" aria-label="Search">
         <button id="search-btn" class="btn btn-primary transition-3d-hover col-2" type="submit">Search</button>
       </div>
       </span>
@@ -377,16 +377,15 @@
     <!-- End of Failure Modal -->
 
     <!-- Found Books -->
-    <div class="container-fluid my-5" id="mainDivStart">
-
+    <div class="container-fluid" id="mainDivStart">
       <div class="row d-flex justify-content-center mb-5" id="searchResults">
         <!-- search Results -->
       </div>
-      <!-- End of Found Books -->
     </div>
+    <!-- End of Found Books -->
 
-    <div class="container-fluid">
-      <h2 class="text-center">My Library</h2>
+    <div class="container-fluid my-5">
+      <h2 id="library" class="text-center">My Library</h2>
 
       <!-- Controls -->
       <div class="row controls-container mt-5 mb-3 d-flex justify-content-between">

@@ -1,49 +1,53 @@
-var Search = function() {
-  Library.call(this);
-  this.$container = $('#banner');
-};
-Search.prototype = Object.create(Library.prototype);
+class Search {
+constructor(){
 
-Search.prototype.init = function() {
+}
+
+_init () {
   this._bindEvents();
   return;
 };
-Search.prototype._bindEvents = function() {
+
+_bindEvents () {
   $('button#search-btn').on('click', $.proxy(this._getSearchResults, this));
   // return;
 };
 
-Search.prototype._getSearchResults = function(e) {
+_getSearchResults (e) {
   e.preventDefault();
+  let allBooks = gDataTable._getGlobalBooks();
 
   var inputTerm = $("#search-input").val();
-  // console.log(inputTerm, 'input');
-  var result = this.search(inputTerm);
-  // console.log(result, 'result');
-  var searchResult = $("<div>", {class:"col-md-12 mb-4 text-white font-weight-bold text-center"});
-  searchResult.text(result.length > 0 ? `Found: ${result.length}` : 'Nothing is found! Try Again...');
+
+  var resultArr = allBooks.filter((book) => {
+    var search = inputTerm.toLowerCase();
+    return book.title.toLowerCase().indexOf(search) > -1 || book.author.toLowerCase().indexOf(search) > -1 || book.pubDate >= search
+  })
+
+  var searchResult = $('<div>', {class:"col-md-12 mt-5 h3 font-weight-bold text-center"});
+  searchResult.text(resultArr.length > 0 ? `Search result: ${resultArr.length}` : 'Nothing is found! Try Again...');
   $("#searchResults").empty();
   $("#searchResults").append(searchResult);
 
-  if (result.length > 0) {
-    for (var i = 0; i < result.length; i++) {
-      var container=$('<div>', {class: 'custom-container m-5'});
+  if (resultArr.length > 0) {
+    for (var i = 0; i < resultArr.length; i++) {
+      var container=$('<div>', {class: 'custom-container'});
       var back = $('<div>', {class: 'back'});
-      var columnDiv = $('<div>', {class: "flipper"});
+      var columnDiv = $('<div>', {class: 'flipper'});
       var span = $('<span>', {class: 'front'});
-      var cardDiv = $('<div>', {class: 'card card-inverse card-info animated zoomIn'});
-      var bookCover = $('<img>', {class: 'card-img-top book-card'}).text(result[i].cover);
-      bookCover.attr("src", `${result[i].cover}`).attr("alt", `${result[i].title} cover`);
-      var innerDiv = $("<div>", {class: "card-block p-2"});
-      var cardTitle = $("<h5>", {class: "card-title "}).text(result[i].title);
-      var cardAuthor = $("<h6>", {class: "card-author "}).text(result[i].author);
-      var cardText = $("<p>", {class: "card-text text-justify p-2"}).text(result[i].synopsis);
+      var card = $('<div>', {class: 'card card-inverse card-info animated zoomIn m-5'});
+      var bookCover = $('<img>', {class: 'card-img-top book-card'}).text(resultArr[i].cover);
+      bookCover.attr("src", `${resultArr[i].cover}`).attr("alt", `${resultArr[i].title} cover`);
+      var cardBody = $("<div>", {class: "card-body p-2"});
+      var cardTitle = $("<h5>", {class: "card-title "}).text(resultArr[i].title);
+      var cardAuthor = $("<h6>", {class: "card-author "}).text(resultArr[i].author);
+      var synopsis = $("<p>", {class: "card-text text-justify p-2"}).text(resultArr[i].synopsis);
 
-      span.html(cardDiv);
-      cardDiv.html(bookCover).append(innerDiv);
-      innerDiv.html(cardTitle);
-      innerDiv.append(cardAuthor)
-      result[i].synopsis === "" ? back.html("No Synopsis Available!") : back.html(cardText);
+      span.html(card);
+      card.html(bookCover).append(cardBody);
+      cardBody.html(cardTitle);
+      cardBody.append(cardAuthor)
+      resultArr[i].synopsis === "" ? back.html("No Synopsis Available!") : back.html(synopsis);
       columnDiv.append(back);
       columnDiv.append(span)
       container.append(columnDiv);
@@ -52,12 +56,14 @@ Search.prototype._getSearchResults = function(e) {
     }
   }
   window.location='/#mainDivStart';
-$("#search-input").val('');
+  $("#search-input").val('');
 
-return;
+  return;
+};
+
 };
 
 $(function() {
   window.gSearch = new Search();
-  window.gSearch.init();
+  window.gSearch._init();
 });

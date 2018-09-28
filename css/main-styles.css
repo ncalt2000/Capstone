@@ -66,13 +66,6 @@ nav {
 }
 
 /* ---------------------------- */
-/* CARDS                        */
-/* ---------------------------- */
-.book-card{
-  max-height: 500px !important;
-}
-
-/* ---------------------------- */
 /* TABLE                        */
 /* ---------------------------- */
 table{
@@ -132,12 +125,14 @@ td .edit, td .delete {
 /* CARD FLIPPER               */
 /* -------------------------- */
 
+
 /* entire container, keeps perspective */
 .custom-container {
 	perspective: 1000px;
 }
 	/* flip the pane when hovered */
-.custom-container:hover .flipper, .custom-container.hover .flipper {
+.custom-container:hover .flipper,
+.custom-container.hover .flipper {
 	transform: rotateY(180deg);
 }
 
@@ -149,9 +144,9 @@ td .edit, td .delete {
 
 /* flip speed goes here */
 .flipper {
-  height: 100%;
-  width: 100%;
-	transition: 0.9s;
+  max-height: 200px;
+  max-width: 300px;
+	transition: 1s;
 	transform-style: preserve-3d;
 	position: relative;
 }
