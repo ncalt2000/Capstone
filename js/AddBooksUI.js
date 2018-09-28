@@ -1,27 +1,15 @@
 class AddBooksUI {
   constructor() {
-    //placeholder for an id='addBooksModal'
-    // allow us to access anythign in the Library
-    // Library.call(this);
-    // temp bookshelf is to hold multiple books, then pass it in addBooks function, and tie to Add btn.
     this._tempBookshelf = new Array();
     this._encodedImg;
     this.libraryURL = 'http://127.0.0.1:3002/library/'
   }
 
-// new instance of Library.prototype is created
-// AddBooksUI.prototype = Object.create(Library.prototype);
-//data-target and data-value are removed from html. This will be added in js.
-
-// init fires whatever is in the _bindEvents.
 _init() {
   this._bindEvents();
 };
 
-// this opens the modal
-// proxy is doing similar ot call(this)
 _bindEvents() {
-  // add an id=''
   $('button#add-book-btn').on('click', this._handleModalOpen.bind(this));
 
   $('button#add-another-btn').on('click', this._bookInLine.bind(this));
@@ -50,18 +38,29 @@ _bookInLine() {
 
   if (bookData.title === "") {
       $('#title-text').addClass('required animated pulse');
-      return;
   }
   if (bookData.author === "") {
     $('#title-text').removeClass('required');
     $('#author').addClass('required animated pulse');
-    return;
   }
   $('#title-text').removeClass('required');
   $('#author').removeClass('required');
  //   this._tempBookshelf.push(book);
+ var file = document.querySelector('#file-upload').files[0];
+ var reader = new FileReader(); 
+ if (file) {
+   reader.readAsDataURL(file);
+   reader.onload = function() {
+     // console.log(reader.result);
+     bookData.cover = reader.result;
+     // console.log(bookData, 'Log 1: BookData , after encoding');
+   };
+ } else {
+   bookData.cover = "noCover";
+ }
   this._tempBookshelf.push(bookData);
   // console.log(this._tempBookshelf, "TEMP SHelf");
+
   var $booksToAdd = $('<p>', {'class': 'booksToAdd'});
     $('.booksInLine').append($booksToAdd).text(`Books to be added: ${this._tempBookshelf.length}`);
     $('#add-book-form')[0].reset();
@@ -81,7 +80,25 @@ _saveBook() {
     $('#author-text').addClass('required animated pulse');
     return;
   }
+
+  var file = document.querySelector('#file-upload').files[0];
+  var reader = new FileReader();
+  // console.log(file, "File");
+  // console.log(reader, 'Reader');
+
+  if (file) {
+    reader.readAsDataURL(file);
+    reader.onload = function() {
+      // console.log(reader.result);
+      bookData.cover = reader.result;
+      console.log(bookData, 'Log 1: BookData , after encoding');
+    };
+  } else {
+    bookData.cover = "noCover";
+  }
+
   this._tempBookshelf.push(bookData);
+  console.log('Log 3', this._tempBookshelf);
 
   $.ajax({
     url: this.libraryURL,
@@ -90,6 +107,7 @@ _saveBook() {
     data: {bookshelf: this._tempBookshelf}, //this is our request
     success: (data) => { //this is the response from DB
       gDataTable._getAllBooks();
+      console.log(data, 'log 2: back from DB');
       // console.log(data, "Success");;
     }
   })
@@ -135,7 +153,7 @@ _saveBook() {
   //   createBook();
   // }
 
-// _getBase64 = function (callback) {
+// _getBase64 (callback) {
 //   var file = document.querySelector('#file-upload').files[0];
 //   var reader = new FileReader();
 //   reader.readAsDataURL(file);

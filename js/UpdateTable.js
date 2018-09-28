@@ -75,10 +75,17 @@ _updateTable () {
   var $thead = $('thead');
   $thead.empty();
 
-  $thead.append(this._createHeader());
-  $.each(this.allBooks, (index, book) => {
-    $tbody.append(this._createRow(index, book));
-  });
+  var message = $('<h1>', {class: 'text-danger text-center' }).html("Your Library is Empty!  🙁")
+
+  this.allBooks.length
+  ? (
+    $thead.append(this._createHeader()) &&
+    $.each(this.allBooks, (index, book) => {
+      $tbody.append(this._createRow(index, book))
+    })
+    )
+  : $tbody.html(message);
+
 };
 
 _openDeleteModal (e) {
@@ -240,9 +247,10 @@ _createRow (index, book) {
   // console.log(book, 'book');
   var bookImg = $('<img>', {
     class: 'coverToEdit',
-    // src: `${book.cover}`, //keep this line until you figure out Base64
+    src: `${book.cover}`, //keep this line until you figure out Base64
     alt: 'book cover'
   })
+  // console.log(bookImg, 'BookImg');
   // end book cover cell ***
 
   for (var i = 0; i < 5; i++) {
@@ -262,7 +270,7 @@ _createRow (index, book) {
     $(ratingList).append(rating);
   }
 
-  $(tr).append($('<td>').append(book.cover))
+  $(tr).append($('<td>').append(bookImg))
   $(tr).append($('<td>', {class: 'h5'}).append(book.title))
   $(tr).append($('<td>').append(book.author))
   $(tr).append($('<td>').append(book.genre))
