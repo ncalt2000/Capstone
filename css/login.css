@@ -16,6 +16,11 @@ body{
   padding-top: 6rem;
 }
 
+.required{
+  box-shadow: 1px 1px 5px 1px rgb(236,43,9);
+  border: 2px solid rgb(236, 43, 9);
+}
+
 
 /* ---------------------- */
 /* NAVBAR                 */

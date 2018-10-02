@@ -46,7 +46,7 @@
                 <!-- End Sign In - Link -->
                 <!-- Button -->
                 <li class="nav-item d-none d-md-inline-block pl-3 pr-0">
-                  <a class="btn btn-sm btn-primary transition-3d-hover" href="./signUp.html">
+                  <a class="btn btn-sm btn-primary transition-3d-hover" href="#">
                 Sign Up
               </a>
                 </li>
@@ -61,32 +61,60 @@
   </header>
   <!-- ========== END HEADER ========== -->
   <div class="container-fluid login-page">
-    <div class="text-center py-5">
-      <h1 class="h2 ">Login to access your library</h1>
-      <small >Don't have an account? <a class="text-white" href="./signUp.html">Sign Up here</a></small>
+    <div class="text-center">
+      <h1 class="h2 ">Sign Up to access your library</h1>
+      <small >Already have an account? <a class="text-white" href="./login.html">Sign-In here</a></small>
     </div>
-    <form class="rounded w-50 m-auto p-5">
+    <form id="signUpForm" class="rounded w-50 m-auto p-5">
       <div class="form-group row">
-        <label for="email" class="col-sm-2 col-form-label text-uppercase">Email</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" id="loginEmail" name="username" autocomplete="username" placeholder="Email" required />
+        <label for="firsName" class="col-sm-4 col-form-label text-uppercase">First Name</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" id="signUpFirstName" name="firstName" autocomplete="firstName" placeholder="First Name" required />
         </div>
       </div>
       <div class="form-group row">
-        <label for="inputPassword" class="col-sm-2 col-form-label text-uppercase">Password</label>
-        <div class="col-sm-10">
-          <input type="password" class="form-control" id="loginPassword" name="password" autocomplete="password" placeholder="Password" required />
-          <small><a class="text-white" href="#">Forgot password?</a></small>
+        <label for="lastName" class="col-sm-4 col-form-label text-uppercase">Last Name</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" id="signUpLastName" name="lastName" autocomplete="lastName" placeholder="Last Name" required />
         </div>
       </div>
-      <button type="submit" id="loginBtn" class="btn btn-primary float-right">Sign In</button>
+      <div class="form-group row">
+        <label for="email" class="col-sm-4 col-form-label text-uppercase">Email</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" id="loginEmail" name="email" autocomplete="username" placeholder="Email" required />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="inputPassword" class="col-sm-4 col-form-label text-uppercase">Password</label>
+        <div class="col-sm-8">
+          <input minlength="6" type="password" class="form-control" id="loginPassword" name="password" autocomplete="password" placeholder="Password" required />
+        </div>
+      </div>
+      <div class="form-group row">
+        <label required minlength="6" for="confirmPassword" class="col-sm-4 col-form-label text-uppercase">Confirm Password</label>
+        <div class="col-sm-8">
+          <input minlength="6" type="password" class="form-control" id="confirmPassword" name="confirmPassword" autocomplete="confirmPassword" placeholder="Confirm Password" required />
+        </div>
+      </div>
+      <button type="submit" id="createAccountBtn" class="btn btn-primary float-right">Create Account</button>
     </form>
+    <!--  Success Modal -->
+    <div id="signUpModal" class="modal animated zoomIn" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document" data-dismiss="modal">
+        <div class="modal-content">
+          <div class="modal-body">
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Success modal -->
   </div>
 
   <script type="text/javascript" src="js/vendor/jQuery.js"></script>
   <script type="text/javascript" src="js/vendor/popper.js"></script>
   <script type="text/javascript" src="js/vendor/bootstrap.js"></script>
-  <!-- <script type="text/javascript" src="js/auth.js"></script> -->
+  <script type="text/javascript" src="js/auth.js"></script>
 
 
 </body>
