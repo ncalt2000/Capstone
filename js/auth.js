@@ -4,24 +4,37 @@ class Auth {
     this.newUserData;
   }
 
+  _init(){
+    // this._lockScreenModal();
+    this._bindEvents();
+    this._setTokenPoll();
+  }
+
   _bindEvents(){
-    // $('#loginBtn').on('click', this._userLogin.bind(this));
+    $('#loginBtn').on('click', this._userLogin.bind(this));
     $('#createAccountBtn').on('click', this._registerUser.bind(this));
   }
+
+  //Polls every hours to check and validate token
+  _setTokenPoll(){
+  setTimeout(() => {
+    this._CheckTokenStatus();
+    }, 3600000);
+  };
 
   _getUserInfo(){
     // console.log("Hello log2");
     const userInfo = $('#signUpForm').serializeArray();
-    console.log(userInfo);
+    // console.log(userInfo);
     let newData = new Object();
     userInfo.map((item, index) => {
       newData[item.name] = item.value;
     })
-    console.log(newData, "DATA");
+    // console.log(newData, "DATA");
 
     //VALIDATION:
     const values = Object.values(newData);
-    console.log(values, "Values");
+    // console.log(values, "Values");
 
     for (var i = 0; i < values.length; i++) {
       if (values[i] === '') {
@@ -36,9 +49,6 @@ class Auth {
 
   _registerUser(e){
     e.preventDefault();
-    // console.log(this.newUserData, 'newUserData');
-    // console.log("register user here log 1");
-    // console.log(this.newUserData, "New User is going to the server");
     try {
       this._getUserInfo();
       $.ajax({
@@ -47,7 +57,7 @@ class Auth {
          dataType: 'json',
          data: this.newUserData,
          success: (data) => {
-           console.log("Hello", data);
+           // console.log("Hello", data);
            if (data && data.auth) {
              this._modalToShow();
              $('#signUpForm')[0].reset();
@@ -71,7 +81,6 @@ class Auth {
       $('#signUpModal').find('.modal-body').append(checkmark);
 
     } else {
-
       $('#signUpModal').find('.modal-body').empty();
       $('#signUpModal').modal('show');
       const message = $('<h4>', {class: 'text-success text-center'});
@@ -83,17 +92,109 @@ class Auth {
 
   }
 
-  // _userLogin(){
-  //   console.log("Hello user!!!");
-  //   $.ajax({
-  //     url: `${this.libraryURL}${'login'}`,
-  //     method: 'POST',
-  //     // dataType: 'json',
-  //     success: (data) => {
-  //       console.log("Hello", data);
-  //     }
-  //   })
-  // }
+  _getUserInfoLogin(){
+    // console.log("Hello log2");
+    const userInfo = $('#loginForm').serializeArray();
+    // console.log(userInfo);
+    let newData = new Object();
+    userInfo.map((item, index) => {
+      newData[item.name] = item.value;
+    })
+    console.log(newData, "DATA");
+
+    //VALIDATION:
+    const values = Object.values(newData);
+    console.log(values, "Values");
+
+    for (var i = 0; i < values.length; i++) {
+      if (values[i] === '') {
+        throw new Error('Please fill out all fields')
+      }
+    }
+    return this.newUserData = newData;
+  }
+
+  _userLogin(e){
+    e.preventDefault();
+    try {
+      this._getUserInfoLogin();
+      $.ajax({
+        url: `${this.libraryURL}${'login'}`,
+        method: 'POST',
+        dataType: 'json',
+        data: this.newUserData,
+        success: (data) => {
+          console.log("Success", data);
+          if (data.auth) {
+            this._setToken(data);
+            // $('#navSignIn').html('Sign Out')
+            location.href = 'http://localhost:3000/index.html'
+          } else {
+            location.href = 'http://localhost:3000/login.html'
+          }
+        }
+      })
+    } catch (e) {
+      this._modalToShow(err);
+    }
+  };
+
+  _switchLogInHeader (data){
+  this.$loginHeader.children("span").text("Welcome, Kai!, ");
+  this.$loginHeader.children("a").text("Log Out").addClass("log-out");
+};
+
+  _setToken(jwt) {
+    if(jwt.auth)
+    {
+      localStorage.setItem("jwt_token", jwt.token);
+    }
+  };
+
+  _logInSetStore() {
+    $.ajax({
+      url: "http://localhost:3000/api/auth/login",
+      type: 'GET',
+      // Fetch the stored token from localStorage and set in the header
+      headers: {"Authorization": localStorage.getItem('jwt_token')}
+    });
+  };
+
+  _LogOut (){
+    $.get("http://localhost:3000/api/auth/logout", (data)=> {
+      this._dumpToken();
+      // this._lockScreenModal();
+    }, "json");
+  };
+
+  //Checks Token Status at the server (Am I still logged in?)
+  //This may work well on a timer in a poll
+  _CheckTokenStatus (){
+    $.ajax({
+      url: "http://localhost:3000/api/auth/me",
+      type: 'GET',
+      dataType: "json",
+      // Fetch the stored token from localStorage and set in the header
+      headers: {"x-access-token": localStorage.getItem("jwt_token")},
+      success: (data) => {
+        return data;
+      }
+    }).fail(()=>{ false });
+  };
+
+  //True or false only
+  _isLoggedIn (){
+    return this._getToken() ? true : false;
+  };
+
+  //Always checked on page load. Token should be wiped when expired or logged out
+  _getToken (){
+    return localStorage.getItem("jwt_token") || false;
+  };
+
+  _dumpToken (){
+    localStorage.removeItem("jwt_token");
+  };
 
 }
 
