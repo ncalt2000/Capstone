@@ -2,26 +2,16 @@ class Auth {
   constructor() {
     this.libraryURL = 'http://127.0.0.1:3002/user/'
     this.newUserData;
-    let successData;
   }
 
   _init(){
-    // this._lockScreenModal();
     this._bindEvents();
-    // this._setTokenPoll();
   }
 
   _bindEvents(){
     $('#loginBtn').on('click', this._userLogin.bind(this));
     $('#createAccountBtn').on('click', this._registerUser.bind(this));
   }
-
-  //Polls every hours to check and validate token
-  // _setTokenPoll(){
-  // setTimeout(() => {
-  //   this._CheckTokenStatus();
-  //   }, 3600000);
-  // };
 
   _getUserInfo(){
     // console.log("Hello log2");
@@ -31,7 +21,6 @@ class Auth {
     userInfo.map((item, index) => {
       newData[item.name] = item.value;
     })
-    // console.log(newData, "DATA");
 
     //VALIDATION:
     const values = Object.values(newData);
@@ -82,7 +71,7 @@ class Auth {
       $('#signUpModal').find('.modal-body').append(checkmark);
 
     } else {
-      console.log("SUCCESS");
+      // console.log("SUCCESS");
       $('#signUpModal').find('.modal-body').empty();
       $('#signUpModal').modal('show');
       const message = $('<h4>', {class: 'text-success text-center'});
@@ -129,7 +118,6 @@ class Auth {
         success: (data) => {
           console.log("Success", data);
           if (data.auth) {
-            this.successData = data.user;
             this._modalToShow();
             this._setToken(data);
             setTimeout(() => {
@@ -162,13 +150,6 @@ class Auth {
     });
   };
 
-  _LogOut (){
-    $.get("http://localhost:3000/user/logout", (data)=> {
-      this._dumpToken();
-      // this._lockScreenModal();
-    }, "json");
-  };
-
   //Checks Token Status at the server (Am I still logged in?)
   //This may work well on a timer in a poll
   _CheckTokenStatus (){
@@ -183,21 +164,6 @@ class Auth {
       }
     }).fail(()=>{ false });
   };
-
-  //True or false only
-  // _isLoggedIn (){
-  //   return this._getToken() ? true : false;
-  // };
-
-  //Always checked on page load. Token should be wiped when expired or logged out
-  // _getToken (){
-  //   return localStorage.getItem("jwt_token") || false;
-  // };
-
-  _dumpToken (){
-    localStorage.removeItem("jwt_token");
-  };
-
 }
 
 $(function(){
