@@ -21,7 +21,7 @@
           <!-- Nav -->
           <nav class="navbar navbar-expand-md u-header__navbar">
             <!-- Logo -->
-            <a class="navbar-brand u-header__navbar-brand u-header__navbar-brand-top-space ml-9" href="index.html">
+            <a class="navbar-brand u-header__navbar-brand u-header__navbar-brand-top-space ml-9" href="/">
               <img class="logo" src="./assets/logo/logo.jpg" alt="Logo">
             </a>
             <!-- End Logo -->
@@ -37,24 +37,29 @@
             <!-- Navigation -->
             <div id="navBar" class="collapse navbar-collapse py-0 u-header--white-nav-links">
               <ul class="navbar-nav u-header__navbar-nav ml-lg-auto">
-                <!-- Data Centers -->
-                <li class="nav-item hs-has-sub-menu u-header__nav-item" data-event="hover" data-animation-in="slideInUp" data-animation-out="fadeOut">
+                <li id="userName" class="nav-item u-header__nav-item">
+                  <a class="nav-link u-header__nav-link" href="javascript:;" aria-haspopup="true" aria-expanded="false">
+
+                  </a>
+                </li>
+                <li class="nav-item u-header__nav-item">
                   <a class="nav-link u-header__nav-link" href="#library" aria-haspopup="true" aria-expanded="false">
                   My Library
-                </a>
+                  </a>
+                </li>
 
                   <!-- Sign In - Link -->
-                  <li class="nav-item">
-                    <a id="navSignIn" class="nav-link" href="./login.html">
-                  Sign In
-                </a>
+                  <li class="nav-item" id="navSignIn">
+                    <a class="nav-link" href="/login.html">
+                      Sign In
+                    </a>
                   </li>
                   <!-- End Sign In - Link -->
                   <!-- Button -->
-                  <li class="nav-item d-none d-md-inline-block pl-3 pr-0">
-                    <a class="btn btn-sm btn-primary transition-3d-hover" href="./signUp.html">
-                  Sign Up
-                </a>
+                  <li id="navSignUp" class="nav-item d-none d-md-inline-block pl-3 pr-0">
+                    <a class="btn btn-sm btn-primary transition-3d-hover" href="/signUp.html">
+                      Sign Up
+                    </a>
                   </li>
                   <!-- End Button -->
               </ul>
@@ -457,7 +462,8 @@
     <script type="text/javascript" src="js/UpdateTable.js"></script>
     <script type="text/javascript" src="js/RandomBookUI.js"></script>
     <script type="text/javascript" src="js/SearchUI.js"></script>
-    <!-- <script type="text/javascript" src="js/auth.js"></script> -->
+    <script type="text/javascript" src="js/auth.js"></script>
+    <script type="text/javascript" src="js/home.js"></script>
 </body>
 
 </html>

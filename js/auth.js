@@ -2,12 +2,13 @@ class Auth {
   constructor() {
     this.libraryURL = 'http://127.0.0.1:3002/user/'
     this.newUserData;
+    let successData;
   }
 
   _init(){
     // this._lockScreenModal();
     this._bindEvents();
-    this._setTokenPoll();
+    // this._setTokenPoll();
   }
 
   _bindEvents(){
@@ -16,11 +17,11 @@ class Auth {
   }
 
   //Polls every hours to check and validate token
-  _setTokenPoll(){
-  setTimeout(() => {
-    this._CheckTokenStatus();
-    }, 3600000);
-  };
+  // _setTokenPoll(){
+  // setTimeout(() => {
+  //   this._CheckTokenStatus();
+  //   }, 3600000);
+  // };
 
   _getUserInfo(){
     // console.log("Hello log2");
@@ -81,6 +82,7 @@ class Auth {
       $('#signUpModal').find('.modal-body').append(checkmark);
 
     } else {
+      console.log("SUCCESS");
       $('#signUpModal').find('.modal-body').empty();
       $('#signUpModal').modal('show');
       const message = $('<h4>', {class: 'text-success text-center'});
@@ -100,11 +102,11 @@ class Auth {
     userInfo.map((item, index) => {
       newData[item.name] = item.value;
     })
-    console.log(newData, "DATA");
+    // console.log(newData, "DATA");
 
     //VALIDATION:
     const values = Object.values(newData);
-    console.log(values, "Values");
+    // console.log(values, "Values");
 
     for (var i = 0; i < values.length; i++) {
       if (values[i] === '') {
@@ -116,6 +118,7 @@ class Auth {
 
   _userLogin(e){
     e.preventDefault();
+
     try {
       this._getUserInfoLogin();
       $.ajax({
@@ -126,34 +129,33 @@ class Auth {
         success: (data) => {
           console.log("Success", data);
           if (data.auth) {
+            this.successData = data.user;
+            this._modalToShow();
             this._setToken(data);
-            // $('#navSignIn').html('Sign Out')
-            location.href = 'http://localhost:3000/index.html'
+            setTimeout(() => {
+              window.location = 'http://localhost:3000/'
+            }, 1500);
           } else {
-            location.href = 'http://localhost:3000/login.html'
+            window.location = 'http://localhost:3000/login'
           }
         }
       })
-    } catch (e) {
+    } catch (err) {
       this._modalToShow(err);
     }
   };
-
-  _switchLogInHeader (data){
-  this.$loginHeader.children("span").text("Welcome, Kai!, ");
-  this.$loginHeader.children("a").text("Log Out").addClass("log-out");
-};
 
   _setToken(jwt) {
     if(jwt.auth)
     {
       localStorage.setItem("jwt_token", jwt.token);
+      localStorage.setItem("userName", jwt.user);
     }
   };
 
   _logInSetStore() {
     $.ajax({
-      url: "http://localhost:3000/api/auth/login",
+      url: "http://localhost:3000/user/login",
       type: 'GET',
       // Fetch the stored token from localStorage and set in the header
       headers: {"Authorization": localStorage.getItem('jwt_token')}
@@ -161,7 +163,7 @@ class Auth {
   };
 
   _LogOut (){
-    $.get("http://localhost:3000/api/auth/logout", (data)=> {
+    $.get("http://localhost:3000/user/logout", (data)=> {
       this._dumpToken();
       // this._lockScreenModal();
     }, "json");
@@ -171,7 +173,7 @@ class Auth {
   //This may work well on a timer in a poll
   _CheckTokenStatus (){
     $.ajax({
-      url: "http://localhost:3000/api/auth/me",
+      url: "http://localhost:3000/user/me",
       type: 'GET',
       dataType: "json",
       // Fetch the stored token from localStorage and set in the header
@@ -183,14 +185,14 @@ class Auth {
   };
 
   //True or false only
-  _isLoggedIn (){
-    return this._getToken() ? true : false;
-  };
+  // _isLoggedIn (){
+  //   return this._getToken() ? true : false;
+  // };
 
   //Always checked on page load. Token should be wiped when expired or logged out
-  _getToken (){
-    return localStorage.getItem("jwt_token") || false;
-  };
+  // _getToken (){
+  //   return localStorage.getItem("jwt_token") || false;
+  // };
 
   _dumpToken (){
     localStorage.removeItem("jwt_token");
