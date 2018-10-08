@@ -18,7 +18,12 @@ class AddBooksUI {
   };
 
   _handleModalOpen() {
-    $('#addBookModal').modal('show');
+    let isLoggedIn = window.gHome.isLoggedIn;
+    if (isLoggedIn){
+      $('#addBookModal').modal('show');
+    } else {
+      alert('Please log in to add a book!')
+    }
   }
 
   _getFieldsFromModal () {
