@@ -131,7 +131,7 @@ _saveEditedBook(id){
   const newSynopsis = $('#synopsis-edit').val();
 
   const editedBook = {
-    // cover: newCover     //when available
+    // cover: newCover,     //when available
     title: newTitle,
     author: newAuthor,
     genre: newGenre,
