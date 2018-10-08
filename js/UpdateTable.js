@@ -110,9 +110,7 @@ _openEditModal (e) {
   })
 
   let parsedDate = parseFormDate(bookToEdit[0].pubDate);
-  // console.log(parsedDate);
-  // this.currentCover = bookToEdit[0].cover;
-  // console.log(this.currentCover, 'from OpenModal');
+
   $('#title-edit').val(bookToEdit[0].title);
   $('#author-edit').val(bookToEdit[0].author);
   $('#genre-edit').val(bookToEdit[0].genre);
@@ -129,28 +127,43 @@ _saveEditedBook(id){
   const newPages = $('#pages-edit').val();
   const newPubDate = $('#publicationDate-edit').val();
   const newSynopsis = $('#synopsis-edit').val();
+  let newCover = $('#file-upload-edit').val();
+  const noBookCover = '../assets/books/noCover.jpg';
 
-  const editedBook = {
-    // cover: newCover,     //when available
-    title: newTitle,
-    author: newAuthor,
-    genre: newGenre,
-    pages: newPages,
-    pubDate: newPubDate,
-    synopsis: newSynopsis
+  const file = document.querySelector('#file-upload-edit').files[0];
+  const reader = new FileReader();
+  if (file) {
+    reader.readAsDataURL(file);
+    reader.onload = function() {
+      console.log(reader.result);
+      newCover = reader.result;
+    };
+  } else {
+    newCover = noBookCover;
   }
-  // console.log(editedBook, 'Book to send to DB');
 
-  $.ajax({
-    url: `${this.libraryURL}${id}`,
-    method: 'PUT',
-    dataType: 'json',
-    data: editedBook,
-    success: (data) => {
-      // console.log(data, 'Edited Book from DB');
-      this._getAllBooks();
+  setTimeout(() => {
+    const editedBook = {
+      cover: newCover,
+      title: newTitle,
+      author: newAuthor,
+      genre: newGenre,
+      pages: newPages,
+      pubDate: newPubDate,
+      synopsis: newSynopsis
     }
-  })
+    $.ajax({
+      url: `${this.libraryURL}${id}`,
+      method: 'PUT',
+      dataType: 'json',
+      data: editedBook,
+      success: (data) => {
+        console.log(data, 'Edited Book from DB');
+        this._getAllBooks();
+      }
+    })
+  }, 100);
+
   $('#edit-book-modal').modal('hide');
 }
 
@@ -168,8 +181,8 @@ _handleDeleteBook (id) {
     url: `${this.libraryURL}${id}`,
     method: 'DELETE',
     dataType: 'json',
-    data: id, //this is our request
-    success: (data) => { //this is the response from DB
+    data: id,
+    success: (data) => {
       if (data) {
         $('#success-modal').modal('show');
         setTimeout(function () {

@@ -35,7 +35,7 @@ class AddBooksUI {
     const bookData = this._getFieldsFromModal ();
     // This line is adding the rating of 1 to new book
     bookData["rating"] = 1;
-    let bookCover = '../assets/books/noCover.jpg';
+    let noBookCover = '../assets/books/noCover.jpg';
     // console.log(bookData, 'BookData');
 
     if (bookData.title === "") {
@@ -57,9 +57,8 @@ class AddBooksUI {
     $('#title-text').removeClass('required');
     $('#author').removeClass('required');
 
-   var file = document.querySelector('#file-upload').files[0];
-   console.log(file);
-   var reader = new FileReader();
+   const file = document.querySelector('#file-upload').files[0];
+   const reader = new FileReader();
    if (file) {
      reader.readAsDataURL(file);
      reader.onload = function() {
@@ -68,12 +67,12 @@ class AddBooksUI {
        // console.log(bookData, 'Log 1: BookData , after encoding');
      };
    } else {
-     bookData.cover = bookCover;
+     bookData.cover = noBookCover;
    }
     this._tempBookshelf.push(bookData);
     // console.log(this._tempBookshelf, "TEMP SHelf");
 
-    var booksToAdd = $('<p>', {'class': 'booksToAdd text-success'});
+    const booksToAdd = $('<p>', {'class': 'booksToAdd text-success'});
       booksToAdd.text(`Books to be added: ${this._tempBookshelf.length}`);
       $('.booksInLine').html(booksToAdd);
       $('#add-book-form')[0].reset();
