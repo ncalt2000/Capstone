@@ -24,7 +24,7 @@ _getSearchResults (e) {
     return book.title.toLowerCase().indexOf(search) > -1 || book.author.toLowerCase().indexOf(search) > -1 || book.pubDate >= search
   })
 
-  var searchResult = $('<div>', {class:"col-md-12 mt-5 h3 font-weight-bold text-center"});
+  var searchResult = $('<div>', {class:"col-md-12 mt-5 h3 font-weight-bold text-center animated fadeIn"});
   searchResult.text(resultArr.length > 0 ? `Search result: ${resultArr.length}` : 'Nothing is found! Try Again...');
   $("#searchResults").empty();
   $("#searchResults").append(searchResult);

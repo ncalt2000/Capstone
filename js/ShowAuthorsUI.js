@@ -33,7 +33,9 @@ _handleShowAuthors () {
     $('#allAuthorsModal').find('.modal-body').html(this._createUlOfAuthors(finalArr));
   }
   else {
-    alert('Nothing in library!')
+    $('#book-table').empty();
+    var message = $('<h1>', {class: 'text-danger text-center' }).html("Your Library is Empty!  🙁")
+    $('#book-table').append(message);
   }
   return;
 };

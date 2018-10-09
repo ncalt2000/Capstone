@@ -14,19 +14,19 @@ class RandomBookOrAuthor {
     var form = $('<form>', {'class': 'form-inline'})
     var image = $('<img>', {
       'class': 'img-thumbnail col-md-4',
-      // 'src': 'book.cover',  //uncomment later
-      'alt': 'random cover'
+      'src': `${book.cover}`, 
+      'alt': 'random book cover'
     })
     var div = $('<div>', {'class': 'col-md-6'});
 
-    // image.text(book.cover);
+    image.text(book.cover);
     var title = $('<h5>').text(book.title);
     var author = $('<h6>').text(book.author);
     var genre = $('<h6>').text(book.genre);
     var pages = $('<h6>').text(book.pages);
     var synopsis = $('<h6>').text(book.synopsis);
     div.append(title).append(author).append(genre).append(pages).append(synopsis);
-    // form.append(image).append(div);
+    form.append(image).append(div);
     form.append(div);
     return form;
   };
@@ -40,7 +40,9 @@ class RandomBookOrAuthor {
       $('#randomBookModal').find('.modal-body').html(this._createRandomBook(randomBook));
     }
     else {
-      alert("Your library is empty!")
+      $('#book-table').empty();
+      var message = $('<h1>', {class: 'text-danger text-center' }).html("Your Library is Empty!  🙁")
+      $('#book-table').append(message);
     }
     return;
   };

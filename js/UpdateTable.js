@@ -3,7 +3,6 @@ class DataTable {
     this.libraryURL = 'http://127.0.0.1:3002/library/'
     this.allBooks = [];
     const bookId = null;
-    // const data = "";
   }
 
 _init () {
@@ -19,7 +18,7 @@ _getGlobalBooks(){
 }
 
 _reload () {
-  // console.log("RELOADED!!!");
+  //Deactivate loader here
   //after addind, editing, deleting, updating these methods must run to add event handlers back to the btns!
   this._updateTable();
   this._bindEvents();
@@ -52,7 +51,11 @@ _closeModalOnCancel () {
 };
 
 _getAllBooks(){
-  // console.log("News books comming in");
+  console.log("get all books");
+
+  // Activate loader!
+  this._activateLoader();
+
   $.ajax({
     url: this.libraryURL,
     method: 'GET',
@@ -61,17 +64,29 @@ _getAllBooks(){
       if(data.length){
         $('#display-data').empty();
         this.allBooks = data;
+        console.log('get all books success');
         // console.log(this.allBooks, 'All Books from DB');
         this._reload();
       } else{
-        var loader = $('<div>', {class: 'loader'})
-        $('#book-table').append(loader);
+        $('#book-table').empty();
+        var message = $('<h1>', {class: 'text-danger text-center' }).html("Your Library is Empty!  🙁")
+        $('#book-table').append(message);
       }
     }
   })
 }
 
+_activateLoader(){
+  var $thead = $('thead');
+  $thead.empty();
+  var $tbody = $('#table-body');
+  $tbody.empty();
+  var loader = $('<div>', {class: 'loader text-center'})
+  $('#table-body').append(loader);
+}
+
 _updateTable () {
+  console.log('update table');
   var $tbody = $('#table-body');
   $tbody.empty();
 
@@ -117,6 +132,7 @@ _openEditModal (e) {
   $('#pages-edit').val(bookToEdit[0].pages);
   $('#publicationDate-edit').val(parsedDate);
   $('#synopsis-edit').val(bookToEdit[0].synopsis);
+  $('#file-upload-edit').val(bookToEdit[0].cover);
   this._keepRating = bookToEdit.rating;
 };
 
@@ -158,7 +174,17 @@ _saveEditedBook(id){
       dataType: 'json',
       data: editedBook,
       success: (data) => {
-        console.log(data, 'Edited Book from DB');
+        // console.log(data, 'Edited Book from DB');
+        $('#success-modal').modal('show');
+        setTimeout(function () {
+          $('#success-modal').removeClass('zoomIn');
+          $('#success-modal').addClass('zoomOut');
+        }, 1000);
+        setTimeout(function () {
+          $('#success-modal').modal('hide');
+          $('#success-modal').removeClass('zoomOut');
+          $('#success-modal').addClass('zoomIn');
+        }, 1500);
         this._getAllBooks();
       }
     })
@@ -299,7 +325,7 @@ _createRow (index, book) {
 };
 
 _rateBook (e) {
-
+  console.log('rate book');
   // console.log(e, 'event');
   this.bookId = $(e.target).data('id');
   // console.log(this.bookId, 'Book ID');
@@ -311,6 +337,7 @@ _rateBook (e) {
     dataType: 'json',
     data: {rating: onStar},
     success: (data) => {
+      console.log('rate book success');
       // console.log(data, 'Edited Book with rating from DB');
       this._getAllBooks();
     }
@@ -456,4 +483,6 @@ _sortBy (e, book) {
 $(function() {
   window.gDataTable = new DataTable();
   window.gDataTable._init();
+  // Activate loader
+  // window.gDataTable._activateLoader();
 });

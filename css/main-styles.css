@@ -286,12 +286,13 @@ td .edit, td .delete {
 /* Loader ANIMATION */
 /* -------------------- */
 .loader {
-  height: 100vh;
+  height: 300px;
+  background-color: rgba(26, 24, 24, 0.21);
   position: relative;
 }
 .loader::before {
   animation: 2s linear infinite loader;
-  border: solid 13px #eee;
+  border: solid 10px #eee;
   border-left-color: #73AF55;
   border-radius: 100%;
   content: "";
