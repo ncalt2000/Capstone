@@ -15,7 +15,6 @@ class Home{
 
   _getUserFromStorage(){
      this.userName = localStorage.getItem("userName") || false;
-     console.log(this.userName, 'USerName???');
   }
 
   _isLoggedIn (){

@@ -47,25 +47,40 @@ class Auth {
          dataType: 'json',
          data: this.newUserData,
          success: (data) => {
-           // console.log("Hello", data);
-           if (data && data.auth) {
+           console.log("Hello", data);
+           if (data.auth) {
              this._modalToShow();
+             this._setToken(data);
              $('#signUpForm')[0].reset();
+             setTimeout(() => {
+               window.location = 'http://localhost:3000/'
+             }, 900);
+           } else {
+             setTimeout(() => {
+               this._modalToShow(data.msg);
+             }, 100);
+             setTimeout(() => {
+               $('#signUpModal').modal('hide');
+             }, 1800);
            }
          }
        })
     } catch (err) {
       // Display error message to user
-      this._modalToShow(err);
-    }
-  }
+      setTimeout(() => {
+        this._modalToShow(err);
+      }, 100);
+      setTimeout(() => {
+        $('#signUpModal').modal('hide');
+      }, 2000);    }
+  };
 
   _modalToShow(err){
     if(err){
       $('#signUpModal').find('.modal-body').empty();
       $('#signUpModal').modal('show');
       const message = $('<h4>', {class: 'text-danger text-center'});
-      const checkmark = $('<figure><svg class="cross__svg" stroke="#e55454" xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" viewBox="0 0 60 60"><circle class="cross__circle" stroke="#e55454" cx="26" cy="26" r="25" fill="none"/><path class="cross__path cross__path--right" stroke="#e55454" stroke-width="6" stroke-linecap="round" fill="none" d="M16,16 l20,20" /><path class="cross__path cross__path--left" stroke="#e55454" stroke-width="6" stroke-linecap="round" fill="none" d="M16,36 l20,-20" /></svg></figure>');
+      const checkmark = $('<figure><svg stroke="#e55454" xmlns="http://www.w3.org/2000/svg" width="40px" height="40px" viewBox="0 0 60 60"><circle class="cross__circle" stroke="#e55454" cx="26" cy="26" r="20" fill="none"/><path class="cross__path cross__path--right" stroke="#e55454" stroke-width="6" stroke-linecap="round" fill="none" d="M16,16 l20,20" /><path class="cross__path cross__path--left" stroke="#e55454" stroke-width="6" stroke-linecap="round" fill="none" d="M16,36 l20,-20" /></svg></figure>');
       message.text(err);
       checkmark.append(message);
       $('#signUpModal').find('.modal-body').append(checkmark);
@@ -75,7 +90,7 @@ class Auth {
       $('#signUpModal').find('.modal-body').empty();
       $('#signUpModal').modal('show');
       const message = $('<h4>', {class: 'text-success text-center'});
-      const checkmark = $('<figure class="w-100"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2" xml:space="preserve" width="40px" height="40px"><circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/><polyline class="path check" fill="none" stroke="#73AF55" stroke-width="12" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/></svg></figure>');
+      const checkmark = $('<figure class="w-40"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2" xml:space="preserve" width="40px" height="40px"><circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/><polyline class="path check" fill="none" stroke="#73AF55" stroke-width="12" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/></svg></figure>');
       message.text('Success!');
       checkmark.append(message);
       $('#signUpModal').find('.modal-body').append(checkmark);
@@ -84,9 +99,7 @@ class Auth {
   }
 
   _getUserInfoLogin(){
-    // console.log("Hello log2");
     const userInfo = $('#loginForm').serializeArray();
-    // console.log(userInfo);
     let newData = new Object();
     userInfo.map((item, index) => {
       newData[item.name] = item.value;
@@ -116,15 +129,19 @@ class Auth {
         dataType: 'json',
         data: this.newUserData,
         success: (data) => {
-          console.log("Success", data);
           if (data.auth) {
             this._modalToShow();
             this._setToken(data);
             setTimeout(() => {
               window.location = 'http://localhost:3000/'
-            }, 1500);
+            }, 900);
           } else {
-            window.location = 'http://localhost:3000/login'
+            setTimeout(() => {
+              this._modalToShow(data.msg);
+            }, 100);
+            setTimeout(() => {
+              $('#signUpModal').modal('hide');
+            }, 1800);
           }
         }
       })
@@ -150,21 +167,7 @@ class Auth {
     });
   };
 
-  //Checks Token Status at the server (Am I still logged in?)
-  //This may work well on a timer in a poll
-  _CheckTokenStatus (){
-    $.ajax({
-      url: "http://localhost:3000/user/me",
-      type: 'GET',
-      dataType: "json",
-      // Fetch the stored token from localStorage and set in the header
-      headers: {"x-access-token": localStorage.getItem("jwt_token")},
-      success: (data) => {
-        return data;
-      }
-    }).fail(()=>{ false });
-  };
-}
+};
 
 $(function(){
   window.gAuth = new Auth();

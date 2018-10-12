@@ -104,7 +104,7 @@ ifNotLoggedIn(){
   body.append(link);
   $('#randomBookModal').modal('show');
   $('#randomBookModal').find('.modal-body').html(body);
-  $('#randomBookModal').find('.modal-title').html('Please sign-in to alter your Library!')
+  $('#randomBookModal').find('.modal-title').html('Please sign-in to update your Library!')
 }
 
 _openDeleteModal (e) {
@@ -336,42 +336,27 @@ _createRow (index, book) {
 };
 
 _rateBook (e) {
-  console.log('rate book');
   // console.log(e, 'event');
   this.bookId = $(e.target).data('id');
   // console.log(this.bookId, 'Book ID');
   var onStar = parseInt($(e.target).data('value'), 10); // The star currently selected
 
-  $('.stars li').on('mouseover', function() {
-    // var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
-    // console.log(this);
-    // console.log(onStar, 'first');
-
-    // Now highlight all the stars that's not after the current hovered star
-    $('li.star').each(function(e) {
-      if (e < onStar) {
-        $('li.star').addClass('hover');
-      } else {
-        $('li.star').removeClass('hover');
-      }
-    });
-  }).on('mouseout', function() {
-    $('li.star').each(function(e) {
-      $('li.star').removeClass('hover');
-    });
-  });
-
   $.ajax({
     url: `${this.libraryURL}${this.bookId}`,
     method: 'PUT',
     dataType: 'json',
+    headers: {"x-access-token": localStorage.getItem("jwt_token")},
     data: {rating: onStar},
     success: (data) => {
-      console.log('rate book success');
-      // console.log(data, 'Edited Book with rating from DB');
-      this._getAllBooks();
+      console.log(data, 'RATE');
+      if(data){
+        this._getAllBooks();
+      } else{
+        this.ifNotLoggedIn();
+      }
     }
   })
+
 };
 
 _sortBy (e, book) {
