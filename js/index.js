@@ -224,17 +224,3 @@ var Book = function(cover, title, author, genre, pages, publishDate, rating, del
   this.synopsis = synopsis;
   this.edit = edit;
 };
-// var Book = function(args) {
-//   this.cover = "cover";
-//   this.title = args.title;
-//   this.author = args.author;
-//   this.genre = args.genre;
-//   this.pages = args.pages;
-//   this.publishDate = new Date(String(args.publishDate)).getUTCFullYear();
-//   this.deleteCol = args.deleteCol;
-//   this.synopsis = args.synopsis;
-// };
-
-// document.addEventListener('DOMContentLoaded', function() {
-//   window.gLibrary = new Library();
-// });

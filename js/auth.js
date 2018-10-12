@@ -76,7 +76,7 @@ class Auth {
       $('#signUpModal').modal('show');
       const message = $('<h4>', {class: 'text-success text-center'});
       const checkmark = $('<figure class="w-100"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2" xml:space="preserve" width="40px" height="40px"><circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/><polyline class="path check" fill="none" stroke="#73AF55" stroke-width="12" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/></svg></figure>');
-      message.text('Thank you for signing up!');
+      message.text('Success!');
       checkmark.append(message);
       $('#signUpModal').find('.modal-body').append(checkmark);
     }

@@ -11,18 +11,26 @@ class AddBooksUI {
 
   _bindEvents() {
     $('button#add-book-btn').on('click', this._handleModalOpen.bind(this));
-
     $('button#add-another-btn').on('click', this._bookInLine.bind(this));
-
     $('button#save-book-btn').on('click', this._saveBook.bind(this));
+    $('button#cancelAdd').on('click', this._cancelAdd.bind(this));
+    $('button#cancel-adding').on('click', this._cancelAdd.bind(this));
   };
+
+  _cancelAdd(){
+    $('#addBookModal').modal('hide');
+    $('#title-text').removeClass('required');
+    $('#author').removeClass('required');
+    $('.booksInLine').empty();
+    $('#add-book-form')[0].reset();
+  }
 
   _handleModalOpen() {
     let isLoggedIn = window.gHome.isLoggedIn;
     if (isLoggedIn){
       $('#addBookModal').modal('show');
     } else {
-      alert('Please log in to add a book!')
+      gDataTable.ifNotLoggedIn();
     }
   }
 
@@ -32,28 +40,27 @@ class AddBooksUI {
     fieldsData.map((item, index) => {
       oData[item.name] = item.value;
     })
-    // console.log(oData, "DATA");
     return oData;
   };
 
   _bookInLine() {
+
     const bookData = this._getFieldsFromModal ();
     // This line is adding the rating of 1 to new book
-    bookData["rating"] = 1;
+    // bookData["rating"] = 1;
     let noBookCover = '../assets/books/noCover.jpg';
-    // console.log(bookData, 'BookData');
 
     if (bookData.title === "") {
-      $('#title-text').addClass('required animated pulse');
-      var errorMessage = $('<p>', {class: 'text-danger animated pulse'});
+      $('#title-text').addClass('required');
+      var errorMessage = $('<p>', {class: 'text-danger'});
       errorMessage.text("Please complete missing fields");
       $('.booksInLine').html(errorMessage);
       return;
     }
     if (bookData.author === "") {
       $('#title-text').removeClass('required');
-      $('#author').addClass('required animated pulse');
-      var errorMessage = $('<p>', {class: 'text-danger animated pulse'});
+      $('#author').addClass('required');
+      var errorMessage = $('<p>', {class: 'text-danger'});
       errorMessage.text("Please complete missing fields");
       $('.booksInLine').html(errorMessage);
       return;
@@ -66,15 +73,20 @@ class AddBooksUI {
    const reader = new FileReader();
    if (file) {
      reader.readAsDataURL(file);
+     console.log(reader, "READER");
      reader.onload = function() {
        // console.log(reader.result);
        bookData.cover = reader.result;
        // console.log(bookData, 'Log 1: BookData , after encoding');
+       //another method here to see if the count of books and loadCount is the same.
+       //if(loadCount < coverCount){
+       // return} esle{}
      };
    } else {
      bookData.cover = noBookCover;
    }
-    this._tempBookshelf.push(bookData);
+
+   this._tempBookshelf.push(bookData);
     // console.log(this._tempBookshelf, "TEMP SHelf");
 
     const booksToAdd = $('<p>', {'class': 'booksToAdd text-success'});
@@ -92,6 +104,7 @@ class AddBooksUI {
         url: this.libraryURL,
         method: 'POST',
         dataType: 'json',
+        headers: {"x-access-token": localStorage.getItem("jwt_token")},
         data: { bookshelf: this._tempBookshelf },
         success: (data) => {
           gDataTable._getAllBooks();
@@ -115,7 +128,7 @@ class AddBooksUI {
         },
         error: ()  => {
           $('#failure-modal').modal('show')
-          var errorMessage = $('<p>', {class: 'text-danger animated pulse'});
+          var errorMessage = $('<p>', {class: 'text-danger'});
           errorMessage.text("Oops! Something went wrong! Please try again!");
           $('#failure-modal').find('.modal-footer').html(errorMessage);
           $('.booksInLine').empty();

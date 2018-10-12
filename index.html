@@ -92,7 +92,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Add Book</h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <button id="cancelAdd" type="button" class="close">&times;</button>
           </div>
           <div class="modal-body">
             <form id="add-book-form">
@@ -153,10 +153,15 @@
               </div>
             </form>
           </div>
-          <div class="modal-footer">
-            <div class="booksInLine mr-5"></div>
-            <button id="add-another-btn" type="submit" class="btn btn-primary transition-3d-hover">Add Another Book</button>
-            <button type="button" class="btn btn-secondary transition-3d-hover" id="save-book-btn">Save</button>
+          <div class="modal-footer d-flex justify-content-between">
+            <div>
+              <button id="cancel-adding" type="button" class="btn btn-secondary transition-3d-hover">Cancel</button>
+            </div>
+            <div class="booksInLine mr-3"></div>
+            <div>
+              <button id="add-another-btn" type="submit" class="btn btn-primary transition-3d-hover mr-2">Add Another Book</button>
+              <button type="button" class="btn btn-success transition-3d-hover" id="save-book-btn">Save</button>
+            </div>
           </div>
         </div>
       </div>
@@ -245,7 +250,7 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">The Universe suggests ...</h5>
+            <h5 class="modal-title"></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -257,41 +262,6 @@
       </div>
     </div>
     <!-- End of Random Book Modal -->
-
-    <!-- Random Author Modal -->
-    <div class="modal fade" id="randomAuthorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="randomAuthorModal">Universe sends you ... </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          </div>
-          <div class="modal-body">
-
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- End of Random Author Modal -->
-
-    <!-- All Authors Modal -->
-    <div class="modal fade" id="allAuthorsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="allAuthorsModal">Authors in your library: </h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-          </div>
-          <div class="modal-body">
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- End of All Authors Modal -->
 
     <!-- Synopsis Modal -->
     <div class="modal fade" id="synopsisModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -447,17 +417,11 @@
     </div>
 
 
-    <!-- ************* -->
-
-    <!-- ************** -->
-
     <script type="text/javascript" src="js/vendor/jQuery.js"></script>
 
     <script type="text/javascript" src="js/vendor/popper.js"></script>
     <script type="text/javascript" src="js/vendor/bootstrap.js"></script>
     <script type="text/javascript" src="js/util.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript" src="js/ShowAuthorsUI.js"></script>
     <script type="text/javascript" src="js/AddBooksUI.js"></script>
     <script type="text/javascript" src="js/UpdateTable.js"></script>
     <script type="text/javascript" src="js/RandomBookUI.js"></script>

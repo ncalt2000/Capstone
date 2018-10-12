@@ -18,14 +18,11 @@ _getGlobalBooks(){
 }
 
 _reload () {
-  //Deactivate loader here
-  //after addind, editing, deleting, updating these methods must run to add event handlers back to the btns!
   this._updateTable();
   this._bindEvents();
 };
 
 _bindEvents () {
-  //Must run this._bindEvents() to attach event handlers to the btns.
   $('.delete').on('click', this._openDeleteModal.bind(this));
   $('.edit').on('click', this._openEditModal.bind(this));
   $('.star').on('click', this._rateBook.bind(this));
@@ -33,10 +30,8 @@ _bindEvents () {
 };
 
 _bindCustomListeners () {
-  //every time table updates, this._bindEvents must reload again.
   $('#confirm-cancel-btn').on('click', this._closeModalOnCancel.bind(this));
   $('#confirm-delete-btn').on('click', this._confirmDeleteBook.bind(this));
-
   $('#save-edit-btn').on('click', this._editBook.bind(this));
 
   $("#sort-title").on('click', this._sortBy.bind(this));
@@ -52,10 +47,7 @@ _closeModalOnCancel () {
 
 _getAllBooks(){
   console.log("get all books");
-
-  // Activate loader!
   this._activateLoader();
-
   $.ajax({
     url: this.libraryURL,
     method: 'GET',
@@ -106,34 +98,52 @@ _updateTable () {
 
 };
 
+ifNotLoggedIn(){
+  const body = $('<div>', {'class': 'h4 text-center'})
+  const link = $('<a>', {href: '../login.html', class: 'u-link btn btn-outline-primary'}).text('Sign In');
+  body.append(link);
+  $('#randomBookModal').modal('show');
+  $('#randomBookModal').find('.modal-body').html(body);
+  $('#randomBookModal').find('.modal-title').html('Please sign-in to alter your Library!')
+}
+
 _openDeleteModal (e) {
-  this.bookId = $(e.target).data('id');
-  const _titleToDelete = $(e.target).data('title');
-  let deleteText = $('<p>', {id: 'delete-text'});
-  deleteText.html(`Are you sure you want to delete ${_titleToDelete}?`)
-  let confirmDeleteText = $('.confirm-delete-text').append(deleteText)
-  $('#confirm-delete-modal').modal('show');
-  return;
-};
+  let isLoggedIn = window.gHome.isLoggedIn;
+  if (isLoggedIn){
+    this.bookId = $(e.target).data('id');
+    const _titleToDelete = $(e.target).data('title');
+    let deleteText = $('<p>', {id: 'delete-text'});
+    deleteText.html(`Are you sure you want to delete ${_titleToDelete}?`)
+    let confirmDeleteText = $('.confirm-delete-text').append(deleteText)
+    $('#confirm-delete-modal').modal('show');
+  } else {
+    this.ifNotLoggedIn();
+  };
+}
 
 _openEditModal (e) {
-  $('#edit-book-modal').modal('show')
+  let isLoggedIn = window.gHome.isLoggedIn;
+  if (isLoggedIn){
+    $('#edit-book-modal').modal('show')
 
-  this.bookId = $(e.target).data('id');
-  let bookToEdit = this.allBooks.filter(item => {
-    return item._id === this.bookId
-  })
+    this.bookId = $(e.target).data('id');
+    let bookToEdit = this.allBooks.filter(item => {
+      return item._id === this.bookId
+    })
 
-  let parsedDate = parseFormDate(bookToEdit[0].pubDate);
+    let parsedDate = parseFormDate(bookToEdit[0].pubDate);
 
-  $('#title-edit').val(bookToEdit[0].title);
-  $('#author-edit').val(bookToEdit[0].author);
-  $('#genre-edit').val(bookToEdit[0].genre);
-  $('#pages-edit').val(bookToEdit[0].pages);
-  $('#publicationDate-edit').val(parsedDate);
-  $('#synopsis-edit').val(bookToEdit[0].synopsis);
-  $('#file-upload-edit').val(bookToEdit[0].cover);
-  this._keepRating = bookToEdit.rating;
+    console.log(bookToEdit, "BOOK to EDIT");
+    $('#title-edit').val(bookToEdit[0].title);
+    $('#author-edit').val(bookToEdit[0].author);
+    $('#genre-edit').val(bookToEdit[0].genre);
+    $('#pages-edit').val(bookToEdit[0].pages);
+    $('#publicationDate-edit').val(parsedDate);
+    $('#synopsis-edit').val(bookToEdit[0].synopsis);
+    $('#file-upload-edit').val(bookToEdit[0].cover);
+  } else {
+    this.ifNotLoggedIn();
+  }
 };
 
 _saveEditedBook(id){
@@ -151,7 +161,7 @@ _saveEditedBook(id){
   if (file) {
     reader.readAsDataURL(file);
     reader.onload = function() {
-      console.log(reader.result);
+      // console.log(reader.result);
       newCover = reader.result;
     };
   } else {
@@ -172,6 +182,7 @@ _saveEditedBook(id){
       url: `${this.libraryURL}${id}`,
       method: 'PUT',
       dataType: 'json',
+      headers: {"x-access-token": localStorage.getItem("jwt_token")},
       data: editedBook,
       success: (data) => {
         // console.log(data, 'Edited Book from DB');
@@ -207,6 +218,7 @@ _handleDeleteBook (id) {
     url: `${this.libraryURL}${id}`,
     method: 'DELETE',
     dataType: 'json',
+    headers: {"x-access-token": localStorage.getItem("jwt_token")},
     data: id,
     success: (data) => {
       if (data) {
@@ -223,10 +235,9 @@ _handleDeleteBook (id) {
       $('.confirm-delete-text').empty();
       }
       this._getAllBooks();
-      // console.log(data, "Success");;
     }
   })
-  return true;
+  return;
 };
 
 _createHeader () {
@@ -330,7 +341,26 @@ _rateBook (e) {
   this.bookId = $(e.target).data('id');
   // console.log(this.bookId, 'Book ID');
   var onStar = parseInt($(e.target).data('value'), 10); // The star currently selected
-  // console.log(onStar, 'onStar');
+
+  $('.stars li').on('mouseover', function() {
+    // var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
+    // console.log(this);
+    // console.log(onStar, 'first');
+
+    // Now highlight all the stars that's not after the current hovered star
+    $('li.star').each(function(e) {
+      if (e < onStar) {
+        $('li.star').addClass('hover');
+      } else {
+        $('li.star').removeClass('hover');
+      }
+    });
+  }).on('mouseout', function() {
+    $('li.star').each(function(e) {
+      $('li.star').removeClass('hover');
+    });
+  });
+
   $.ajax({
     url: `${this.libraryURL}${this.bookId}`,
     method: 'PUT',
@@ -342,122 +372,6 @@ _rateBook (e) {
       this._getAllBooks();
     }
   })
-}
-
-ratingBook () {
-  // console.log("From Rating");
-  /* 1. Visualizing things on Hover - See next part for action on click */
-  $('.stars li').on('mouseover', function() {
-    var onStar = parseInt($(this).data('value'), 10); // The star currently mouse on
-    // console.log(this);
-    // console.log(onStar, 'first');
-
-    // Now highlight all the stars that's not after the current hovered star
-    $(this).parent().children('.star').each(function(e) {
-      if (e < onStar) {
-        $(this).addClass('hover');
-      } else {
-        $(this).removeClass('hover');
-      }
-    });
-  }).on('mouseout', function() {
-    $(this).parent().children('li.star').each(function(e) {
-      $(this).removeClass('hover');
-    });
-  });
-  /* 2. Action to perform on click */
-  $('.stars li').on('click', function(e) {
-    // console.log(e, 'event');
-    this.bookId = $(e.target).data('id');
-    // console.log(currentTitle, 'currentTitle');
-    var onStar = parseInt($(this).data('value'), 10); // The star currently selected
-    // console.log(onStar, 'onStar');
-    var stars = $(this).parent().children('li.star');
-    for (i = 0; i < stars.length; i++) {
-      $(stars[i]).removeClass('selected');
-    }
-    for (i = 0; i < onStar; i++) {
-      $(stars[i]).addClass('selected');
-    }
-    for (var y = 0; y < window.bookshelf.length; y++) {
-      if (window.bookshelf[y].title === currentTitle) {
-        window.bookshelf[y].rating = onStar;
-      }
-    }
-    localStorage.setItem("bookshelf", JSON.stringify(window.bookshelf));
-  });
-};
-
-editBook () {
-
-  var newTitle = $('#title-edit').val();
-  var newAuthor = $('#author-edit').val();
-  var newGenre = $('#genre-edit').val();
-  var newPages = $('#pages-edit').val();
-  var newPubDate = $('#publicationDate-edit').val();
-  var newSynopsis = $('#synopsis-edit').val();
-
-  editThisBook = function(cover) {
-    if(newTitle === ""){
-      $('#title-edit').addClass('required animated pulse');
-      return;
-    }
-    if(newAuthor === ""){
-      $('#title-edit').removeClass('required');
-      $('#author-edit').addClass('required animated pulse');
-      return;
-    }
-
-    var newBook = new Book(cover, newTitle, newAuthor, newGenre, newPages, newPubDate, this._keepRating, '', newSynopsis, '');
-    var index;
-    var isSuccessful = false;
-    for (var i = 0; i < window.bookshelf.length; i++) {
-      if (window.bookshelf[i].title === this._titleToEdit) {
-        index = i;
-        isSuccessful = true;
-      }
-    }
-
-    window.bookshelf.splice(index, 1, newBook);
-
-    this.setStorage();
-    // this._handleEventTrigger("objUpdate", {bookEdited: "Book is Edited!"});
-
-    $('#edit-book-modal').modal('hide');
-
-    if (isSuccessful) {
-      $('#success-modal').modal('show');
-      setTimeout(function () {
-        $('#success-modal').removeClass('zoomIn');
-        $('#success-modal').addClass('zoomOut');
-      }, 1000);
-      setTimeout(function () {
-        $('#success-modal').modal('hide');
-        $('#success-modal').removeClass('zoomOut');
-        $('#success-modal').addClass('zoomIn');
-      }, 1500);
-    }
-  }.bind(this);
-
-  var file = document.querySelector('#file-upload-edit').files[0];
-  // console.log('file', file);
-  var reader = new FileReader();
-  var coverToEdit;
-  if (file) {
-    // console.log('If file');
-    reader.readAsDataURL(file);
-    reader.onload = function() {
-      coverToEdit = reader.result;
-      editThisBook(coverToEdit);
-    };
-  } else {
-    // console.log('if NO file');
-    coverToEdit = this.currentCover;
-    // console.log(this.currentCover, 'from else');
-    // this.currentCover = null;
-    editThisBook(coverToEdit);
-  }
-  document.getElementById("file-upload-edit").value = "";
 };
 
 _sortBy (e, book) {
@@ -483,6 +397,4 @@ _sortBy (e, book) {
 $(function() {
   window.gDataTable = new DataTable();
   window.gDataTable._init();
-  // Activate loader
-  // window.gDataTable._activateLoader();
 });

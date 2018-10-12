@@ -1,11 +1,10 @@
-var bookshelf = new Array();
 
 // Enable tooltips everywhere:
 $(function() {
   $('[data-toggle="tooltip"]').tooltip()
 });
 
-//format a date methods here:
+//from 02/01/2000 into "February 2000":
 function parseDate(pubDate) {
   var date = new Date(pubDate);
   var month = date.getMonth();
@@ -23,4 +22,17 @@ function parseFormDate (pubDate) {
   var day = date.getDay().toString().padStart(2, '0');
   var year = date.getFullYear();
   return `${year}-${month}-${day}`
+};
+
+var Book = function(cover, title, author, genre, pages, publishDate, rating, deleteCol, synopsis, edit) {
+  this.cover = cover;
+  this.title = title;
+  this.author = author;
+  this.genre = genre;
+  this.pages = pages;
+  this.publishDate = new Date(String(publishDate));
+  this.rating = rating;
+  this.deleteCol = deleteCol;
+  this.synopsis = synopsis;
+  this.edit = edit;
 };
