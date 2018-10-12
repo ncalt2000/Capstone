@@ -1,12 +1,467 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <!-- ****** -->
+  <!-- <link rel="stylesheet" href="css/front-components.css"> -->
+  <!-- *** -->
+  <link rel="stylesheet" href="css/animate.css">
+  <link rel="stylesheet" href="css/web-fonts-with-css/css/fontawesome-all.css">
+  <link rel="stylesheet" href="css/main-styles.css">
   <title>Library</title>
 </head>
-<body>
 
+<body>
+  <div class="container-fluid p-0">
+    <!-- ========== HEADER ========== -->
+    <header>
+      <div class="bg-dark">
+        <div id="logoAndNav" class="ml-auto">
+          <!-- Nav -->
+          <nav class="navbar navbar-expand-md u-header__navbar">
+            <!-- Logo -->
+            <a class="navbar-brand u-header__navbar-brand u-header__navbar-brand-top-space ml-9" href="index.html">
+              <img class="logo" src="./assets/logo/logo.jpg" alt="Logo">
+            </a>
+            <!-- End Logo -->
+
+            <!-- Responsive Toggle Button -->
+            <button type="button" class="navbar-toggler btn u-hamburger" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navBar" data-toggle="collapse" data-target="#navBar">
+            <span id="hamburgerTrigger" class="u-hamburger__box">
+              <span class="u-hamburger__inner"></span>
+            </span>
+          </button>
+            <!-- End Responsive Toggle Button -->
+
+            <!-- Navigation -->
+            <div id="navBar" class="collapse navbar-collapse py-0 u-header--white-nav-links">
+              <ul class="navbar-nav u-header__navbar-nav ml-lg-auto">
+                <!-- Data Centers -->
+                <li class="nav-item hs-has-sub-menu u-header__nav-item" data-event="hover" data-animation-in="slideInUp" data-animation-out="fadeOut">
+                  <a class="nav-link u-header__nav-link" href="javascript:;" aria-haspopup="true" aria-expanded="false">
+                  My Books
+                </a>
+
+                  <!-- Sign In - Link -->
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">
+                  Sign In
+                </a>
+                  </li>
+                  <!-- End Sign In - Link -->
+                  <!-- Button -->
+                  <li class="nav-item d-none d-md-inline-block pl-3 pr-0">
+                    <a class="btn btn-sm btn-primary transition-3d-hover" href="#">
+                  Sign Up
+                </a>
+                  </li>
+                  <!-- End Button -->
+              </ul>
+            </div>
+            <!-- End Navigation -->
+          </nav>
+          <!-- End Nav -->
+        </div>
+      </div>
+    </header>
+    <!-- ========== END HEADER ========== -->
+
+    <!-- Banner -->
+    <div class="row banner" id="banner">
+      <form class="form-inline search-group d-flex justify-content-center align-items-center">
+        <span class="custom-box d-flex justify-content-center align-items-center shadow-lg p-3 mb-5 rounded">
+        <div class="input-border d-flex justify-content-center align-items-center">
+        <input
+        id="search-input" class="form-control col-6 mr-3" type="search" placeholder="Search" aria-label="Search">
+        <button id="search-btn" class="btn btn-primary transition-3d-hover col-2" type="submit">Search</button>
+      </div>
+      </span>
+      </form>
+    </div>
+    <!-- End of Banner -->
+
+    <!-- The AddBook Modal -->
+    <div class="modal fade bd-example-modal-lg" id="addBookModal">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Add Book</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form id="add-book-form">
+              <div class="form-row">
+                <div class="form-group col-md-12 title-div">
+                  <label for="title">Title*</label>
+                  <input type="text" class="form-control" id="title-text" placeholder="Title" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-8">
+                  <label for="author">Author*</label>
+                  <input type="text" class="form-control" id="author" placeholder="Name" required>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="genre">Genre</label>
+                  <select class="selectpicker form-control" id="genre">
+                  <option value="Action and Adventure">Action and Adventure</option>
+                  <option value="Drama">Drama</option>
+                  <option value="Fantasy">Fantasy</option>
+                  <option value="History">History</option>
+                  <option value="Horror">Horror</option>
+                  <option value="Poetry">Poetry</option>
+                  <option value="Romance">Romance</option>
+                  <option value="Satire">Satire</option>
+                  <option value="Science">Science</option>
+                  <option value="Science fiction">Science fiction</option>
+                  <option value="Trilogy">Trilogy</option>
+                </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="pages">Pages</label>
+                  <input type="text" class="form-control" id="pages">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="publicationDate">Publish Date</label>
+                  <input type="date" id="publicationDate" class="form-control">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="synopsis">Synopsis</label>
+                <textarea class="form-control" id="synopsis" rows="5"></textarea>
+              </div>
+            </form>
+            <form>
+              <label for="book-cover">Upload Book Cover</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-arrow-circle-down"></i></span>
+                </div>
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" id="file-upload">
+                  <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <div class="booksInLine mr-5  text-success"></div>
+            <button id="add-another-btn" type="submit" class="btn btn-primary transition-3d-hover">Add Another Book</button>
+            <button type="button" class="btn btn-secondary transition-3d-hover" id="save-book-btn">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of AddBookModal -->
+
+    <!-- The EDITBook Modal -->
+    <div class="modal fade bd-example-modal-lg" id="edit-book-modal">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Edit Book</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form id="edit-book-form">
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <label for="title">Title*</label>
+                  <input type="text" class="form-control" id="title-edit" placeholder="Title" required>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-8">
+                  <label for="author">Author*</label>
+                  <input type="text" class="form-control" id="author-edit" placeholder="Name" required>
+                </div>
+                <div class="form-group col-md-4">
+                  <label for="genre">Genre</label>
+                  <select class="selectpicker form-control" id="genre-edit">
+                  <option value="Action and Adventure">Action and Adventure</option>
+                  <option value="Drama">Drama</option>
+                  <option value="Fantasy">Fantasy</option>
+                  <option value="History">History</option>
+                  <option value="Horror">Horror</option>
+                  <option value="Poetry">Poetry</option>
+                  <option value="Romance">Romance</option>
+                  <option value="Satire">Satire</option>
+                  <option value="Science">Science</option>
+                  <option value="Science fiction">Science fiction</option>
+                  <option value="Trilogy">Trilogy</option>
+                </select>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="pages">Pages</label>
+                  <input type="text" class="form-control" id="pages-edit">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="publicationDate">Publish Date</label>
+                  <input type="date" id="publicationDate-edit" class="form-control">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="synopsis">Synopsis</label>
+                <textarea class="form-control" id="synopsis-edit" rows="5"></textarea>
+              </div>
+            </form>
+            <form id="form-upload">
+              <label for="book-cover">Upload Book Cover</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-arrow-circle-down"></i></span>
+                </div>
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" id="file-upload-edit">
+                  <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <div class="booksInLine mr-5  text-success"></div>
+            <button id="save-edit-btn" type="submit" class="btn btn-primary transition-3d-hover">Save Edits</button>
+            <button type="button" class="btn btn-secondary transition-3d-hover" data-dismiss="modal" id="cancel-edit-btn">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of EDITBookModal -->
+
+    <!-- Random Book Modal -->
+    <div class="modal fade" id="randomBookModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">The Universe suggests ...</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </div>
+          <div class="modal-body">
+            <!-- form goes here -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Random Book Modal -->
+
+    <!-- Random Author Modal -->
+    <div class="modal fade" id="randomAuthorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="randomAuthorModal">Universe sends you ... </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          </div>
+          <div class="modal-body">
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Random Author Modal -->
+
+    <!-- All Authors Modal -->
+    <div class="modal fade" id="allAuthorsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="allAuthorsModal">Authors in your library: </h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+          </div>
+          <div class="modal-body">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of All Authors Modal -->
+
+    <!-- Synopsis Modal -->
+    <div class="modal fade" id="synopsisModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="synopsisModal">Synopsis ...</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+          </div>
+          <div class="modal-body">
+            <form class="form-inline">
+              <img class="img-thumbnail col-md-4" src="assets/books/martian.jpg" alt="random book">
+              <div class="col-md-6">
+                <h5>Martian</h5>
+                <h6>Andy Weir</h6>
+              </div>
+              <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque
+                eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer
+                tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra
+                nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero,
+                sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci
+                eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc.
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Synopsis Modal -->
+
+    <!-- Confirm DeleteBook Modal -->
+    <div id="confirm-delete-modal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-body confirm-delete-text">
+
+          </div>
+          <div class="modal-footer">
+            <button id="confirm-delete-btn" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+            <button id="confirm-cancel-btn" type="button" class="btn btn-secondary">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Confirm DeleteBook modal -->
+
+    <!--  Success Modal -->
+    <div id="success-modal" class="modal animated zoomIn" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document" data-dismiss="modal">
+        <div class="modal-content">
+          <div class="modal-body mx-auto">
+            <!-- Checkmark -->
+            <figure class="w-100">
+              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2" xml:space="preserve" width="200px" height="200px">
+                  <circle class="path circle" fill="#CCFF90" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
+                  <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="12" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/>
+                </svg>
+            </figure>
+            <!-- End Checkmark -->
+
+            <h3 class="text-success font-weight-bold text-center">Success!!!</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Success modal -->
+
+    <!-- Failure Modal -->
+    <div id="failure-modal" class="modal animated zoomIn" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document" data-dismiss="modal">
+        <div class="modal-content">
+          <div class="modal-body mx-auto">
+            <!-- Cross -->
+            <svg class="cross__svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+              <circle class="cross__circle" cx="26" cy="26" r="25" fill="none"/>
+            	<path class="cross__path cross__path--right" fill="none" d="M16,16 l20,20" />
+              <path class="cross__path cross__path--right" fill="none" d="M16,36 l20,-20" />
+            </svg>
+            <!-- End Cross -->
+            <h3 class="text-danger font-weight-bold text-center">Nope!!!</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Failure Modal -->
+
+    <!-- Found Books -->
+    <div class="container-fluid my-5" id="mainDivStart">
+
+      <div class="row d-flex justify-content-center mb-5" id="searchResults">
+        <!-- search Results -->
+      </div>
+      <!-- End of Found Books -->
+    </div>
+
+    <div class="container-fluid">
+      <h2 class="text-center">My Library</h2>
+
+      <!-- Controls -->
+      <div class="row controls-container mt-5 mb-3 d-flex justify-content-between">
+        <span class="col-md-2">
+          <button id="add-book-btn" type="button" class="btn btn-primary transition-3d-hover w-100" data-toggle="tooltip" data-placement="top" title="Add New Book">
+            <i class="fas fa-book"></i>
+            New Book
+          </button>
+        </span>
+        <span class="col-md-2">
+          <button id="random-book-btn" type="button" class="btn btn-secondary transition-3d-hover btn-sm w-100" data-toggle="tooltip" data-placement="top" title="Random Book">
+            <i class="fas fa-gift"></i>
+            Lucky Book
+          </button>
+        </span>
+        <span class="col-md-2">
+          <button id="random-author-btn" type="button" class="btn btn-secondary transition-3d-hover btn-sm w-100" data-toggle="tooltip" data-placement="top" title="Random Author">
+            <i class="fas fa-pencil-alt"></i>
+            Lucky Author
+          </button>
+        </span>
+        <span class="col-md-2">
+          <button type="button" class="btn btn-secondary transition-3d-hover btn-sm w-100" id='showAllAuthorsBtn' data-toggle="tooltip" data-placement="top" title="List of authors">
+            <i class="fas fa-list-alt"></i>
+            All Authors
+          </button>
+        </span>
+        <span class="col-md-2">
+          <div class="dropdown">
+            <button class="btn btn-secondary btn-sm w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-filter"></i>
+              Sort By
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <button id="sort-title" class="dropdown-item" data-sort="title">Title</button>
+              <button id="sort-author" class="dropdown-item" data-sort="author">Author</button>
+              <button id="sort-genre" class="dropdown-item" data-sort="genre">Genre</button>
+              <button id="sort-rating" class="dropdown-item" data-sort="rating">Rating</button>
+            </div>
+          </div>
+        </span>
+      </div>
+      <!-- End of Controls -->
+
+      <!-- Table -->
+      <table id="book-table" class="table table-hover">
+        <thead class="thead-dark">
+          <!-- _createHeader() is invoked here -->
+        </thead>
+        <tbody id="table-body">
+          <!-- _createRow() is invoked here -->
+        </tbody>
+      </table>
+      <!-- End of Table -->
+    </div>
+
+
+    <!-- ************* -->
+
+    <!-- ************** -->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="js/popper.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/util.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="js/ShowAuthorsUI.js"></script>
+    <script type="text/javascript" src="js/AddBooksUI.js"></script>
+    <script type="text/javascript" src="js/DeleteBook.js"></script>
+    <script type="text/javascript" src="js/UpdateTable.js"></script>
+    <script type="text/javascript" src="js/RandomBookUI.js"></script>
+    <script type="text/javascript" src="js/RandomAuthor.js"></script>
+    <script type="text/javascript" src="js/SearchUI.js"></script>
 </body>
+
 </html>
