@@ -10,57 +10,53 @@
   <link rel="stylesheet" href="css/vendor/animate.css">
   <link rel="stylesheet" href="css/vendor/web-fonts-with-css/css/fontawesome-all.css">
   <link rel="stylesheet" href="css/login.css">
+  <link rel="stylesheet" href="css/main-styles.css">
   <title>Login</title>
 </head>
 
 <body>
   <!-- ========== HEADER ========== -->
   <header>
-    <div class="bg-dark">
-      <div id="logoAndNav" class="ml-auto">
-        <!-- Nav -->
-        <nav class="navbar navbar-expand-md u-header__navbar">
-          <!-- Logo -->
-          <a class="navbar-brand u-header__navbar-brand u-header__navbar-brand-top-space ml-9" href="/">
-            <img class="logo" src="./assets/logo/logo.jpg" alt="Logo">
-          </a>
-          <!-- End Logo -->
+    <div id="logoAndNav">
+      <!-- Nav -->
+      <nav class="navbar navbar-expand-md">
+        <!-- Logo -->
+        <a class="navbar" href="/">
+          <img class="logo" src="./assets/logo/logo.jpg" alt="Logo">
+        </a>
+        <!-- End Logo -->
 
-          <!-- Responsive Toggle Button -->
-          <button type="button" class="navbar-toggler btn u-hamburger bg-white" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navBar" data-toggle="collapse" data-target="#navBar">
-          <span id="hamburgerTrigger" class="u-hamburger__box bg-warning">
-            <span class="u-hamburger__inner"></span>
-          </span>
+        <!-- Responsive Toggle Button -->
+        <button type="button" class="navbar-toggler bg-white" data-toggle="collapse" data-target="#navBar">
+          <i class="fas fa-bars"></i>
         </button>
-          <!-- End Responsive Toggle Button -->
+        <!-- End Responsive Toggle Button -->
 
-          <!-- Navigation -->
-          <div id="navBar" class="collapse navbar-collapse py-0 u-header--white-nav-links">
-            <ul class="navbar-nav u-header__navbar-nav ml-lg-auto">
-                <!-- Sign In - Link -->
-                <li class="nav-item">
-                  <a class="nav-link" href="./login.html">
+        <!-- Navigation -->
+        <div id="navBar" class="collapse navbar-collapse">
+          <ul class="navbar-nav nav-expanded d-flex justify-content-end">
+            <li id="userName" class="nav-item">
+              <a class="nav-link" href="javascript:;"></a>
+            </li>
+            <li id="navSignIn">
+              <a class="nav-link" href="/login.html">
                 Sign In
               </a>
-                </li>
-                <!-- End Sign In - Link -->
-                <!-- Button -->
-                <li class="nav-item d-none d-md-inline-block pl-3 pr-0">
-                  <a class="btn btn-sm btn-primary transition-3d-hover" href="./signUp.html">
+            </li>
+            <li id="navSignUp" class=" d-none d-md-inline-block pl-3 pr-0">
+              <a class="btn btn-sm btn-primary" href="/signUp.html">
                 Sign Up
               </a>
-                </li>
-                <!-- End Button -->
-            </ul>
-          </div>
-          <!-- End Navigation -->
-        </nav>
-        <!-- End Nav -->
-      </div>
+            </li>
+          </ul>
+        </div>
+        <!-- End Navigation -->
+      </nav>
+      <!-- End Nav -->
     </div>
   </header>
   <!-- ========== END HEADER ========== -->
-  <div class="container-fluid login-page">
+  <div class="container-fluid login-page animated fadeIn">
     <div class="text-center py-5">
       <h1 class="h2 ">Login to access your library</h1>
       <small >Don't have an account? <a class="text-white" href="./signUp.html">Sign Up here</a></small>

@@ -9,8 +9,12 @@ body{
 body h2{
   color: white;
 }
-.warning{
-  border: 3px solid red;
+
+.btn{
+  transition: all .1s;
+}
+.btn:active{
+  transform: scale(.9);
 }
 
 /* ---------------------- */
@@ -18,10 +22,13 @@ body h2{
 /* ---------------------- */
 
 nav {
-  /* width: 100%; */
   background-color: rgb(29, 32, 42);
   color: #E5E5E8;
   height: 80px;
+}
+.nav-expanded{
+  background-color: rgb(29, 32, 42);
+  width:100%;
 }
 
 .navbar a {
@@ -36,6 +43,7 @@ nav {
   align-items: center;
   display: none;
 }
+
 .logo {
   width: 100px;
   border-radius: 10px;;
@@ -47,7 +55,7 @@ nav {
 
 .banner {
   height: 100vh;
-  /* padding: 0; */
+  width: 100%;
   background-image: linear-gradient( rgba(0, 0, 0, .3), rgba(0, 0, 0, .3)), url("../assets/bookshelf.jpg");
 }
 

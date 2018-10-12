@@ -20,32 +20,3 @@ body{
   box-shadow: 1px 1px 5px 1px rgb(236,43,9);
   border: 2px solid rgb(236, 43, 9);
 }
-
-
-/* ---------------------- */
-/* NAVBAR                 */
-/* ---------------------- */
-
-nav {
-  /* width: 100%; */
-  background-color: rgb(29, 32, 42);
-  color: #E5E5E8;
-  height: 80px;
-}
-
-.navbar a {
-  color: #E5E5E8;
-}
-
-.login {
-  align-items: center;
-}
-
-.logout {
-  align-items: center;
-  display: none;
-}
-.logo {
-  width: 100px;
-  border-radius: 10px;;
-}

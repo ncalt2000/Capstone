@@ -16,72 +16,64 @@
   <div class="container-fluid p-0">
     <!-- ========== HEADER ========== -->
     <header>
-      <div class="bg-dark">
-        <div id="logoAndNav" class="ml-auto">
-          <!-- Nav -->
-          <nav class="navbar navbar-expand-md u-header__navbar">
-            <!-- Logo -->
-            <a class="navbar-brand u-header__navbar-brand u-header__navbar-brand-top-space ml-9" href="/">
-              <img class="logo" src="./assets/logo/logo.jpg" alt="Logo">
-            </a>
-            <!-- End Logo -->
+      <div id="logoAndNav">
+        <!-- Nav -->
+        <nav class="navbar navbar-expand-md">
+          <!-- Logo -->
+          <a class="navbar" href="/">
+            <img class="logo" src="./assets/logo/logo.jpg" alt="Logo">
+          </a>
+          <!-- End Logo -->
 
-            <!-- Responsive Toggle Button -->
-            <button type="button" class="navbar-toggler btn u-hamburger bg-white" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navBar" data-toggle="collapse" data-target="#navBar">
-            <span id="hamburgerTrigger" class="u-hamburger__box bg-warning">
-              <span class="u-hamburger__inner"></span>
-            </span>
+          <!-- Responsive Toggle Button -->
+          <button type="button" class="navbar-toggler bg-white" data-toggle="collapse" data-target="#navBar">
+            <i class="fas fa-bars"></i>
           </button>
-            <!-- End Responsive Toggle Button -->
+          <!-- End Responsive Toggle Button -->
 
-            <!-- Navigation -->
-            <div id="navBar" class="collapse navbar-collapse py-0 u-header--white-nav-links">
-              <ul class="navbar-nav u-header__navbar-nav ml-lg-auto">
-                <li class="nav-item u-header__nav-item">
-                  <a class="nav-link u-header__nav-link" href="#library" aria-haspopup="true" aria-expanded="false">
-                  My Library
-                  </a>
-                </li>
-
-                  <!-- Sign In - Link -->
-                  <li class="nav-item" id="navSignIn">
-                    <a class="nav-link" href="/login.html">
-                      Sign In
-                    </a>
-                  </li>
-                  <!-- End Sign In - Link -->
-                  <!-- Button -->
-                  <li id="navSignUp" class="nav-item d-none d-md-inline-block pl-3 pr-0">
-                    <a class="btn btn-sm btn-primary transition-3d-hover" href="/signUp.html">
-                      Sign Up
-                    </a>
-                  </li>
-                  <!-- End Button -->
-                  <li id="userName" class="nav-item u-header__nav-item">
-                    <a class="nav-link u-header__nav-link" href="javascript:;" aria-haspopup="true" aria-expanded="false">
-
-                    </a>
-                  </li>
-              </ul>
-            </div>
-            <!-- End Navigation -->
-          </nav>
-          <!-- End Nav -->
-        </div>
+          <!-- Navigation -->
+          <div id="navBar" class="collapse navbar-collapse">
+            <ul class="navbar-nav nav-expanded d-flex justify-content-end">
+              <li id="userName" class="nav-item">
+                <a class="nav-link pl-3" href="javascript:;"></a>
+              </li>
+              <li>
+                <a class="nav-link pl-3" href="#library">
+                My Library
+                </a>
+              </li>
+              <li id="navSignIn">
+                <a class="nav-link pl-3" href="/login.html">
+                  Sign In
+                </a>
+              </li>
+              <li id="navSignUp" class="pl-3 pr-0">
+                <a class="btn btn-sm btn-primary" href="/signUp.html">
+                  Sign Up
+                </a>
+              </li>
+            </ul>
+          </div>
+          <!-- End Navigation -->
+        </nav>
+        <!-- End Nav -->
       </div>
     </header>
     <!-- ========== END HEADER ========== -->
 
     <!-- Banner -->
-    <div class="row banner" id="banner">
+    <div class="row banner m-0 animated fadeIn">
       <form class="form-inline search-group d-flex justify-content-center align-items-center">
         <span class="custom-box d-flex justify-content-center align-items-center shadow-lg p-3 mb-5 rounded">
-        <div class="input-border d-flex justify-content-center align-items-center">
-        <input
-        id="search-input" class="form-control col-6 mr-3" type="search" placeholder="Enter Book title or Author name" aria-label="Search">
-        <button id="search-btn" class="btn btn-primary transition-3d-hover col-2" type="submit">Search</button>
-      </div>
-      </span>
+          <div class="input-border d-flex justify-content-center align-items-center">
+            <input
+            id="search-input" class="form-control col-6 col-sm-6 mr-3 d-none d-sm-block" type="search" placeholder="Enter Book title or Author name" aria-label="Search">
+            <input
+            id="search-input" class="form-control col-6 col-sm-6 mr-3 d-sm-none" type="search" placeholder="🔎" aria-label="Search">
+            <button id="search-btn" class="d-none d-sm-block btn btn-primary col-2 col-sm-2" type="submit">Search</button>
+            <button id="search-btn" class="d-sm-none btn btn-primary col-2 col-sm-2" type="submit"><i class="fas fa-search"></i></button>
+          </div>
+        </span>
       </form>
     </div>
     <!-- End of Banner -->
@@ -364,31 +356,31 @@
 
       <!-- Controls -->
       <div class="row controls-container mt-5 mb-3 d-flex justify-content-between">
-        <span class="col-md-2">
+        <span class="col-md-2 mb-1">
           <button id="add-book-btn" type="button" class="btn btn-primary transition-3d-hover w-100" data-toggle="tooltip" data-placement="top" title="Add New Book">
             <i class="fas fa-book"></i>
             New Book
           </button>
         </span>
-        <span class="col-md-2">
+        <span class="col-md-2 mb-1">
           <button id="random-book-btn" type="button" class="btn btn-secondary transition-3d-hover btn-sm w-100" data-toggle="tooltip" data-placement="top" title="Random Book">
             <i class="fas fa-gift"></i>
             Lucky Book
           </button>
         </span>
-        <span class="col-md-2">
+        <span class="col-md-2 mb-1">
           <button id="random-author-btn" type="button" class="btn btn-secondary transition-3d-hover btn-sm w-100" data-toggle="tooltip" data-placement="top" title="Random Author">
             <i class="fas fa-pencil-alt"></i>
             Lucky Author
           </button>
         </span>
-        <span class="col-md-2">
+        <span class="col-md-2 mb-1">
           <button type="button" class="btn btn-secondary transition-3d-hover btn-sm w-100" id='showAllAuthorsBtn' data-toggle="tooltip" data-placement="top" title="List of authors">
             <i class="fas fa-list-alt"></i>
             All Authors
           </button>
         </span>
-        <span class="col-md-2">
+        <span class="col-md-2 mb-1">
           <div class="dropdown">
             <button class="btn btn-secondary btn-sm w-100 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-filter"></i>
               Sort By
@@ -405,7 +397,7 @@
       <!-- End of Controls -->
 
       <!-- Table -->
-      <table id="book-table" class="table table-hover">
+      <table id="book-table" class="table table-hover table-responsive-md">
         <thead class="thead-dark">
           <!-- _createHeader() is invoked here -->
         </thead>
