@@ -49,7 +49,7 @@ class AddBooksUI {
 
     if (bookData.title === "") {
       $('#title-text').addClass('required');
-      var errorMessage = $('<p>', {class: 'text-danger'});
+      let errorMessage = $('<p>', {class: 'text-danger'});
       errorMessage.text("Please complete missing fields");
       $('.booksInLine').html(errorMessage);
       return;
@@ -57,7 +57,7 @@ class AddBooksUI {
     if (bookData.author === "") {
       $('#title-text').removeClass('required');
       $('#author').addClass('required');
-      var errorMessage = $('<p>', {class: 'text-danger'});
+      let errorMessage = $('<p>', {class: 'text-danger'});
       errorMessage.text("Please complete missing fields");
       $('.booksInLine').html(errorMessage);
       return;
@@ -70,7 +70,7 @@ class AddBooksUI {
    const reader = new FileReader();
    if (file) {
      reader.readAsDataURL(file);
-     console.log(reader, "READER");
+     // console.log(reader, "READER");
      reader.onload = function() {
        // console.log(reader.result);
        bookData.cover = reader.result;
@@ -79,14 +79,17 @@ class AddBooksUI {
      bookData.cover = noBookCover;
    }
 
+   let count = 0;
    for (var i = 0; i < gDataTable.allBooks.length; i++) {
      if(gDataTable.allBooks[i].title === bookData.title && gDataTable.allBooks[i].author === bookData.author){
        $('#failure-modal').modal('show');
        $('#failure-modal').find('.modal-footer').html("This title and author already exist in the Library!");
-       return;
+       return count++;
      }
    }
-    this._tempBookshelf.push(bookData);
+   if(count===0){
+     this._tempBookshelf.push(bookData);
+   }
     const booksToAdd = $('<p>', {'class': 'booksToAdd text-success'});
       booksToAdd.text(`Books to be added: ${this._tempBookshelf.length}`);
       $('.booksInLine').html(booksToAdd);
@@ -125,7 +128,7 @@ class AddBooksUI {
         },
         error: ()  => {
           $('#failure-modal').modal('show')
-          var errorMessage = $('<p>', {class: 'text-danger'});
+          let errorMessage = $('<p>', {class: 'text-danger'});
           errorMessage.text("Oops! Something went wrong! Please try again!");
           $('#failure-modal').find('.modal-footer').html(errorMessage);
           $('.booksInLine').empty();

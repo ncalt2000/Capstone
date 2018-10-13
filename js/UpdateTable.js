@@ -44,7 +44,7 @@ _closeModalOnCancel () {
 };
 
 _getAllBooks(){
-  console.log("get all books");
+  // console.log("get all books");
   this._activateLoader();
   $.ajax({
     url: this.libraryURL,
