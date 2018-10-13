@@ -46,8 +46,6 @@ class AddBooksUI {
   _bookInLine() {
 
     const bookData = this._getFieldsFromModal ();
-    // This line is adding the rating of 1 to new book
-    // bookData["rating"] = 1;
     let noBookCover = '../assets/books/noCover.jpg';
 
     if (bookData.title === "") {
@@ -77,16 +75,19 @@ class AddBooksUI {
      reader.onload = function() {
        // console.log(reader.result);
        bookData.cover = reader.result;
-       // console.log(bookData, 'Log 1: BookData , after encoding');
-       //another method here to see if the count of books and loadCount is the same.
-       //if(loadCount < coverCount){
-       // return} esle{}
      };
    } else {
      bookData.cover = noBookCover;
    }
 
-   this._tempBookshelf.push(bookData);
+   for (var i = 0; i < gDataTable.allBooks.length; i++) {
+     if(gDataTable.allBooks[i].title === bookData.title && gDataTable.allBooks[i].author === bookData.author){
+       $('#failure-modal').modal('show');
+       $('#failure-modal').find('.modal-footer').html("This title and author already exist in the Library!");
+       return;
+     }
+   }
+    this._tempBookshelf.push(bookData);
     // console.log(this._tempBookshelf, "TEMP SHelf");
 
     const booksToAdd = $('<p>', {'class': 'booksToAdd text-success'});
@@ -97,7 +98,6 @@ class AddBooksUI {
 
   _saveBook() {
     this._bookInLine();
-    console.log(this._tempBookshelf, "books to be sent to DB");
 
     setTimeout(() => {
       $.ajax({
