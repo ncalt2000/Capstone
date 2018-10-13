@@ -14,7 +14,6 @@ class Auth {
   }
 
   _getUserInfo(){
-    // console.log("Hello log2");
     const userInfo = $('#signUpForm').serializeArray();
     // console.log(userInfo);
     let newData = new Object();
@@ -24,7 +23,6 @@ class Auth {
 
     //VALIDATION:
     const values = Object.values(newData);
-    // console.log(values, "Values");
 
     for (var i = 0; i < values.length; i++) {
       if (values[i] === '') {
@@ -66,7 +64,6 @@ class Auth {
          }
        })
     } catch (err) {
-      // Display error message to user
       setTimeout(() => {
         this._modalToShow(err);
       }, 100);
@@ -86,7 +83,6 @@ class Auth {
       $('#signUpModal').find('.modal-body').append(checkmark);
 
     } else {
-      // console.log("SUCCESS");
       $('#signUpModal').find('.modal-body').empty();
       $('#signUpModal').modal('show');
       const message = $('<h4>', {class: 'text-success text-center'});
@@ -104,11 +100,7 @@ class Auth {
     userInfo.map((item, index) => {
       newData[item.name] = item.value;
     })
-    // console.log(newData, "DATA");
-
-    //VALIDATION:
     const values = Object.values(newData);
-    // console.log(values, "Values");
 
     for (var i = 0; i < values.length; i++) {
       if (values[i] === '') {
@@ -151,20 +143,10 @@ class Auth {
   };
 
   _setToken(jwt) {
-    if(jwt.auth)
-    {
+    if(jwt.auth) {
       localStorage.setItem("jwt_token", jwt.token);
       localStorage.setItem("userName", jwt.user);
     }
-  };
-
-  _logInSetStore() {
-    $.ajax({
-      url: "http://localhost:3000/user/login",
-      type: 'GET',
-      // Fetch the stored token from localStorage and set in the header
-      headers: {"Authorization": localStorage.getItem('jwt_token')}
-    });
   };
 
 };

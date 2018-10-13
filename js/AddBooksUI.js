@@ -44,7 +44,6 @@ class AddBooksUI {
   };
 
   _bookInLine() {
-
     const bookData = this._getFieldsFromModal ();
     let noBookCover = '../assets/books/noCover.jpg';
 
@@ -88,8 +87,6 @@ class AddBooksUI {
      }
    }
     this._tempBookshelf.push(bookData);
-    // console.log(this._tempBookshelf, "TEMP SHelf");
-
     const booksToAdd = $('<p>', {'class': 'booksToAdd text-success'});
       booksToAdd.text(`Books to be added: ${this._tempBookshelf.length}`);
       $('.booksInLine').html(booksToAdd);

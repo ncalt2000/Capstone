@@ -6,7 +6,6 @@ class DataTable {
   }
 
 _init () {
-  // when the page initially loads
   this._getAllBooks();
   this._bindCustomListeners();
 };
@@ -26,7 +25,6 @@ _bindEvents () {
   $('.delete').on('click', this._openDeleteModal.bind(this));
   $('.edit').on('click', this._openEditModal.bind(this));
   $('.star').on('click', this._rateBook.bind(this));
-
 };
 
 _bindCustomListeners () {
