@@ -1,5 +1,39 @@
 {
+  "name": "library_node",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eslint": "eslint . --ext .js",
+    "build": "webpack",
+    "nodemon": "nodemon --exec babel-node --presets env,stage-2 server.js"
+  },
+  "author": "Natalia Calt",
+  "license": "ISC",
   "dependencies": {
-    "eslint": "^5.7.0"
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "dotenv": "^6.1.0",
+    "dotenv-webpack": "^1.5.7",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "font-awesome": "^4.7.0",
+    "install": "^0.12.2",
+    "node-pre-gyp": "^0.11.0"
+  },
+  "devDependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.8",
+    "@fortawesome/free-brands-svg-icons": "^5.5.0",
+    "@fortawesome/free-regular-svg-icons": "^5.5.0",
+    "@fortawesome/free-solid-svg-icons": "^5.5.0",
+    "css-loader": "^1.0.1",
+    "file-loader": "^2.0.0",
+    "font-awesome-loader": "^1.0.2",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.26.0",
+    "webpack-cli": "^3.1.2"
   }
 }

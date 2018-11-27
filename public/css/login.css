@@ -1,0 +1,22 @@
+html {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body{
+  color: #E5E5E8;
+}
+
+.login-page{
+  width: 100%;
+  height: calc(100vh - 80px);
+  background: linear-gradient(to bottom, rgba(0, 47, 75, 0.5), rgba(194, 126, 113, 0.99)), url('../assets/reading.jpg'), no-repeat;
+  background-position: center;
+  background-size: cover;
+  padding-top: 6rem;
+}
+
+.required{
+  box-shadow: 1px 1px 5px 1px rgb(236,43,9);
+  border: 2px solid rgb(236, 43, 9);
+}
